@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { theme } from '../theme';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 300);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
     setIsOpen(false);
   };
 
@@ -13,7 +21,7 @@ const Navbar = () => {
     <nav className="fixed w-full bg-white shadow-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <div className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
+          <div className="text-2xl font-bold cursor-pointer" style={{ fontFamily: theme.fonts.heading }} onClick={() => navigate('/')}>
             <span style={{ color: theme.colors.primary.deepPurple }}>Ktinos</span><em style={{ color: theme.colors.primary.healthGreen }}>kare</em>
           </div>
           
@@ -28,7 +36,7 @@ const Navbar = () => {
             <li><button onClick={() => scrollToSection('about')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>About</button></li>
             <li><button onClick={() => scrollToSection('practice-areas')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>Features</button></li>
             <li><button onClick={() => scrollToSection('our-team')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>Our Team</button></li>
-            <li><button onClick={() => scrollToSection('contact')} className="text-white px-6 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.body }}>Contact</button></li>
+            <li><button onClick={() => { navigate('/users'); setIsOpen(false); }} className="text-white px-6 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen }}>User List</button></li>
           </ul>
         </div>
       </div>
