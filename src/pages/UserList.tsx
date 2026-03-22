@@ -7,7 +7,7 @@ import { theme } from '../theme';
 const statusColor = (status: string) => {
   if (status === 'Healthy') return { bg: '#d1fae5', text: '#065f46' };
   if (status === 'Needs Attention') return { bg: '#fef3c7', text: '#92400e' };
-  return { bg: '#fee2e2', text: '#991b1b' };
+  return { backgroundColor: '#fee2e2', color: '#991b1b' };
 };
 
 const UserList = () => {
