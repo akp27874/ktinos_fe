@@ -14,6 +14,7 @@ import PetProfile from './pages/PetProfile';
 import GpsTracking from './pages/GpsTracking';
 import HealthMonitoring from './pages/HealthMonitoring';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -49,6 +50,7 @@ function App() {
         <Route path="/gps" element={<GpsTracking />} />
         <Route path="/health" element={<HealthMonitoring />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
