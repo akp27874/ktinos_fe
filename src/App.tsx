@@ -9,6 +9,11 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import UserList from './pages/UserList';
 import PetDetails from './pages/PetDetails';
+import Dashboard from './pages/Dashboard';
+import PetProfile from './pages/PetProfile';
+import GpsTracking from './pages/GpsTracking';
+import HealthMonitoring from './pages/HealthMonitoring';
+import Settings from './pages/Settings';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -35,11 +40,15 @@ const Home = () => {
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<UserList />} />
-        <Route path="/pet/:id" element={<PetDetails />} />
+        <Route path="/" element={<><Navbar /><Home /></>} />
+        <Route path="/users" element={<><Navbar /><UserList /></>} />
+        <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile/:id" element={<PetProfile />} />
+        <Route path="/gps" element={<GpsTracking />} />
+        <Route path="/health" element={<HealthMonitoring />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );
