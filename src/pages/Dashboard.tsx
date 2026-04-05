@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../theme';
 import { pets } from '../data/pets';
+import AddPetModal from '../components/AddPetModal';
 
 const navItems = [
   { icon: '🐾', label: 'Pets Dashboard', key: 'dashboard' },
@@ -15,6 +16,7 @@ const featured = pets[3]; // Luna
 
 const Dashboard = () => {
   const [activeNav, setActiveNav] = useState('dashboard');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -62,6 +64,7 @@ const Dashboard = () => {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => setIsModalOpen(true)}
             className="w-full py-3 rounded-full text-white font-bold text-sm"
             style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}
           >
@@ -303,6 +306,15 @@ const Dashboard = () => {
           </div>
         </div>
       </main>
+
+      <AddPetModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddPet={(pet) => {
+          console.log('New pet added:', pet);
+          // Here you can add logic to save the pet, e.g., to a state or API
+        }}
+      />
     </div>
   );
 };
