@@ -38,9 +38,11 @@ const Home = () => {
 };
 
 import { PetsProvider } from './context/PetsContext';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
+    <AuthProvider>
     <PetsProvider>
       <BrowserRouter>
       <Routes>
@@ -56,6 +58,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </PetsProvider>
+    </AuthProvider>
   );
 }
 

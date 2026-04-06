@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '', remember: false });
   const [error, setError] = useState('');
 
@@ -14,6 +16,7 @@ const Login = () => {
       setError('Please fill in all fields.');
       return;
     }
+    login();
     navigate('/dashboard');
   };
 

@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
+import { ENDPOINTS } from '../config/api';
+import axiosInstance from '../config/axiosInstance';
 import { usePets } from '../context/PetsContext';
+import { useAuth } from '../context/AuthContext';
+
+interface SpeciesOption { id: number; name: string; }
 
 const navItems = [
   { icon: '🐾', label: 'Pets Dashboard', key: 'dashboard', path: '/dashboard' },
@@ -11,26 +16,35 @@ const navItems = [
   { icon: '⚙️', label: 'Settings', key: 'settings', path: '/settings' },
 ];
 
-const fields = [
-  { label: 'Pet Name', key: 'petName', type: 'text', placeholder: 'e.g. Buddy' },
-  { label: 'Species', key: 'species', type: 'text', placeholder: 'e.g. Dog, Cat' },
-  { label: 'Breed', key: 'breed', type: 'text', placeholder: 'e.g. Golden Retriever' },
-  { label: 'Age (years)', key: 'age', type: 'number', placeholder: 'e.g. 3' },
-  { label: 'Weight', key: 'weight', type: 'text', placeholder: 'e.g. 10kg' },
-  { label: 'Gender', key: 'gender', type: 'select', options: ['Male', 'Female'] },
-];
-
-const emptyForm = { petName: '', species: '', breed: '', age: '', weight: '', gender: 'Male', ownerName: '', ownerEmail: '', ownerPhone: '' };
+const emptyForm = { petName: '', species: '', speciesId: '', breed: '', age: '', weight: '', gender: 'Male', ownerName: '', ownerEmail: '', ownerPhone: '' };
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { pets: allPets, addPet } = usePets();
+  const { logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [speciesList, setSpeciesList] = useState<SpeciesOption[]>([]);
+  const [photoPreview, setPhotoPreview] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
 
   const activeKey = navItems.find(n => n.path === location.pathname)?.key ?? '';
+
+  useEffect(() => {
+    axiosInstance.get(ENDPOINTS.species)
+      .then(res => setSpeciesList(res.data.results ?? []))
+      .catch(() => setSpeciesList([]));
+  }, []);
+
+  console.log(speciesList,"speciesList")
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setPhotoPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,13 +65,14 @@ const Sidebar = () => {
       nextCheckup: '',
       healthStatus: 'Healthy' as const,
       notes: '',
-      avatar: `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
+      avatar: photoPreview || `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
     };
     addPet(newPet);
     setSubmitted(true);
     setTimeout(() => {
       setShowModal(false);
       setForm(emptyForm);
+      setPhotoPreview('');
       setSubmitted(false);
     }, 1500);
   };
@@ -100,7 +115,7 @@ const Sidebar = () => {
           <button className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
             ❓ Support
           </button>
-          <button onClick={() => navigate('/')} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
+          <button onClick={() => { logout(); navigate('/'); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
             ↩ Logout
           </button>
         </div>
@@ -154,34 +169,46 @@ const Sidebar = () => {
 
                   {/* Row 1: Pet Name + Species */}
                   <div className="grid grid-cols-2 gap-3">
-                    {['petName', 'species'].map((key) => {
-                      const f = fields.find(f => f.key === key)!;
-                      return (
-                        <div key={key}>
-                          <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>{f.label}</label>
-                          <input type="text" placeholder={f.placeholder} value={form[key as keyof typeof form]}
-                            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                            className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
-                        </div>
-                      );
-                    })}
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Pet Name</label>
+                      <input type="text" placeholder="e.g. Buddy" value={form.petName}
+                        onChange={e => setForm({ ...form, petName: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Species</label>
+                      <select value={form.speciesId}
+                        onChange={e => {
+                          const selected = speciesList.find(s => String(s.id) === e.target.value);
+                          setForm({ ...form, speciesId: e.target.value, species: selected?.name ?? '', breed: '' });
+                        }}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
+                        <option value="">Select species</option>
+                        {speciesList.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Row 2: Breed + Age */}
                   <div className="grid grid-cols-2 gap-3">
-                    {['breed', 'age'].map((key) => {
-                      const f = fields.find(f => f.key === key)!;
-                      return (
-                        <div key={key}>
-                          <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>{f.label}</label>
-                          <input type={f.type} placeholder={f.placeholder} value={form[key as keyof typeof form]}
-                            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                            className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
-                        </div>
-                      );
-                    })}
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Breed</label>
+                      <select value={form.breed}
+                        onChange={e => setForm({ ...form, breed: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
+                        <option value="">Select breed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Age (years)</label>
+                      <input type="number" placeholder="e.g. 3" value={form.age}
+                        onChange={e => setForm({ ...form, age: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                    </div>
                   </div>
 
                   {/* Row 3: Weight + Gender */}
@@ -200,6 +227,25 @@ const Sidebar = () => {
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
                         <option>Male</option><option>Female</option>
                       </select>
+                    </div>
+                  </div>
+
+                  {/* Photo Upload */}
+                  <div>
+                    <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Pet Photo</label>
+                    <div className="flex items-center gap-3">
+                      <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 border flex items-center justify-center"
+                        style={{ borderColor: theme.colors.neutral.gray[200], backgroundColor: theme.colors.neutral.lightBg }}>
+                        {photoPreview
+                          ? <img src={photoPreview} alt="preview" className="w-full h-full object-cover" />
+                          : <span className="text-2xl">🐾</span>
+                        }
+                      </div>
+                      <label className="cursor-pointer flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold border transition hover:opacity-80"
+                        style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }}>
+                        📷 {photoPreview ? 'Change Photo' : 'Upload Photo'}
+                        <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+                      </label>
                     </div>
                   </div>
 

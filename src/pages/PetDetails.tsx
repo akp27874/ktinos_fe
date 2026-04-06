@@ -1,65 +1,139 @@
-import React from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { pets } from '../data/pets';
+import { usePets } from '../context/PetsContext';
 import { theme } from '../theme';
 
-const statusColor = (status: string) => {
-  if (status === 'Healthy') return { bg: '#d1fae5', text: '#065f46' };
-  if (status === 'Needs Attention') return { bg: '#fef3c7', text: '#92400e' };
+const statusColor = (status: string): React.CSSProperties => {
+  if (status === 'Healthy') return { backgroundColor: '#d1fae5', color: '#065f46' };
+  if (status === 'Needs Attention') return { backgroundColor: '#fef3c7', color: '#92400e' };
   return { backgroundColor: '#fee2e2', color: '#991b1b' };
 };
 
-const InfoRow = ({ label, value }: { label: string; value: string | number | boolean }) => (
-  <div className="flex justify-between py-3 border-b border-gray-100">
-    <span className="font-semibold text-sm" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[500] }}>{label}</span>
-    <span className="text-sm font-medium" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[800] }}>
-      {typeof value === 'boolean' ? (value ? '✅ Yes' : '❌ No') : value}
-    </span>
+const inputCls = "w-full px-3 py-2 rounded-lg text-sm border focus:outline-none focus:ring-2";
+const inputStyle = { borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] };
+
+const Field = ({ label, value, editing, onChange, type = 'text' }: {
+  label: string; value: string; editing: boolean; onChange: (v: string) => void; type?: string;
+}) => (
+  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+    <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>{label}</span>
+    {editing
+      ? <input type={type} value={value} onChange={e => onChange(e.target.value)} className={`${inputCls} w-2/3`} style={inputStyle} />
+      : <span className="text-sm font-medium text-right w-2/3" style={{ color: theme.colors.neutral.gray[800] }}>{value || '—'}</span>
+    }
   </div>
 );
 
 const PetDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const pet = pets.find((p) => p.id === Number(id));
+  const { pets, updatePet } = usePets();
+  const pet = pets.find(p => p.id === Number(id));
 
-  if (!pet) return (
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState(pet ? { ...pet } : null);
+  const [photoPreview, setPhotoPreview] = useState<string>('');
+
+  if (!pet || !form) return (
     <div className="min-h-screen flex items-center justify-center">
       <p style={{ fontFamily: theme.fonts.body }}>Pet not found.</p>
     </div>
   );
 
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPhotoPreview(result);
+      setForm(prev => prev ? { ...prev, avatar: result } : prev);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = () => {
+    updatePet(form);
+    setEditing(false);
+    setPhotoPreview('');
+  };
+
+  const handleCancel = () => {
+    setForm({ ...pet });
+    setPhotoPreview('');
+    setEditing(false);
+  };
+
+  const set = (key: string) => (v: string) => setForm(prev => prev ? { ...prev, [key]: v } : prev);
+
   return (
-    <div className="min-h-screen pt-20 pb-10" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
+    <div className="min-h-screen pt-20 pb-10" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>
       <div className="container mx-auto px-4 max-w-4xl">
 
         {/* Back */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          onClick={() => navigate('/users')}
+        <motion.button initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2 mb-6 font-semibold hover:opacity-75 transition"
-          style={{ fontFamily: theme.fonts.body, color: theme.colors.primary.deepPurple }}
-        >
-          ← Back to User List
+          style={{ color: theme.colors.primary.deepPurple }}>
+          ← Back
         </motion.button>
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-          {/* Hero Banner */}
-          <div className="h-40 w-full" style={{ background: `linear-gradient(to right, ${theme.colors.primary.deepPurple}, ${theme.colors.primary.tealWellness})` }}></div>
+          {/* Banner */}
+          <div className="h-36 w-full" style={{ background: `linear-gradient(to right, ${theme.colors.primary.deepPurple}, ${theme.colors.primary.tealWellness})` }} />
 
-          {/* Avatar + Name */}
-          <div className="px-8 pb-6">
+          <div className="px-8 pb-8">
+            {/* Avatar + Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 -mt-16 mb-6">
-              <img src={pet.avatar} alt={pet.petName} className="w-32 h-32 rounded-2xl object-cover border-4 border-white shadow-lg" />
-              <div className="pb-2">
-                <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</h1>
-                <p className="text-gray-500" style={{ fontFamily: theme.fonts.body }}>{pet.breed} · {pet.species}</p>
-                <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(pet.healthStatus)}>
-                  {pet.healthStatus}
+              <div className="relative">
+                <img
+                  src={photoPreview || form.avatar}
+                  alt={form.petName}
+                  className="w-32 h-32 rounded-2xl object-cover border-4 border-white shadow-lg"
+                />
+                <label className="absolute bottom-1 right-1 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm cursor-pointer shadow"
+                  style={{ backgroundColor: theme.colors.primary.deepPurple }}>
+                  📷
+                  <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+                </label>
+              </div>
+              <div className="pb-2 flex-1">
+                {editing
+                  ? <input value={form.petName} onChange={e => setForm(p => p ? { ...p, petName: e.target.value } : p)}
+                      className="text-3xl font-bold bg-transparent border-b-2 focus:outline-none w-full mb-1"
+                      style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }} />
+                  : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{form.petName}</h1>
+                }
+                <p className="text-gray-500 text-sm">{form.breed} · {form.species}</p>
+                <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(form.healthStatus)}>
+                  {form.healthStatus}
                 </span>
+              </div>
+
+              {/* Edit / Save buttons */}
+              <div className="flex gap-2 pb-2">
+                {editing ? (
+                  <>
+                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSave}
+                      className="px-5 py-2 rounded-full text-white text-sm font-semibold"
+                      style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}>
+                      Save
+                    </motion.button>
+                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCancel}
+                      className="px-5 py-2 rounded-full text-sm font-semibold border"
+                      style={{ borderColor: theme.colors.neutral.gray[300], color: theme.colors.neutral.gray[600], fontFamily: theme.fonts.heading }}>
+                      Cancel
+                    </motion.button>
+                  </>
+                ) : (
+                  <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setEditing(true)}
+                    className="px-5 py-2 rounded-full text-white text-sm font-semibold"
+                    style={{ backgroundColor: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }}>
+                    ✏️ Edit
+                  </motion.button>
+                )}
               </div>
             </div>
 
@@ -67,34 +141,35 @@ const PetDetails = () => {
               {/* Pet Info */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🐾 Pet Information</h2>
-                <InfoRow label="Name" value={pet.petName} />
-                <InfoRow label="Species" value={pet.species} />
-                <InfoRow label="Breed" value={pet.breed} />
-                <InfoRow label="Age" value={`${pet.age} years`} />
-                <InfoRow label="Weight" value={pet.weight} />
-                <InfoRow label="Gender" value={pet.gender} />
-                <InfoRow label="Color" value={pet.color} />
-                <InfoRow label="Vaccinated" value={pet.vaccinated} />
+                <Field label="Species"    value={form.species}   editing={editing} onChange={set('species')} />
+                <Field label="Breed"      value={form.breed}     editing={editing} onChange={set('breed')} />
+                <Field label="Age"        value={String(form.age)} editing={editing} onChange={set('age')} type="number" />
+                <Field label="Weight"     value={form.weight}    editing={editing} onChange={set('weight')} />
+                <Field label="Gender"     value={form.gender}    editing={editing} onChange={set('gender')} />
+                <Field label="Color"      value={form.color}     editing={editing} onChange={set('color')} />
               </div>
 
-              {/* Owner + Health Info */}
+              {/* Owner + Health */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>👤 Owner Information</h2>
-                <InfoRow label="Name" value={pet.ownerName} />
-                <InfoRow label="Email" value={pet.ownerEmail} />
-                <InfoRow label="Phone" value={pet.ownerPhone} />
+                <Field label="Name"  value={form.ownerName}  editing={editing} onChange={set('ownerName')} />
+                <Field label="Email" value={form.ownerEmail} editing={editing} onChange={set('ownerEmail')} type="email" />
+                <Field label="Phone" value={form.ownerPhone} editing={editing} onChange={set('ownerPhone')} />
 
                 <h2 className="text-lg font-bold mt-6 mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🏥 Health Records</h2>
-                <InfoRow label="Last Checkup" value={pet.lastCheckup} />
-                <InfoRow label="Next Checkup" value={pet.nextCheckup} />
-                <InfoRow label="Health Status" value={pet.healthStatus} />
+                <Field label="Last Checkup" value={form.lastCheckup} editing={editing} onChange={set('lastCheckup')} type="date" />
+                <Field label="Next Checkup" value={form.nextCheckup} editing={editing} onChange={set('nextCheckup')} type="date" />
               </div>
             </div>
 
             {/* Notes */}
             <div className="mt-6 p-4 rounded-xl" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
               <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>📝 Notes</h2>
-              <p style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>{pet.notes}</p>
+              {editing
+                ? <textarea value={form.notes} onChange={e => setForm(p => p ? { ...p, notes: e.target.value } : p)}
+                    rows={3} className={`${inputCls} w-full`} style={inputStyle} />
+                : <p style={{ color: theme.colors.neutral.gray[700] }}>{form.notes || '—'}</p>
+              }
             </div>
           </div>
         </motion.div>
