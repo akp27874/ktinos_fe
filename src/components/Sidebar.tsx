@@ -18,7 +18,6 @@ const fields = [
   { label: 'Age (years)', key: 'age', type: 'number', placeholder: 'e.g. 3' },
   { label: 'Weight', key: 'weight', type: 'text', placeholder: 'e.g. 10kg' },
   { label: 'Gender', key: 'gender', type: 'select', options: ['Male', 'Female'] },
-
 ];
 
 const emptyForm = { petName: '', species: '', breed: '', age: '', weight: '', gender: 'Male', ownerName: '', ownerEmail: '', ownerPhone: '' };
@@ -29,26 +28,17 @@ const Sidebar = () => {
   const { pets: allPets, addPet } = usePets();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [photoPreview, setPhotoPreview] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
 
   const activeKey = navItems.find(n => n.path === location.pathname)?.key ?? '';
-
-  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setPhotoPreview(reader.result as string);
-    reader.readAsDataURL(file);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newPet = {
       id: Date.now(),
-      ownerName: form.ownerName,
-      ownerEmail: form.ownerEmail,
-      ownerPhone: form.ownerPhone,
+      ownerName: '',
+      ownerEmail: '',
+      ownerPhone: '',
       petName: form.petName,
       species: form.species,
       breed: form.breed,
@@ -61,14 +51,13 @@ const Sidebar = () => {
       nextCheckup: '',
       healthStatus: 'Healthy' as const,
       notes: '',
-      avatar: photoPreview || `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
+      avatar: `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
     };
     addPet(newPet);
     setSubmitted(true);
     setTimeout(() => {
       setShowModal(false);
       setForm(emptyForm);
-      setPhotoPreview('');
       setSubmitted(false);
     }, 1500);
   };
@@ -133,11 +122,11 @@ const Sidebar = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="flex justify-between items-center px-6 py-5 border-b" style={{ borderColor: theme.colors.neutral.gray[100] }}>
+              <div className="flex justify-between items-center px-5 py-3 border-b" style={{ borderColor: theme.colors.neutral.gray[100] }}>
                 <div>
                   <h2 className="text-xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
                     Add New Pet
@@ -161,64 +150,67 @@ const Sidebar = () => {
                   </p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+                <form onSubmit={handleSubmit} className="px-5 py-3 space-y-3">
 
-                  {/* Photo Upload */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-dashed"
-                      style={{ borderColor: theme.colors.primary.softLavender, backgroundColor: `${theme.colors.primary.softLavender}11` }}>
-                      {photoPreview
-                        ? <img src={photoPreview} alt="preview" className="w-full h-full object-cover" />
-                        : <span className="text-3xl">🐾</span>
-                      }
+                  {/* Row 1: Pet Name + Species */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {['petName', 'species'].map((key) => {
+                      const f = fields.find(f => f.key === key)!;
+                      return (
+                        <div key={key}>
+                          <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>{f.label}</label>
+                          <input type="text" placeholder={f.placeholder} value={form[key as keyof typeof form]}
+                            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                            className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Row 2: Breed + Age */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {['breed', 'age'].map((key) => {
+                      const f = fields.find(f => f.key === key)!;
+                      return (
+                        <div key={key}>
+                          <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>{f.label}</label>
+                          <input type={f.type} placeholder={f.placeholder} value={form[key as keyof typeof form]}
+                            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                            className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Row 3: Weight + Gender */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Weight</label>
+                      <input type="text" placeholder="e.g. 10kg" value={form.weight}
+                        onChange={(e) => setForm({ ...form, weight: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Pet Photo</p>
-                      <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition hover:opacity-80"
-                        style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }}>
-                        📷 {photoPreview ? 'Change Photo' : 'Upload Photo'}
-                        <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
-                      </label>
-                      <p className="text-xs mt-1" style={{ color: theme.colors.neutral.gray[400] }}>JPG, PNG up to 5MB</p>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Gender</label>
+                      <select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
+                        <option>Male</option><option>Female</option>
+                      </select>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    {fields.map((field) => (
-                      <div key={field.key} className={field.key === 'ownerName' || field.key === 'ownerEmail' || field.key === 'ownerPhone' ? 'col-span-2' : ''}>
-                        <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>
-                          {field.label}
-                        </label>
-                        {field.type === 'select' ? (
-                          <select
-                            value={form[field.key as keyof typeof form]}
-                            onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                            className="w-full px-3 py-2 rounded-xl text-sm focus:outline-none border"
-                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}
-                          >
-                            {field.options?.map(o => <option key={o}>{o}</option>)}
-                          </select>
-                        ) : (
-                          <input
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            value={form[field.key as keyof typeof form]}
-                            onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                            className="w-full px-3 py-2 rounded-xl text-sm focus:outline-none border"
-                            style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
 
-                  <div className="flex gap-3 pt-2">
+                  <div className="flex gap-3 pt-1">
                     <button type="button" onClick={() => setShowModal(false)}
-                      className="flex-1 py-3 rounded-xl text-sm font-semibold border transition hover:bg-gray-50"
+                      className="flex-1 py-2 rounded-xl text-xs font-semibold border transition hover:bg-gray-50"
                       style={{ borderColor: theme.colors.neutral.gray[200], color: theme.colors.neutral.gray[600], fontFamily: theme.fonts.heading }}>
                       Cancel
                     </button>
                     <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                      className="flex-1 py-3 rounded-xl text-white text-sm font-bold"
+                      className="flex-1 py-2 rounded-xl text-white text-xs font-bold"
                       style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}>
                       Add Pet
                     </motion.button>
