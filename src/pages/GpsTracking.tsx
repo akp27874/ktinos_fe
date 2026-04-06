@@ -1,15 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import { pets } from '../data/pets';
-
-const navItems = [
-  { icon: '🐾', label: 'Pets Dashboard', key: 'dashboard' },
-  { icon: '📍', label: 'GPS Tracking', key: 'gps' },
-  { icon: '💊', label: 'Health Monitoring', key: 'health' },
-  { icon: '⚙️', label: 'Settings', key: 'settings' },
-];
+import Sidebar from '../components/Sidebar';
 
 const safeZones = [
   { name: 'Home Sweet Home', radius: '500M RADIUS', active: true, icon: '🏠', alert: 'Entry & Exit Alerts active' },
@@ -19,7 +12,6 @@ const safeZones = [
 const featured = pets[0];
 
 const GpsTracking = () => {
-  const navigate = useNavigate();
   const [zones, setZones] = useState(safeZones);
 
   const toggleZone = (idx: number) => {
@@ -28,56 +20,7 @@ const GpsTracking = () => {
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>
-
-      {/* Sidebar */}
-      <aside className="w-56 min-h-screen bg-white shadow-sm flex flex-col justify-between py-8 px-4 fixed left-0 top-0 z-40">
-        <div>
-          <div className="flex items-center gap-3 mb-8 px-2">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2" style={{ borderColor: theme.colors.primary.deepPurple }}>
-              <img src={featured.avatar} alt="sanctuary" className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <p className="font-bold text-sm" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>Pet Sanctuary</p>
-              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>Premium Care Management</p>
-            </div>
-          </div>
-
-          <nav className="space-y-1">
-            {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => {
-                  if (item.key === 'dashboard') navigate('/dashboard');
-                  if (item.key === 'gps') navigate('/gps');
-                  if (item.key === 'health') navigate('/health');
-                  if (item.key === 'settings') navigate('/settings');
-                }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition"
-                style={{
-                  backgroundColor: item.key === 'gps' ? `${theme.colors.primary.healthGreen}22` : 'transparent',
-                  color: item.key === 'gps' ? theme.colors.primary.deepPurple : theme.colors.neutral.gray[400],
-                }}
-              >
-                <span>{item.icon}</span>
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        <div className="space-y-3">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="w-full py-2 rounded-full text-white font-bold text-sm"
-            style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}
-          >
-            + Add New Pet
-          </motion.button>
-          <button className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>❓ Support</button>
-          <button onClick={() => navigate('/')} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>↩ Logout</button>
-        </div>
-      </aside>
+      <Sidebar />
 
       {/* Map Area */}
       <main className="ml-56 flex-1 flex">

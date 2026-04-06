@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import PracticeAreas from './components/PracticeAreas';
-import Team from './components/Team';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import UserList from './pages/UserList';
@@ -31,16 +30,19 @@ const Home = () => {
       <Hero />
       <About />
       <PracticeAreas />
-      <Team />
+      {/* <Team /> */}
       <Contact />
       <Footer />
     </>
   );
 };
 
+import { PetsProvider } from './context/PetsContext';
+
 function App() {
   return (
-    <BrowserRouter>
+    <PetsProvider>
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
@@ -53,6 +55,7 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
+    </PetsProvider>
   );
 }
 
