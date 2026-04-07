@@ -8,6 +8,7 @@ import { usePets } from '../context/PetsContext';
 import { useAuth } from '../context/AuthContext';
 
 interface SpeciesOption { id: number; name: string; }
+interface BreedOption { id: number; name: string; species: number; }
 
 const navItems = [
   { icon: '🐾', label: 'Pets Dashboard', key: 'dashboard', path: '/dashboard' },
@@ -16,7 +17,7 @@ const navItems = [
   { icon: '⚙️', label: 'Settings', key: 'settings', path: '/settings' },
 ];
 
-const emptyForm = { petName: '', species: '', speciesId: '', breed: '', age: '', weight: '', gender: 'Male', ownerName: '', ownerEmail: '', ownerPhone: '' };
+const emptyForm = { petName: '', species: '', speciesId: '', breed: '', breedId: '', age: '', weight: '', gender: 'Male', dob: '', color: '', device: '', ownerName: '', ownerEmail: '', ownerPhone: '' };
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Sidebar = () => {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [speciesList, setSpeciesList] = useState<SpeciesOption[]>([]);
+  const [breedList, setBreedList] = useState<BreedOption[]>([]);
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -37,6 +39,13 @@ const Sidebar = () => {
       .catch(() => setSpeciesList([]));
   }, []);
 
+  useEffect(() => {
+    if (!form.speciesId) { setBreedList([]); return; }
+    axiosInstance.get(ENDPOINTS.breeds(form.speciesId))
+      .then(res => setBreedList(res.data.results ?? []))
+      .catch(() => setBreedList([]));
+  }, [form.speciesId]);
+
   console.log(speciesList,"speciesList")
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,8 +55,34 @@ const Sidebar = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const today = new Date().toISOString().split('T')[0];
+    const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const payload = {
+      owner: 1,
+      device: Number(form.device),
+      name: form.petName,
+      breedId: Number(form.breedId),
+      species: form.species,
+      gender: form.gender,
+      dob: form.dob || today,
+      age: Number(form.age) || 0,
+      weight: Number(form.weight) || 0,
+      color: form.color || '',
+      vaccinated: false,
+      lastCheckup: today,
+      nextCheckup: nextMonth,
+      healthStatus: 'Healthy',
+      notes: '',
+      avatar: photoPreview || '',
+    };
+    try {
+      await axiosInstance.post(ENDPOINTS.addPet, payload);
+    } catch (err) {
+      console.error('Failed to add pet:', err);
+    }
+    // also update local state for immediate UI feedback
     const newPet = {
       id: Date.now(),
       ownerName: '',
@@ -55,7 +90,9 @@ const Sidebar = () => {
       ownerPhone: '',
       petName: form.petName,
       species: form.species,
+      speciesId: Number(form.speciesId),
       breed: form.breed,
+      breedId: Number(form.breedId),
       age: Number(form.age),
       weight: form.weight,
       gender: form.gender,
@@ -181,7 +218,7 @@ const Sidebar = () => {
                       <select value={form.speciesId}
                         onChange={e => {
                           const selected = speciesList.find(s => String(s.id) === e.target.value);
-                          setForm({ ...form, speciesId: e.target.value, species: selected?.name ?? '', breed: '' });
+                          setForm({ ...form, speciesId: e.target.value, species: selected?.name ?? '', breed: '', breedId: '' });
                         }}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
@@ -195,11 +232,15 @@ const Sidebar = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Breed</label>
-                      <select value={form.breed}
-                        onChange={e => setForm({ ...form, breed: e.target.value })}
+                      <select value={form.breedId}
+                        onChange={e => {
+                          const selected = breedList.find(b => String(b.id) === e.target.value);
+                          setForm({ ...form, breedId: e.target.value, breed: selected?.name ?? '' });
+                        }}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
                         <option value="">Select breed</option>
+                        {breedList.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                       </select>
                     </div>
                     <div>
@@ -214,19 +255,48 @@ const Sidebar = () => {
                   {/* Row 3: Weight + Gender */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Weight</label>
-                      <input type="text" placeholder="e.g. 10kg" value={form.weight}
-                        onChange={(e) => setForm({ ...form, weight: e.target.value })}
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Weight (kg)</label>
+                      <input type="number" placeholder="e.g. 10" value={form.weight}
+                        onChange={e => setForm({ ...form, weight: e.target.value })}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Gender</label>
-                      <select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                      <select value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
                         <option>Male</option><option>Female</option>
                       </select>
+                    </div>
+                  </div>
+
+                  {/* Row 4: DOB + Color */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Date of Birth</label>
+                      <input type="date" value={form.dob}
+                        onChange={e => setForm({ ...form, dob: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Color</label>
+                      <input type="text" placeholder="e.g. Golden" value={form.color}
+                        onChange={e => setForm({ ...form, color: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                    </div>
+                  </div>
+
+                  {/* Row 5: Device + Color */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Device ID</label>
+                      <input type="number" placeholder="e.g. 10" value={form.device}
+                        onChange={e => setForm({ ...form, device: e.target.value })}
+                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
                   </div>
 
