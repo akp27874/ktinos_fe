@@ -6,8 +6,27 @@ import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { pets } = usePets();
-  const featured = pets[3] ?? pets[0];
+  const { pets, loading } = usePets();
+  const featured = pets[0];
+
+  if (loading) return (
+    <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
+      <Sidebar />
+      <main className="ml-56 flex-1 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2" style={{ borderColor: theme.colors.primary.deepPurple }}></div>
+      </main>
+    </div>
+  );
+
+  if (!featured) return (
+    <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
+      <Sidebar />
+      <main className="ml-56 flex-1 flex items-center justify-center flex-col gap-4">
+        <p className="text-2xl">🐾</p>
+        <p style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>No pets yet. Add your first pet!</p>
+      </main>
+    </div>
+  );
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>

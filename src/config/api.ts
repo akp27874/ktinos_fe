@@ -5,4 +5,5 @@ export const ENDPOINTS = {
   species: `/api/v1/pets/species/`,
   breeds: (speciesId: number | string) => `/api/v1/pets/breeds/?species_id=${speciesId}`,
   addPet: `/api/v1/pets/`,
+  getPets: (ownerId: number) => `/api/v1/pets/?owner_id=${ownerId}`,
 };

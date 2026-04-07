@@ -22,7 +22,7 @@ const emptyForm = { petName: '', species: '', speciesId: '', breed: '', breedId:
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { pets: allPets, addPet } = usePets();
+  const { pets: allPets, addPet, refetch } = usePets();
   const { logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -30,6 +30,7 @@ const Sidebar = () => {
   const [breedList, setBreedList] = useState<BreedOption[]>([]);
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const activeKey = navItems.find(n => n.path === location.pathname)?.key ?? '';
 
@@ -57,6 +58,7 @@ const Sidebar = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError('');
     const today = new Date().toISOString().split('T')[0];
     const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const payload = {
@@ -67,7 +69,7 @@ const Sidebar = () => {
       species: form.species,
       gender: form.gender,
       dob: form.dob || today,
-      age: Number(form.age) || 0,
+      age: 0,
       weight: Number(form.weight) || 0,
       color: form.color || '',
       vaccinated: false,
@@ -79,39 +81,41 @@ const Sidebar = () => {
     };
     try {
       await axiosInstance.post(ENDPOINTS.addPet, payload);
-    } catch (err) {
-      console.error('Failed to add pet:', err);
+      // only add to local state and show success if API succeeds
+      const newPet = {
+        id: Date.now(),
+        ownerName: '',
+        ownerEmail: '',
+        ownerPhone: '',
+        petName: form.petName,
+        species: form.species,
+        speciesId: Number(form.speciesId),
+        breed: form.breed,
+        breedId: Number(form.breedId),
+        age: Number(form.age),
+        weight: form.weight,
+        gender: form.gender,
+        color: form.color,
+        vaccinated: false,
+        lastCheckup: today,
+        nextCheckup: nextMonth,
+        healthStatus: 'Healthy' as const,
+        notes: '',
+        avatar: photoPreview || `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
+      };
+      addPet(newPet);
+      refetch();
+      setSubmitted(true);
+      setTimeout(() => {
+        setShowModal(false);
+        setForm(emptyForm);
+        setPhotoPreview('');
+        setSubmitted(false);
+      }, 1500);
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: unknown } })?.response?.data;
+      setApiError(msg ? JSON.stringify(msg) : 'Something went wrong. Please try again.');
     }
-    // also update local state for immediate UI feedback
-    const newPet = {
-      id: Date.now(),
-      ownerName: '',
-      ownerEmail: '',
-      ownerPhone: '',
-      petName: form.petName,
-      species: form.species,
-      speciesId: Number(form.speciesId),
-      breed: form.breed,
-      breedId: Number(form.breedId),
-      age: Number(form.age),
-      weight: form.weight,
-      gender: form.gender,
-      color: 'Unknown',
-      vaccinated: false,
-      lastCheckup: new Date().toISOString().split('T')[0],
-      nextCheckup: '',
-      healthStatus: 'Healthy' as const,
-      notes: '',
-      avatar: photoPreview || `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
-    };
-    addPet(newPet);
-    setSubmitted(true);
-    setTimeout(() => {
-      setShowModal(false);
-      setForm(emptyForm);
-      setPhotoPreview('');
-      setSubmitted(false);
-    }, 1500);
   };
 
   return (
@@ -228,7 +232,7 @@ const Sidebar = () => {
                     </div>
                   </div>
 
-                  {/* Row 2: Breed + Age */}
+                  {/* Row 2: Breed + DOB */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Breed</label>
@@ -244,9 +248,9 @@ const Sidebar = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Age (years)</label>
-                      <input type="number" placeholder="e.g. 3" value={form.age}
-                        onChange={e => setForm({ ...form, age: e.target.value })}
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Date of Birth</label>
+                      <input type="date" value={form.dob}
+                        onChange={e => setForm({ ...form, dob: e.target.value })}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
@@ -271,15 +275,8 @@ const Sidebar = () => {
                     </div>
                   </div>
 
-                  {/* Row 4: DOB + Color */}
+                  {/* Row 4: Color + Device */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Date of Birth</label>
-                      <input type="date" value={form.dob}
-                        onChange={e => setForm({ ...form, dob: e.target.value })}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
-                    </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Color</label>
                       <input type="text" placeholder="e.g. Golden" value={form.color}
@@ -287,10 +284,6 @@ const Sidebar = () => {
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
-                  </div>
-
-                  {/* Row 5: Device + Color */}
-                  <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Device ID</label>
                       <input type="number" placeholder="e.g. 10" value={form.device}
@@ -320,7 +313,7 @@ const Sidebar = () => {
                   </div>
 
                   <div className="flex gap-3 pt-1">
-                    <button type="button" onClick={() => setShowModal(false)}
+                    <button type="button" onClick={() => { setShowModal(false); setApiError(''); }}
                       className="flex-1 py-2 rounded-xl text-xs font-semibold border transition hover:bg-gray-50"
                       style={{ borderColor: theme.colors.neutral.gray[200], color: theme.colors.neutral.gray[600], fontFamily: theme.fonts.heading }}>
                       Cancel
@@ -331,6 +324,9 @@ const Sidebar = () => {
                       Add Pet
                     </motion.button>
                   </div>
+                  {apiError && (
+                    <p className="text-xs text-red-500 mt-2 text-center">{apiError}</p>
+                  )}
                 </form>
               )}
             </motion.div>
