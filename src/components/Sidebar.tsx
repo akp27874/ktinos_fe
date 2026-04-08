@@ -5,6 +5,7 @@ import { theme } from '../theme';
 import { ENDPOINTS } from '../config/api';
 import axiosInstance from '../config/axiosInstance';
 import { usePets } from '../context/PetsContext';
+import logo from '../assets/images/logokk-withoutbg.png';
 import { useAuth } from '../context/AuthContext';
 
 interface SpeciesOption { id: number; name: string; }
@@ -122,13 +123,8 @@ const Sidebar = () => {
     <>
       <aside className="w-56 min-h-screen bg-white shadow-sm flex flex-col justify-between py-8 px-4 fixed left-0 top-0 z-40">
         <div>
-          <div className="flex items-center gap-3 mb-8 px-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <div>
-              <p className="text-lg font-bold leading-tight" style={{ fontFamily: theme.fonts.heading }}>
-                <span style={{ color: theme.colors.primary.deepPurple }}>Ktinos</span><em style={{ color: theme.colors.primary.healthGreen }}>kare</em>
-              </p>
-              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>Know before they show</p>
-            </div>
+          <div className="flex items-center gap-2 mb-8 px-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
+            <img src={logo} alt="Ktinoskare" className="h-10 w-auto object-contain" />
           </div>
 
           <nav className="space-y-1">
