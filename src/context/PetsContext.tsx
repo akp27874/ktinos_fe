@@ -2,29 +2,32 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Pet } from '../data/pets';
 import axiosInstance from '../config/axiosInstance';
 import { ENDPOINTS } from '../config/api';
+import { BASE_URL } from '../config/api';
 
 interface ApiPet {
   id: number;
-  owner: number;
+  owner_id: number;
   owner_username: string;
   name: string;
-  device: number;
-  device_uid: string;
-  breedId: number;
+  device: number | null;
+  device_uid?: string;
+  breed_id: number | null;
   breed_name: string;
-  species: string;
+  species_id: number | null;
   gender: string;
   dob: string;
-  age: number;
+  age?: number;
   weight: number;
   color: string;
   vaccinated: boolean;
-  lastCheckup: string;
-  nextCheckup: string;
+  lastCheckup: string | null;
+  nextCheckup: string | null;
   healthStatus: 'Healthy' | 'Needs Attention' | 'Critical';
   notes: string;
-  avatar: string;
+  avatar: string | null;
 }
+
+const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80';
 
 const mapApiPet = (p: ApiPet): Pet => ({
   id: p.id,
@@ -32,18 +35,18 @@ const mapApiPet = (p: ApiPet): Pet => ({
   ownerEmail: '',
   ownerPhone: '',
   petName: p.name,
-  species: p.species,
+  species: String(p.species_id ?? ''),
   breed: p.breed_name,
-  age: p.age,
+  age: p.age ?? 0,
   weight: String(p.weight),
   gender: p.gender,
   color: p.color,
   vaccinated: p.vaccinated,
-  lastCheckup: p.lastCheckup,
-  nextCheckup: p.nextCheckup,
+  lastCheckup: p.lastCheckup ?? '',
+  nextCheckup: p.nextCheckup ?? '',
   healthStatus: p.healthStatus,
   notes: p.notes,
-  avatar: p.avatar || 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80',
+  avatar: p.avatar ? `${BASE_URL}${p.avatar}` : DEFAULT_AVATAR,
 });
 
 interface PetsContextType {

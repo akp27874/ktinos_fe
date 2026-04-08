@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { pets } from '../data/pets';
+import { usePets } from '../context/PetsContext';
 import { theme } from '../theme';
 import Sidebar from '../components/Sidebar';
 
@@ -11,6 +11,7 @@ const timeLabels = ['06:00', '12:00', '18:00', '00:00'];
 const PetProfile = () => {
   const { id } = useParams();
   const [chartTab, setChartTab] = useState<'Day' | 'Week' | 'Month'>('Week');
+  const { pets } = usePets();
   const pet = pets.find((p) => p.id === Number(id));
 
   if (!pet) return (
@@ -20,6 +21,14 @@ const PetProfile = () => {
   );
 
   const maxHR = Math.max(...heartRateData);
+
+  const lastCheckupDaysAgo = pet.lastCheckup
+    ? Math.floor((Date.now() - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
+    : null;
+
+  const nextVisitLabel = pet.nextCheckup
+    ? new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : 'Not scheduled';
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>
@@ -41,7 +50,7 @@ const PetProfile = () => {
             <img src={pet.avatar} alt={pet.petName} className="w-10 h-10 rounded-full object-cover" />
             <div>
               <p className="font-bold text-sm" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</p>
-              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>{pet.breed} · {pet.age} yrs</p>
+              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>{pet.breed} · {pet.species}</p>
             </div>
           </div>
         </div>
@@ -55,35 +64,44 @@ const PetProfile = () => {
               animate={{ opacity: 1, y: 0 }}
               className="bg-white rounded-2xl p-6 shadow-sm relative overflow-hidden"
             >
-              {/* Status */}
               <div className="flex items-center gap-2 mb-4">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: theme.colors.primary.healthGreen }}></span>
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme.colors.primary.healthGreen }}>Stable Status</span>
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}></span>
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}>{pet.healthStatus}</span>
               </div>
 
               <h2 className="text-3xl font-bold mb-1" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</h2>
               <p className="text-sm mb-4" style={{ color: theme.colors.neutral.gray[500] }}>
-                {pet.breed}, {pet.gender === 'Male' ? 'energetic' : 'graceful'} and {pet.healthStatus === 'Healthy' ? 'healthy' : 'under observation'}. Last check-up was {Math.floor(Math.random() * 20) + 5} days ago.
+                {pet.breed} · {pet.gender} · {pet.color || 'Unknown color'}.
+                {lastCheckupDaysAgo !== null ? ` Last check-up was ${lastCheckupDaysAgo} days ago.` : ' No checkup recorded.'}
               </p>
 
               <div className="space-y-3 border-t pt-4" style={{ borderColor: theme.colors.neutral.gray[100] }}>
                 <div className="flex justify-between text-sm">
                   <span style={{ color: theme.colors.neutral.gray[400] }}>Weight</span>
-                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{pet.weight}</span>
+                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{pet.weight} kg</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span style={{ color: theme.colors.neutral.gray[400] }}>Activity Level</span>
-                  <span className="font-bold" style={{ color: theme.colors.primary.healthGreen }}>High</span>
+                  <span style={{ color: theme.colors.neutral.gray[400] }}>Gender</span>
+                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{pet.gender}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: theme.colors.neutral.gray[400] }}>Vaccinated</span>
+                  <span className="font-semibold" style={{ color: pet.vaccinated ? theme.colors.primary.healthGreen : '#ef4444' }}>
+                    {pet.vaccinated ? '✅ Yes' : '❌ No'}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
-                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>
-                    {new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </span>
+                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{nextVisitLabel}</span>
                 </div>
+                {pet.notes && (
+                  <div className="flex justify-between text-sm">
+                    <span style={{ color: theme.colors.neutral.gray[400] }}>Notes</span>
+                    <span className="font-semibold text-right max-w-[60%]" style={{ color: theme.colors.neutral.gray[800] }}>{pet.notes}</span>
+                  </div>
+                )}
               </div>
 
-              {/* Decorative paw */}
               <div className="absolute bottom-4 right-4 text-6xl opacity-5">🐾</div>
             </motion.div>
 
@@ -98,11 +116,12 @@ const PetProfile = () => {
               <div className="text-2xl mb-3">💡</div>
               <h3 className="text-lg font-bold mb-3" style={{ fontFamily: theme.fonts.heading }}>Health Insight</h3>
               <p className="text-sm opacity-85 mb-4 leading-relaxed">
-                {pet.petName}'s heart rate is slightly elevated compared to resting average. This is normal following a morning walk, but monitor for the next 2 hours.
+                {pet.petName}'s vitals are being monitored. Health status is currently <strong>{pet.healthStatus}</strong>.
+                {pet.vaccinated ? ' Vaccinations are up to date.' : ' Vaccination may be overdue — please consult your vet.'}
               </p>
               <div className="flex items-center gap-2 mb-4 bg-white bg-opacity-10 rounded-xl p-3">
                 <span className="text-lg">✅</span>
-                <p className="text-xs opacity-80">Advice confirmed by Dr. Aris</p>
+                <p className="text-xs opacity-80">Data synced from Ktinoskare device</p>
               </div>
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -121,17 +140,12 @@ const PetProfile = () => {
             {/* Vitals Row */}
             <div className="grid grid-cols-3 gap-4">
               {[
-                { label: 'Heart Rate', value: '82', unit: 'BPM', sub: 'REAL-TIME', icon: '📈', bars: [3, 6, 4, 8, 5, 7, 6] },
-                { label: 'Temperature', value: '38.2', unit: '°C', sub: 'LIVE SENSOR', icon: '🌡️', range: true },
-                { label: 'Respiratory', value: '24', unit: 'BR/MIN', sub: 'TRACKING', icon: '💨', bars: [4, 7, 5, 6, 4, 7, 5] },
+                { label: 'Heart Rate', value: '—', unit: 'BPM', sub: 'REAL-TIME', icon: '📈', bars: [3, 6, 4, 8, 5, 7, 6] },
+                { label: 'Temperature', value: '—', unit: '°C', sub: 'LIVE SENSOR', icon: '🌡️', range: true },
+                { label: 'Respiratory', value: '—', unit: 'BR/MIN', sub: 'TRACKING', icon: '💨', bars: [4, 7, 5, 6, 4, 7, 5] },
               ].map((vital, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-white rounded-2xl p-5 shadow-sm"
-                >
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                  className="bg-white rounded-2xl p-5 shadow-sm">
                   <div className="flex justify-between items-start mb-3">
                     <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme.colors.neutral.gray[400] }}>{vital.sub}</span>
                     <span className="text-lg">{vital.icon}</span>
@@ -163,12 +177,8 @@ const PetProfile = () => {
             </div>
 
             {/* Heart Rate Chart */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl p-6 shadow-sm"
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="bg-white rounded-2xl p-6 shadow-sm">
               <div className="flex justify-between items-start mb-1">
                 <div>
                   <h3 className="text-lg font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.neutral.gray[800] }}>Heart Rate Intensity</h3>
@@ -176,36 +186,19 @@ const PetProfile = () => {
                 </div>
                 <div className="flex gap-1">
                   {(['Day', 'Week', 'Month'] as const).map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => setChartTab(t)}
+                    <button key={t} onClick={() => setChartTab(t)}
                       className="px-3 py-1 rounded-full text-xs font-semibold transition"
-                      style={{
-                        backgroundColor: chartTab === t ? theme.colors.primary.deepPurple : theme.colors.neutral.gray[100],
-                        color: chartTab === t ? 'white' : theme.colors.neutral.gray[500],
-                      }}
-                    >
+                      style={{ backgroundColor: chartTab === t ? theme.colors.primary.deepPurple : theme.colors.neutral.gray[100], color: chartTab === t ? 'white' : theme.colors.neutral.gray[500] }}>
                       {t}
                     </button>
                   ))}
                 </div>
               </div>
-
-              {/* Bar Chart */}
               <div className="flex items-end gap-2 h-40 mt-4 mb-2">
                 {heartRateData.map((val, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ height: 0 }}
-                    animate={{ height: `${(val / maxHR) * 100}%` }}
-                    transition={{ delay: i * 0.05, duration: 0.5 }}
-                    className="flex-1 rounded-t-lg"
-                    style={{
-                      background: val === maxHR
-                        ? `linear-gradient(to top, ${theme.colors.primary.tealWellness}, ${theme.colors.primary.healthGreen})`
-                        : `linear-gradient(to top, ${theme.colors.primary.healthGreen}44, ${theme.colors.primary.healthGreen}88)`,
-                    }}
-                  />
+                  <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${(val / maxHR) * 100}%` }}
+                    transition={{ delay: i * 0.05, duration: 0.5 }} className="flex-1 rounded-t-lg"
+                    style={{ background: val === maxHR ? `linear-gradient(to top, ${theme.colors.primary.tealWellness}, ${theme.colors.primary.healthGreen})` : `linear-gradient(to top, ${theme.colors.primary.healthGreen}44, ${theme.colors.primary.healthGreen}88)` }} />
                 ))}
               </div>
               <div className="flex justify-between text-xs" style={{ color: theme.colors.neutral.gray[400] }}>
@@ -216,13 +209,9 @@ const PetProfile = () => {
         </div>
 
         {/* Chat with Vet floating button */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
           className="fixed bottom-8 right-8 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 cursor-pointer"
-          whileHover={{ scale: 1.05 }}
-        >
+          whileHover={{ scale: 1.05 }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" style={{ backgroundColor: theme.colors.primary.healthGreen }}>💬</div>
           <div>
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: theme.colors.neutral.gray[400] }}>Expert Support</p>

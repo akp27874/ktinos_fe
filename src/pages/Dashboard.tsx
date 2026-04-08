@@ -67,7 +67,7 @@ const Dashboard = () => {
                 Welcome home,
               </h1>
               <h1 className="text-5xl font-bold leading-tight mb-3" style={{ fontFamily: theme.fonts.heading, color: theme.colors.neutral.gray[300] }}>
-                The Sanctuary awaits.
+                The Ktinoskare awaits.
               </h1>
               <p className="text-sm max-w-md" style={{ color: theme.colors.neutral.gray[500] }}>
                 Everything is calm. Your companions are resting comfortably, and their vitals are within the optimal range.

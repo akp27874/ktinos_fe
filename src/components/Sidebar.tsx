@@ -22,7 +22,7 @@ const emptyForm = { petName: '', species: '', speciesId: '', breed: '', breedId:
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { pets: allPets, addPet, refetch } = usePets();
+  const { addPet, refetch } = usePets();
   const { logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -62,11 +62,11 @@ const Sidebar = () => {
     const today = new Date().toISOString().split('T')[0];
     const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const payload = {
-      owner: 1,
+      owner_id: 1,
       device: Number(form.device),
       name: form.petName,
-      breedId: Number(form.breedId),
-      species: form.species,
+      breed_id: Number(form.breedId),
+      species_id: Number(form.speciesId),
       gender: form.gender,
       dob: form.dob || today,
       age: 0,
@@ -123,12 +123,11 @@ const Sidebar = () => {
       <aside className="w-56 min-h-screen bg-white shadow-sm flex flex-col justify-between py-8 px-4 fixed left-0 top-0 z-40">
         <div>
           <div className="flex items-center gap-3 mb-8 px-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2" style={{ borderColor: theme.colors.primary.deepPurple }}>
-              <img src={allPets[0]?.avatar} alt="sanctuary" className="w-full h-full object-cover" />
-            </div>
             <div>
-              <p className="font-bold text-sm" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>Pet Sanctuary</p>
-              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>Premium Care Management</p>
+              <p className="text-lg font-bold leading-tight" style={{ fontFamily: theme.fonts.heading }}>
+                <span style={{ color: theme.colors.primary.deepPurple }}>Ktinos</span><em style={{ color: theme.colors.primary.healthGreen }}>kare</em>
+              </p>
+              <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>Know before they show</p>
             </div>
           </div>
 

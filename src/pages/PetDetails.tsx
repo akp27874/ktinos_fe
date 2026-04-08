@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { usePets } from '../context/PetsContext';
 import { theme } from '../theme';
+import axiosInstance from '../config/axiosInstance';
+import { ENDPOINTS } from '../config/api';
 
 const statusColor = (status: string): React.CSSProperties => {
   if (status === 'Healthy') return { backgroundColor: '#d1fae5', color: '#065f46' };
@@ -28,12 +30,14 @@ const Field = ({ label, value, editing, onChange, type = 'text' }: {
 const PetDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { pets, updatePet } = usePets();
+  const { pets, updatePet, refetch } = usePets();
   const pet = pets.find(p => p.id === Number(id));
 
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState(pet ? { ...pet } : null);
   const [photoPreview, setPhotoPreview] = useState<string>('');
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   if (!pet || !form) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -53,10 +57,33 @@ const PetDetails = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = () => {
-    updatePet(form);
-    setEditing(false);
-    setPhotoPreview('');
+  const handleSave = async () => {
+    if (!form) return;
+    setSaving(true);
+    setSaveError('');
+    try {
+      await axiosInstance.patch(ENDPOINTS.updatePet(form.id, 1), {
+        name: form.petName,
+        gender: form.gender,
+        weight: Number(form.weight) || 0,
+        color: form.color,
+        vaccinated: form.vaccinated,
+        lastCheckup: form.lastCheckup || null,
+        nextCheckup: form.nextCheckup || null,
+        healthStatus: form.healthStatus,
+        notes: form.notes,
+        avatar: photoPreview || form.avatar || null,
+      });
+      updatePet({ ...form, avatar: photoPreview || form.avatar });
+      refetch();
+      setEditing(false);
+      setPhotoPreview('');
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: unknown } })?.response?.data;
+      setSaveError(msg ? JSON.stringify(msg) : 'Failed to save. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -113,19 +140,23 @@ const PetDetails = () => {
               </div>
 
               {/* Edit / Save buttons */}
-              <div className="flex gap-2 pb-2">
+              <div className="flex flex-col gap-2 pb-2">
                 {editing ? (
                   <>
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSave}
-                      className="px-5 py-2 rounded-full text-white text-sm font-semibold"
-                      style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}>
-                      Save
-                    </motion.button>
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCancel}
-                      className="px-5 py-2 rounded-full text-sm font-semibold border"
-                      style={{ borderColor: theme.colors.neutral.gray[300], color: theme.colors.neutral.gray[600], fontFamily: theme.fonts.heading }}>
-                      Cancel
-                    </motion.button>
+                    <div className="flex gap-2">
+                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSave}
+                        disabled={saving}
+                        className="px-5 py-2 rounded-full text-white text-sm font-semibold disabled:opacity-60"
+                        style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.heading }}>
+                        {saving ? 'Saving...' : 'Save'}
+                      </motion.button>
+                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCancel}
+                        className="px-5 py-2 rounded-full text-sm font-semibold border"
+                        style={{ borderColor: theme.colors.neutral.gray[300], color: theme.colors.neutral.gray[600], fontFamily: theme.fonts.heading }}>
+                        Cancel
+                      </motion.button>
+                    </div>
+                    {saveError && <p className="text-xs text-red-500">{saveError}</p>}
                   </>
                 ) : (
                   <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setEditing(true)}
