@@ -31,6 +31,7 @@ const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1587300003388-59208cc9
 
 const mapApiPet = (p: ApiPet): Pet => ({
   id: p.id,
+  device: p.device,
   ownerName: p.owner_username,
   ownerEmail: '',
   ownerPhone: '',

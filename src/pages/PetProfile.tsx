@@ -1,18 +1,34 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePets } from '../context/PetsContext';
 import { theme } from '../theme';
 import Sidebar from '../components/Sidebar';
+import axiosInstance from '../config/axiosInstance';
+import { ENDPOINTS } from '../config/api';
 
-const heartRateData = [40, 65, 55, 82, 70, 60, 75, 50, 68, 82, 58, 45];
-const timeLabels = ['06:00', '12:00', '18:00', '00:00'];
+const timeLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+interface TelemetryData {
+  heart: { avg_heart_rate: number; date: string }[];
+  spo2: { avg_spo2: number; date: string }[];
+  temperature: { avg_temp: number; date: string }[];
+}
 
 const PetProfile = () => {
   const { id } = useParams();
   const [chartTab, setChartTab] = useState<'Day' | 'Week' | 'Month'>('Week');
   const { pets } = usePets();
   const pet = pets.find((p) => p.id === Number(id));
+  const [telemetry, setTelemetry] = useState<TelemetryData | null>(null);
+
+  useEffect(() => {
+    if (pet?.device) {
+      axiosInstance.get(ENDPOINTS.telemetry(pet.device))
+        .then(res => setTelemetry(res.data.data))
+        .catch(() => setTelemetry(null));
+    }
+  }, [pet?.device]);
 
   if (!pet) return (
     <div className="flex items-center justify-center min-h-screen">
@@ -20,7 +36,14 @@ const PetProfile = () => {
     </div>
   );
 
-  const maxHR = Math.max(...heartRateData);
+  const heartRateData = telemetry?.heart.map(h => h.avg_heart_rate) ?? [];
+  const maxHR = heartRateData.length ? Math.max(...heartRateData) : 1;
+  const latestHR = heartRateData[heartRateData.length - 1] ?? null;
+  const latestTemp = telemetry?.temperature[telemetry.temperature.length - 1]?.avg_temp ?? null;
+  const latestSpo2 = telemetry?.spo2[telemetry.spo2.length - 1]?.avg_spo2 ?? null;
+  const tempMax = telemetry ? Math.max(...telemetry.temperature.map(t => t.avg_temp)) : 40;
+  const tempMin = telemetry ? Math.min(...telemetry.temperature.map(t => t.avg_temp)) : 36;
+  const tempPercent = latestTemp ? Math.round(((latestTemp - tempMin) / (tempMax - tempMin || 1)) * 100) : 75;
 
   const lastCheckupDaysAgo = pet.lastCheckup
     ? Math.floor((Date.now() - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
@@ -140,9 +163,9 @@ const PetProfile = () => {
             {/* Vitals Row */}
             <div className="grid grid-cols-3 gap-4">
               {[
-                { label: 'Heart Rate', value: '—', unit: 'BPM', sub: 'REAL-TIME', icon: '📈', bars: [3, 6, 4, 8, 5, 7, 6] },
-                { label: 'Temperature', value: '—', unit: '°C', sub: 'LIVE SENSOR', icon: '🌡️', range: true },
-                { label: 'Respiratory', value: '—', unit: 'BR/MIN', sub: 'TRACKING', icon: '💨', bars: [4, 7, 5, 6, 4, 7, 5] },
+                { label: 'Heart Rate', value: latestHR !== null ? String(latestHR) : '—', unit: 'BPM', sub: 'REAL-TIME', icon: '📈', bars: heartRateData.slice(-7) },
+                { label: 'Temperature', value: latestTemp !== null ? String(latestTemp) : '—', unit: '°C', sub: 'LIVE SENSOR', icon: '🌡️', range: true, rangePercent: tempPercent },
+                { label: 'SpO2', value: latestSpo2 !== null ? String(latestSpo2) : '—', unit: '%', sub: 'RESPIRATORY', icon: '💨', bars: (telemetry?.spo2.map(s => s.avg_spo2) ?? []).slice(-7) },
               ].map((vital, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                   className="bg-white rounded-2xl p-5 shadow-sm">
@@ -155,17 +178,19 @@ const PetProfile = () => {
                     <span className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{vital.value}</span>
                     <span className="text-sm mb-1" style={{ color: theme.colors.neutral.gray[400] }}>{vital.unit}</span>
                   </div>
-                  {vital.bars && (
+                  {vital.bars && vital.bars.length > 0 && (
                     <div className="flex items-end gap-1 h-8">
-                      {vital.bars.map((h, j) => (
-                        <div key={j} className="flex-1 rounded-sm" style={{ height: `${h * 10}%`, backgroundColor: j === 3 ? theme.colors.primary.deepPurple : `${theme.colors.primary.softLavender}55` }}></div>
-                      ))}
+                      {vital.bars.map((h, j) => {
+                        const barsArr = vital.bars as number[];
+                        const max = Math.max(...barsArr);
+                        return <div key={j} className="flex-1 rounded-sm" style={{ height: `${(h / (max || 1)) * 100}%`, backgroundColor: j === barsArr.length - 1 ? theme.colors.primary.deepPurple : `${theme.colors.primary.softLavender}55` }}></div>;
+                      })}
                     </div>
                   )}
                   {vital.range && (
                     <div>
                       <div className="h-2 rounded-full mb-1 overflow-hidden" style={{ backgroundColor: theme.colors.neutral.gray[100] }}>
-                        <div className="h-full rounded-full w-3/4" style={{ backgroundColor: theme.colors.primary.healthGreen }}></div>
+                        <div className="h-full rounded-full" style={{ width: `${vital.rangePercent ?? 75}%`, backgroundColor: theme.colors.primary.healthGreen }}></div>
                       </div>
                       <div className="flex justify-between text-xs" style={{ color: theme.colors.neutral.gray[400] }}>
                         <span>Normal Range</span><span>Optimal</span>
@@ -195,14 +220,16 @@ const PetProfile = () => {
                 </div>
               </div>
               <div className="flex items-end gap-2 h-40 mt-4 mb-2">
-                {heartRateData.map((val, i) => (
+                {heartRateData.length > 0 ? heartRateData.map((val, i) => (
                   <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${(val / maxHR) * 100}%` }}
                     transition={{ delay: i * 0.05, duration: 0.5 }} className="flex-1 rounded-t-lg"
                     style={{ background: val === maxHR ? `linear-gradient(to top, ${theme.colors.primary.tealWellness}, ${theme.colors.primary.healthGreen})` : `linear-gradient(to top, ${theme.colors.primary.healthGreen}44, ${theme.colors.primary.healthGreen}88)` }} />
-                ))}
+                )) : (
+                  <div className="flex-1 flex items-center justify-center text-sm" style={{ color: theme.colors.neutral.gray[400] }}>No data available</div>
+                )}
               </div>
               <div className="flex justify-between text-xs" style={{ color: theme.colors.neutral.gray[400] }}>
-                {timeLabels.map((t) => <span key={t}>{t}</span>)}
+                {(telemetry?.heart.map(h => h.date.slice(5)) ?? timeLabels).map((t, i) => <span key={i}>{t}</span>)}
               </div>
             </motion.div>
           </div>

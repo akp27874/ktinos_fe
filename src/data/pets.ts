@@ -1,5 +1,6 @@
 export interface Pet {
   id: number;
+  device?: number | null;
   ownerName: string;
   ownerEmail: string;
   ownerPhone: string;
