@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Pet } from '../data/pets';
 import axiosInstance from '../config/axiosInstance';
 import { ENDPOINTS } from '../config/api';
-import { BASE_URL } from '../config/api';
+
 
 interface ApiPet {
   id: number;
