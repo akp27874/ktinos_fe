@@ -1,19 +1,19 @@
-import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { pets } from '../data/pets';
+import { usePets } from '../context/PetsContext';
 import { theme } from '../theme';
 
-const statusColor = (status: string) => {
-  if (status === 'Healthy') return { bg: '#d1fae5', text: '#065f46' };
-  if (status === 'Needs Attention') return { bg: '#fef3c7', text: '#92400e' };
+const statusColor = (status: string): React.CSSProperties => {
+  if (status === 'Healthy') return { backgroundColor: '#d1fae5', color: '#065f46' };
+  if (status === 'Needs Attention') return { backgroundColor: '#fef3c7', color: '#92400e' };
   return { backgroundColor: '#fee2e2', color: '#991b1b' };
 };
 
 const UserList = () => {
   const [tab, setTab] = useState<'table' | 'card'>('table');
   const navigate = useNavigate();
+  const { pets, loading } = usePets();
 
   return (
     <div className="min-h-screen pt-20" style={{ backgroundColor: theme.colors.neutral.lightBg }}>

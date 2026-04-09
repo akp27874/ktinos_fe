@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { usePets } from '../context/PetsContext';
@@ -30,7 +30,7 @@ const Field = ({ label, value, editing, onChange, type = 'text' }: {
 const PetDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { pets, updatePet, refetch } = usePets();
+  const { pets, loading, updatePet, refetch } = usePets();
   const pet = pets.find(p => p.id === Number(id));
 
   const [editing, setEditing] = useState(false);
@@ -38,6 +38,17 @@ const PetDetails = () => {
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+
+  // Sync form when pet loads from API
+  useEffect(() => {
+    if (pet && !form) setForm({ ...pet });
+  }, [pet]);
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2" style={{ borderColor: theme.colors.primary.deepPurple }}></div>
+    </div>
+  );
 
   if (!pet || !form) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -172,24 +183,34 @@ const PetDetails = () => {
               {/* Pet Info */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🐾 Pet Information</h2>
-                <Field label="Species"    value={form.species}   editing={editing} onChange={set('species')} />
-                <Field label="Breed"      value={form.breed}     editing={editing} onChange={set('breed')} />
-                <Field label="Age"        value={String(form.age)} editing={editing} onChange={set('age')} type="number" />
-                <Field label="Weight"     value={form.weight}    editing={editing} onChange={set('weight')} />
-                <Field label="Gender"     value={form.gender}    editing={editing} onChange={set('gender')} />
-                <Field label="Color"      value={form.color}     editing={editing} onChange={set('color')} />
+                <Field label="Species"    value={form.species}        editing={editing} onChange={set('species')} />
+                <Field label="Breed"      value={form.breed}          editing={editing} onChange={set('breed')} />
+                <Field label="Weight (kg)" value={form.weight}        editing={editing} onChange={set('weight')} />
+                <Field label="Gender"     value={form.gender}         editing={editing} onChange={set('gender')} />
+                <Field label="Color"      value={form.color}          editing={editing} onChange={set('color')} />
+                <Field label="Vaccinated" value={form.vaccinated ? 'Yes' : 'No'} editing={false} onChange={() => {}} />
               </div>
 
-              {/* Owner + Health */}
+              {/* Health */}
               <div>
-                <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>👤 Owner Information</h2>
-                <Field label="Name"  value={form.ownerName}  editing={editing} onChange={set('ownerName')} />
-                <Field label="Email" value={form.ownerEmail} editing={editing} onChange={set('ownerEmail')} type="email" />
-                <Field label="Phone" value={form.ownerPhone} editing={editing} onChange={set('ownerPhone')} />
-
-                <h2 className="text-lg font-bold mt-6 mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🏥 Health Records</h2>
-                <Field label="Last Checkup" value={form.lastCheckup} editing={editing} onChange={set('lastCheckup')} type="date" />
-                <Field label="Next Checkup" value={form.nextCheckup} editing={editing} onChange={set('nextCheckup')} type="date" />
+                <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🏥 Health Records</h2>
+                <Field label="Health Status" value={form.healthStatus} editing={editing} onChange={set('healthStatus')} />
+                <Field label="Last Checkup"  value={form.lastCheckup}  editing={editing} onChange={set('lastCheckup')} type="date" />
+                <Field label="Next Checkup"  value={form.nextCheckup}  editing={editing} onChange={set('nextCheckup')} type="date" />
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Vaccinated</span>
+                  {editing
+                    ? <select value={form.vaccinated ? 'Yes' : 'No'}
+                        onChange={e => setForm(p => p ? { ...p, vaccinated: e.target.value === 'Yes' } : p)}
+                        className="w-2/3 px-3 py-2 rounded-lg text-sm border focus:outline-none"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body }}>
+                        <option>Yes</option><option>No</option>
+                      </select>
+                    : <span className="text-sm font-medium text-right w-2/3" style={{ color: form.vaccinated ? '#065f46' : '#991b1b' }}>
+                        {form.vaccinated ? '✅ Yes' : '❌ No'}
+                      </span>
+                  }
+                </div>
               </div>
             </div>
 
