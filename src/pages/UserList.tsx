@@ -13,7 +13,7 @@ const statusColor = (status: string): React.CSSProperties => {
 const UserList = () => {
   const [tab, setTab] = useState<'table' | 'card'>('table');
   const navigate = useNavigate();
-  const { pets, loading } = usePets();
+  const { pets } = usePets();
 
   return (
     <div className="min-h-screen pt-20" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
