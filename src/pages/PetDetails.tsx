@@ -144,7 +144,7 @@ const PetDetails = () => {
                       style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }} />
                   : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{form.petName}</h1>
                 }
-                <p className="text-gray-500 text-sm">{form.breed} · {form.species}</p>
+                <p className="text-gray-500 text-sm">{form.breed}</p>
                 <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(form.healthStatus)}>
                   {form.healthStatus}
                 </span>

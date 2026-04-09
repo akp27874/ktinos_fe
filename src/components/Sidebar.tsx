@@ -37,14 +37,14 @@ const Sidebar = () => {
 
   useEffect(() => {
     axiosInstance.get(ENDPOINTS.species)
-      .then(res => setSpeciesList(res.data.results ?? []))
+      .then(res => setSpeciesList(res.data ?? []))
       .catch(() => setSpeciesList([]));
   }, []);
 
   useEffect(() => {
     if (!form.speciesId) { setBreedList([]); return; }
     axiosInstance.get(ENDPOINTS.breeds(form.speciesId))
-      .then(res => setBreedList(res.data.results ?? []))
+      .then(res => setBreedList(res.data ?? []))
       .catch(() => setBreedList([]));
   }, [form.speciesId]);
 

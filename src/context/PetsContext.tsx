@@ -47,7 +47,7 @@ const mapApiPet = (p: ApiPet): Pet => ({
   nextCheckup: p.nextCheckup ?? '',
   healthStatus: p.healthStatus,
   notes: p.notes,
-  avatar: p.avatar ? `${BASE_URL}${p.avatar}` : DEFAULT_AVATAR,
+  avatar: p.avatar ? `${p.avatar}` : DEFAULT_AVATAR,
 });
 
 interface PetsContextType {
