@@ -6,6 +6,17 @@ import { theme } from '../theme';
 import axiosInstance from '../config/axiosInstance';
 import { ENDPOINTS } from '../config/api';
 
+const BREED_OPTIONS: Record<string, string[]> = {
+  Dog: ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Poodle', 'Beagle', 'Rottweiler', 'Yorkshire Terrier', 'Dachshund', 'Shih Tzu', 'Mixed / Other'],
+  Cat: ['Persian', 'Maine Coon', 'Siamese', 'Ragdoll', 'Bengal', 'Sphynx', 'British Shorthair', 'Abyssinian', 'Scottish Fold', 'Mixed / Other'],
+  Bird: ['Parrot', 'Canary', 'Cockatiel', 'Budgerigar', 'Macaw', 'Finch', 'Lovebird', 'Other'],
+  Rabbit: ['Holland Lop', 'Mini Rex', 'Netherland Dwarf', 'Lionhead', 'Flemish Giant', 'Other'],
+  Other: ['Mixed / Other'],
+};
+
+const getBreedOptions = (species: string): string[] =>
+  BREED_OPTIONS[species] ?? BREED_OPTIONS['Other'];
+
 const statusColor = (status: string): React.CSSProperties => {
   if (status === 'Healthy') return { backgroundColor: '#d1fae5', color: '#065f46' };
   if (status === 'Needs Attention') return { backgroundColor: '#fef3c7', color: '#92400e' };
@@ -75,6 +86,7 @@ const PetDetails = () => {
     try {
       await axiosInstance.patch(ENDPOINTS.updatePet(form.id, 1), {
         name: form.petName,
+        breed: form.breed,
         gender: form.gender,
         weight: Number(form.weight) || 0,
         color: form.color,
@@ -131,18 +143,20 @@ const PetDetails = () => {
                   alt={form.petName}
                   className="w-32 h-32 rounded-2xl object-cover border-4 border-white shadow-lg"
                 />
-                <label className="absolute bottom-1 right-1 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm cursor-pointer shadow"
-                  style={{ backgroundColor: theme.colors.primary.deepPurple }}>
-                  📷
-                  <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
-                </label>
+                {editing && (
+                  <label className="absolute bottom-1 right-1 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm cursor-pointer shadow"
+                    style={{ backgroundColor: theme.colors.primary.deepPurple }}>
+                    📷
+                    <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+                  </label>
+                )}
               </div>
               <div className="pb-2 flex-1">
                 {editing
                   ? <input value={form.petName} onChange={e => setForm(p => p ? { ...p, petName: e.target.value } : p)}
                       className="text-3xl font-bold bg-transparent border-b-2 focus:outline-none w-full mb-1"
                       style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }} />
-                  : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{form.petName}</h1>
+                  : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: '#f5f5f5',marginBottom:"10px" }}>{form.petName}</h1>
                 }
                 <p className="text-gray-500 text-sm">{form.breed}</p>
                 <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(form.healthStatus)}>
@@ -183,8 +197,29 @@ const PetDetails = () => {
               {/* Pet Info */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🐾 Pet Information</h2>
-                <Field label="Species"    value={form.species}        editing={editing} onChange={set('species')} />
-                <Field label="Breed"      value={form.breed}          editing={editing} onChange={set('breed')} />
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Species</span>
+                  {editing
+                    ? <select value={form.species} onChange={e => {
+                        const species = e.target.value;
+                        const firstBreed = getBreedOptions(species)[0];
+                        setForm(p => p ? { ...p, species, breed: firstBreed } : p);
+                      }} className={`${inputCls} w-2/3`} style={inputStyle}>
+                        {Object.keys(BREED_OPTIONS).map(s => <option key={s}>{s}</option>)}
+                      </select>
+                    : <span className="text-sm font-medium text-right w-2/3" style={{ color: theme.colors.neutral.gray[800] }}>{form.species || '—'}</span>
+                  }
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Breed</span>
+                  {editing
+                    ? <select value={form.breed} onChange={e => setForm(p => p ? { ...p, breed: e.target.value } : p)}
+                        className={`${inputCls} w-2/3`} style={inputStyle}>
+                        {getBreedOptions(form.species).map(b => <option key={b}>{b}</option>)}
+                      </select>
+                    : <span className="text-sm font-medium text-right w-2/3" style={{ color: theme.colors.neutral.gray[800] }}>{form.breed || '—'}</span>
+                  }
+                </div>
                 <Field label="Weight (kg)" value={form.weight}        editing={editing} onChange={set('weight')} />
                 <Field label="Gender"     value={form.gender}         editing={editing} onChange={set('gender')} />
                 <Field label="Color"      value={form.color}          editing={editing} onChange={set('color')} />

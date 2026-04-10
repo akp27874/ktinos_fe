@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="w-full bg-white shadow-md">
         <div className="container-lg mr-5">
           <div className="flex justify-between items-center py-4">
-            <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto'/>
+            <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto cursor-pointer' onClick={() => navigate('/dashboard')} />
           
             <div className="flex items-center gap-4">
               <button onClick={() => setIsOpen(!isOpen)} className="md:hidden" style={{ color: theme.colors.primary.deepPurple }}>
