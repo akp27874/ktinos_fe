@@ -1,8 +1,20 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import logo from '../assets/images/logokk-withoutbg.png';
 import { useAuth } from '../context/AuthContext';
+
+const TICKER_ITEMS = [
+  '🎉 Special Offer — 20% off your first month! Use code KARE20',
+  '✨ Track your pet\'s health in real-time',
+  '🐾 GPS Tracking now available for all pets',
+  '💊 Never miss a vet appointment again',
+  '🏥 Smart health monitoring at your fingertips',
+  '🚀 Join thousands of happy pet owners today',
+];
+
+const tickerText = TICKER_ITEMS.join('   ✦   ') + '   ✦   ';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,11 +25,47 @@ const Navbar = () => {
 
   return (
     <nav className="fixed w-full z-50">
-      {/* Offer Ribbon */}
-      <div className="w-full py-2.5 text-center" style={{ backgroundColor: theme.colors.primary.healthGreen }}>
-        <p className="text-white text-sm font-semibold" style={{ fontFamily: theme.fonts.body }}>
-          🎉 Special Offer: Get 20% off your first month! Use code: <span className="font-bold">KARE20</span> 🎉
-        </p>
+      {/* Ticker Banner */}
+      <div className="w-full overflow-hidden relative"
+        style={{
+          background: `linear-gradient(90deg, #1a0533, ${theme.colors.primary.deepPurple}, #0d3d56, ${theme.colors.primary.tealWellness}, #0d3d56, ${theme.colors.primary.deepPurple}, #1a0533)`,
+          backgroundSize: '400% 100%',
+          animation: 'gradientPan 8s ease infinite',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          boxShadow: '0 2px 20px rgba(99,38,180,0.4)',
+        }}>
+        {/* shimmer overlay */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)', animation: 'shimmer 3s ease infinite' }} />
+        <div className="flex py-2.5">
+          <motion.div
+            className="flex whitespace-nowrap text-sm font-semibold"
+            style={{ fontFamily: theme.fonts.body }}
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 22, ease: 'linear', repeat: Infinity }}>
+            {[tickerText, tickerText].map((t, i) => (
+              <span key={i} className="flex items-center gap-1 pr-4" style={{ color: 'rgba(255,255,255,0.95)', textShadow: '0 0 12px rgba(255,255,255,0.3)' }}>
+                {t.split('KARE20').map((part, j, arr) => (
+                  <span key={j}>
+                    {part}
+                    {j < arr.length - 1 && (
+                      <motion.span
+                        className="inline-block px-2 py-0.5 rounded font-bold mx-1 text-xs"
+                        style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#1a0533', letterSpacing: '0.08em', boxShadow: '0 0 8px rgba(255,215,0,0.6)' }}
+                        animate={{ scale: [1, 1.12, 1], boxShadow: ['0 0 8px rgba(255,215,0,0.6)', '0 0 18px rgba(255,215,0,0.9)', '0 0 8px rgba(255,215,0,0.6)'] }}
+                        transition={{ repeat: Infinity, duration: 1.8 }}>
+                        KARE20
+                      </motion.span>
+                    )}
+                  </span>
+                ))}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+        <style>{`
+          @keyframes gradientPan { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+          @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(200%)} }
+        `}</style>
       </div>
 
       {/* Main Navbar */}
