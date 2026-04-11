@@ -6,16 +6,6 @@ import { theme } from '../theme';
 import axiosInstance from '../config/axiosInstance';
 import { ENDPOINTS } from '../config/api';
 
-const BREED_OPTIONS: Record<string, string[]> = {
-  Dog: ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Poodle', 'Beagle', 'Rottweiler', 'Yorkshire Terrier', 'Dachshund', 'Shih Tzu', 'Mixed / Other'],
-  Cat: ['Persian', 'Maine Coon', 'Siamese', 'Ragdoll', 'Bengal', 'Sphynx', 'British Shorthair', 'Abyssinian', 'Scottish Fold', 'Mixed / Other'],
-  Bird: ['Parrot', 'Canary', 'Cockatiel', 'Budgerigar', 'Macaw', 'Finch', 'Lovebird', 'Other'],
-  Rabbit: ['Holland Lop', 'Mini Rex', 'Netherland Dwarf', 'Lionhead', 'Flemish Giant', 'Other'],
-  Other: ['Mixed / Other'],
-};
-
-const getBreedOptions = (species: string): string[] =>
-  BREED_OPTIONS[species] ?? BREED_OPTIONS['Other'];
 
 const statusColor = (status: string): React.CSSProperties => {
   if (status === 'Healthy') return { backgroundColor: '#d1fae5', color: '#065f46' };
@@ -49,6 +39,24 @@ const PetDetails = () => {
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [speciesList, setSpeciesList] = useState<{ id: number; name: string }[]>([]);
+  const [breedList, setBreedList] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    axiosInstance.get(ENDPOINTS.species)
+      .then(res => setSpeciesList(res.data ?? []))
+      .catch(() => setSpeciesList([]));
+  }, []);
+
+  useEffect(() => {
+    if (!form?.species) {
+      setBreedList([]);
+      return;
+    }
+    axiosInstance.get(ENDPOINTS.breeds(form.species))
+      .then(res => setBreedList(res.data ?? []))
+      .catch(() => setBreedList([]));
+  }, [form?.species]);
 
   // Sync form when pet loads from API
   useEffect(() => {
@@ -154,9 +162,9 @@ const PetDetails = () => {
               <div className="pb-2 flex-1">
                 {editing
                   ? <input value={form.petName} onChange={e => setForm(p => p ? { ...p, petName: e.target.value } : p)}
-                      className="text-3xl font-bold bg-transparent border-b-2 focus:outline-none w-full mb-1"
-                      style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }} />
-                  : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: '#f5f5f5',marginBottom:"10px" }}>{form.petName}</h1>
+                    className="text-3xl font-bold bg-transparent border-b-2 focus:outline-none w-full mb-1"
+                    style={{ borderColor: theme.colors.primary.deepPurple, color: theme.colors.primary.deepPurple, fontFamily: theme.fonts.heading }} />
+                  : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: '#f5f5f5', marginBottom: "10px" }}>{form.petName}</h1>
                 }
                 <p className="text-gray-500 text-sm">{form.breed}</p>
                 <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(form.healthStatus)}>
@@ -201,49 +209,60 @@ const PetDetails = () => {
                   <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Species</span>
                   {editing
                     ? <select value={form.species} onChange={e => {
-                        const species = e.target.value;
-                        const firstBreed = getBreedOptions(species)[0];
-                        setForm(p => p ? { ...p, species, breed: firstBreed } : p);
-                      }} className={`${inputCls} w-2/3`} style={inputStyle}>
-                        {Object.keys(BREED_OPTIONS).map(s => <option key={s}>{s}</option>)}
-                      </select>
+                      const speciesId = e.target.value;
+                      setForm(p => p ? { ...p, species: speciesId, breed: '', breedId: '' } : p);
+                    }} className={`${inputCls} w-2/3`} style={inputStyle}
+                    >
+                      {speciesList.map(species => (
+                        <option key={species.id} value={String(species.id)}>
+                          {species.name}
+                        </option>
+                      ))}
+                    </select>
                     : <span className="text-sm font-medium text-right w-2/3" style={{ color: theme.colors.neutral.gray[800] }}>{form.species || '—'}</span>
                   }
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
                   <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Breed</span>
                   {editing
-                    ? <select value={form.breed} onChange={e => setForm(p => p ? { ...p, breed: e.target.value } : p)}
-                        className={`${inputCls} w-2/3`} style={inputStyle}>
-                        {getBreedOptions(form.species).map(b => <option key={b}>{b}</option>)}
-                      </select>
+                    ? <select
+                      value={form.breed}
+                      onChange={e => setForm(p => p ? { ...p, breed: e.target.value } : p)}
+                      className={`${inputCls} w-2/3`} style={inputStyle}
+                    >
+                      {breedList.map(breed => (
+                        <option key={breed.id} value={breed.name}>
+                          {breed.name}
+                        </option>
+                      ))}
+                    </select>
                     : <span className="text-sm font-medium text-right w-2/3" style={{ color: theme.colors.neutral.gray[800] }}>{form.breed || '—'}</span>
                   }
                 </div>
-                <Field label="Weight (kg)" value={form.weight}        editing={editing} onChange={set('weight')} />
-                <Field label="Gender"     value={form.gender}         editing={editing} onChange={set('gender')} />
-                <Field label="Color"      value={form.color}          editing={editing} onChange={set('color')} />
-                <Field label="Vaccinated" value={form.vaccinated ? 'Yes' : 'No'} editing={false} onChange={() => {}} />
+                <Field label="Weight (kg)" value={form.weight} editing={editing} onChange={set('weight')} />
+                <Field label="Gender" value={form.gender} editing={editing} onChange={set('gender')} />
+                <Field label="Color" value={form.color} editing={editing} onChange={set('color')} />
+                <Field label="Vaccinated" value={form.vaccinated ? 'Yes' : 'No'} editing={false} onChange={() => { }} />
               </div>
 
               {/* Health */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🏥 Health Records</h2>
                 <Field label="Health Status" value={form.healthStatus} editing={editing} onChange={set('healthStatus')} />
-                <Field label="Last Checkup"  value={form.lastCheckup}  editing={editing} onChange={set('lastCheckup')} type="date" />
-                <Field label="Next Checkup"  value={form.nextCheckup}  editing={editing} onChange={set('nextCheckup')} type="date" />
+                <Field label="Last Checkup" value={form.lastCheckup} editing={editing} onChange={set('lastCheckup')} type="date" />
+                <Field label="Next Checkup" value={form.nextCheckup} editing={editing} onChange={set('nextCheckup')} type="date" />
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
                   <span className="font-semibold text-sm w-1/3" style={{ color: theme.colors.neutral.gray[500] }}>Vaccinated</span>
                   {editing
                     ? <select value={form.vaccinated ? 'Yes' : 'No'}
-                        onChange={e => setForm(p => p ? { ...p, vaccinated: e.target.value === 'Yes' } : p)}
-                        className="w-2/3 px-3 py-2 rounded-lg text-sm border focus:outline-none"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body }}>
-                        <option>Yes</option><option>No</option>
-                      </select>
+                      onChange={e => setForm(p => p ? { ...p, vaccinated: e.target.value === 'Yes' } : p)}
+                      className="w-2/3 px-3 py-2 rounded-lg text-sm border focus:outline-none"
+                      style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body }}>
+                      <option>Yes</option><option>No</option>
+                    </select>
                     : <span className="text-sm font-medium text-right w-2/3" style={{ color: form.vaccinated ? '#065f46' : '#991b1b' }}>
-                        {form.vaccinated ? '✅ Yes' : '❌ No'}
-                      </span>
+                      {form.vaccinated ? '✅ Yes' : '❌ No'}
+                    </span>
                   }
                 </div>
               </div>
@@ -254,7 +273,7 @@ const PetDetails = () => {
               <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>📝 Notes</h2>
               {editing
                 ? <textarea value={form.notes} onChange={e => setForm(p => p ? { ...p, notes: e.target.value } : p)}
-                    rows={3} className={`${inputCls} w-full`} style={inputStyle} />
+                  rows={3} className={`${inputCls} w-full`} style={inputStyle} />
                 : <p style={{ color: theme.colors.neutral.gray[700] }}>{form.notes || '—'}</p>
               }
             </div>
