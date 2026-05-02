@@ -1,53 +1,141 @@
-# React + TypeScript + Vite
+# Ktinoskare - Proactive Pet & Animal Care Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Know before they show** 🐾
 
-Currently, two official plugins are available:
+Ktinoskare is an innovative pet and animal care management platform designed to empower pet owners with proactive, data-driven insights. Transform animal healthcare from reactive to proactive with advanced monitoring, GPS tracking, and health analytics.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Vision
 
-## React Compiler
+We envision a future where animal healthcare is proactive, precise, and accessible—revolutionizing how pet and farm owners care for their animals.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+- **🔍 Pet Safety & Geo-Fencing**: Advanced GPS tracking with geo-fencing technology to keep your pet safe within designated areas
+- **💚 Health Monitoring**: Real-time health monitoring with vital data tracking to prevent potential issues before they arise
+- **📊 Data-Driven Insights**: Intelligent analytics providing comprehensive data about your pet's activity, nutrition, and wellbeing
+- **🎯 Holistic Pet Care**: Track activity levels, nutrition, playtime, and overall wellness in one seamless dashboard
+- **👥 Multi-Pet Management**: Manage multiple pets with personalized profiles and health records
+- **⚙️ User Settings**: Customize your experience with flexible preferences and notification settings
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Technology Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **API Communication**: Axios
+- **Animations**: Framer Motion
+- **Routing**: React Router DOM v7
+- **Linting**: ESLint
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📦 Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Hero.tsx        # Landing page hero section
+│   ├── About.tsx       # About section
+│   ├── PracticeAreas.tsx  # Key features showcase
+│   ├── Navbar.tsx      # Navigation bar
+│   ├── Footer.tsx      # Footer component
+│   └── ...
+├── pages/              # Page components
+│   ├── Dashboard.tsx   # Main dashboard
+│   ├── Login.tsx       # Authentication
+│   ├── PetProfile.tsx  # Pet profiles
+│   ├── PetDetails.tsx  # Detailed pet information
+│   ├── GpsTracking.tsx # GPS tracking page
+│   ├── HealthMonitoring.tsx  # Health monitoring
+│   ├── UserList.tsx    # User management
+│   └── Settings.tsx    # User settings
+├── context/            # React Context for state management
+│   ├── AuthContext.tsx # Authentication state
+│   └── PetsContext.tsx # Pets data management
+├── config/             # Configuration files
+│   ├── api.ts         # API configuration
+│   └── axiosInstance.ts # Axios setup
+├── data/              # Static data
+│   └── pets.ts        # Pet data
+├── App.tsx            # Root component
+└── main.tsx           # Entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd ktinos_fe
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure environment variables:
+Create a `.env` file in the root directory with necessary API endpoints and configuration.
+
+### Development
+
+Start the development server with HMR (Hot Module Replacement):
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm preview
+```
+
+## 📝 Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+
+## 🔐 Authentication
+
+The app uses context-based authentication via `AuthContext`. Users can log in and manage their session securely.
+
+## 🐕 Pet Management
+
+Pets are managed through `PetsContext` which provides global state management for pet data across the application.
+
+## 🎨 Styling
+
+The application uses Tailwind CSS for responsive design and custom theme configuration. See `tailwind.config.js` and `theme.ts` for customization options.
+
+## 📚 Additional Configuration
+
+- **TypeScript**: See `tsconfig.json` and `tsconfig.app.json`
+- **Vite**: See `vite.config.ts`
+- **PostCSS**: See `postcss.config.js`
+- **ESLint**: See `eslint.config.js`
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow the existing code structure and conventions.
+
+## 📄 License
+
+This project is proprietary and confidential.
 import reactDom from 'eslint-plugin-react-dom'
 
 export default defineConfig([
