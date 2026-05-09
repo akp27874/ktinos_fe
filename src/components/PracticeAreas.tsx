@@ -1,65 +1,267 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { theme } from '../theme';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-const areas = [
-  { title: 'The Future of Pet Safety', desc: 'Know the signs early so you can take action sooner. Advanced geo-fencing technology ensures your pet stays safe within designated areas, offering you unparalleled peace of mind.', icon: '📍' },
-  { title: 'Smart Monitoring, Happier Pets', desc: 'Stay informed about your pet\'s health with real-time monitoring. Ktinoskare provides vital health data, helping you prevent potential issues before they arise.', icon: '💚' },
-  { title: 'From Playtime to Nutrition', desc: 'Discover insights into your pet\'s well-being. From activity levels to dietary needs, you\'ll have everything you need to ensure a happy, healthy pet.', icon: '🎯' },
-  { title: 'Seamless Pet Care', desc: 'Explore the unique features that set Ktinoskare apart. With seamless integration into your daily routine, caring for your pet has never been easier.', icon: '⚡' },
-  { title: 'From Concern to Confidence', desc: 'Hear from satisfied pet owners who trust Ktinoskare for their pets\' safety and health. Their stories highlight the transformative impact of proactive care.', icon: '🌟' },
-  { title: 'Data-Driven Insights', desc: 'Empower yourself with intelligent analytics that help you make informed decisions about your animal\'s health and wellbeing.', icon: '📊' }
+// ─── Feature data ────────────────────────────────────────────────────────────
+const features = [
+  {
+    icon: "🔍",
+    title: "Pet Safety & Geo-Fencing",
+    description:
+      "Advanced GPS tracking with geo-fencing technology to keep your pet safe within designated areas.",
+    // Replace src with your real image path when ready
+    imageSrc: "https://www.thesprucepets.com/thmb/XN-58rdUa1F1KOxK8fZmm6fXJdw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dog-gps-tracker-test-cube-real-time-cat-tracker-tstaples-3318-2186d694cccf4ea1a73d84dedc954463.jpg",
+    imageAlt: "Dog wearing a GPS collar running in a park",
+    accentColor: "#22c55e",
+  },
+  {
+    icon: "💚",
+    title: "Health Monitoring",
+    description:
+      "Real-time health monitoring with vital data tracking to prevent potential issues before they arise.",
+    imageSrc: "/image (2).png",
+    imageAlt: "App screen showing pet heart rate and health graph",
+    accentColor: "#3b82f6",
+  },
+  {
+    icon: "📊",
+    title: "Data-Driven Insights",
+    description:
+      "Intelligent analytics providing comprehensive data about your pet's activity, nutrition, and wellbeing.",
+    imageSrc: "/dataset.png",
+    imageAlt: "Dashboard showing pet activity and nutrition charts",
+    accentColor: "#f59e0b",
+  },
+  {
+    icon: "🎯",
+    title: "Holistic Pet Care",
+    description:
+      "Track activity levels, nutrition, playtime, and overall wellness in one seamless dashboard.",
+    imageSrc: "https://animalwellnessmagazine.com/wp-content/uploads/dog-and-cat-1.jpg",
+    imageAlt: "Happy dog playing outdoors",
+    accentColor: "#ec4899",
+  },
+  {
+    icon: "👥",
+    title: "Multi-Pet Management",
+    description:
+      "Manage multiple pets with personalized profiles and health records all in one place.",
+    imageSrc: "https://www.healthy-pet.com/cdn/shop/articles/ac7ae5f6fbc297bbb835a5ff8a0c0de5_9fa4a5ed-80f5-4c8d-83dd-602d39ae5def.jpg?v=1771531864",
+    imageAlt: "Multiple pet profiles on a mobile app screen",
+    accentColor: "#8b5cf6",
+  },
+  {
+    icon: "⚙️",
+    title: "Smart Settings",
+    description:
+      "Customize your experience with flexible preferences, alerts, and notification settings.",
+    imageSrc: "https://scontent.fbbi5-2.fna.fbcdn.net/v/t39.30808-6/666554639_1450744553168285_487806054023360503_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=13d280&_nc_ohc=nAqbjVyrnoAQ7kNvwHY8D3O&_nc_oc=AdoCkFLrLNVdyMP-JZVdwiGWeVDFBBFepiq1evP_1hpUW1gQ7Ohd_lewJv-lwVqWZl8&_nc_zt=23&_nc_ht=scontent.fbbi5-2.fna&_nc_gid=6VQXltTo41RQ1idoXzogLg&_nc_ss=7b289&oh=00_Af4LY6gDnZBuOOCPdbOMGRNpvu48lSwdvdwv8ayToucQzg&oe=6A034DBC",
+    imageAlt: "Settings screen with toggle controls",
+    accentColor: "#06b6d4",
+  },
 ];
 
-const PracticeAreas = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+// ─── Styles ───────────────────────────────────────────────────────────────────
+const styles: Record<string, React.CSSProperties> = {
+  section: {
+    padding: '80px 48px 100px',
+    background: '#f0f7f4',
+    fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '56px',
+  },
+  eyebrow: {
+    display: 'inline-block',
+    fontSize: '0.78rem',
+    fontWeight: 700,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase' as const,
+    color: '#16a34a',
+    background: '#dcfce7',
+    borderRadius: '999px',
+    padding: '5px 14px',
+    marginBottom: '16px',
+  },
+  h2: {
+    fontSize: '2.4rem',
+    fontWeight: 800,
+    color: '#0f172a',
+    margin: '0 0 14px',
+    lineHeight: 1.2,
+    letterSpacing: '-0.02em',
+  },
+  subtitle: {
+    fontSize: '1.05rem',
+    color: '#475569',
+    maxWidth: '520px',
+    margin: '0 auto',
+    lineHeight: 1.7,
+  },
 
+  // ── card ──
+  card: {
+    background: '#ffffff',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    height: '100%',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  },
+
+  // ── image placeholder ──
+ imgBox: {
+    width: '100%',
+    height: '240px',
+    background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative' as const,
+    overflow: 'hidden',
+  },
+  placeholderIcon: {
+    fontSize: '52px',
+    lineHeight: 1,
+    marginBottom: '10px',
+    opacity: 0.7,
+  },
+  placeholderLabel: {
+    fontSize: '0.72rem',
+    color: '#94a3b8',
+    fontWeight: 600,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase' as const,
+  },
+  accentBar: {
+    position: 'absolute' as const,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '4px',
+  },
+
+  // ── card body ──
+  cardBody: {
+    padding: '24px 24px 28px',
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column' as const,
+  },
+  cardTitle: {
+    fontSize: '1.05rem',
+    fontWeight: 700,
+    color: '#0f172a',
+    marginBottom: '10px',
+    lineHeight: 1.3,
+  },
+  cardDesc: {
+    fontSize: '0.88rem',
+    color: '#64748b',
+    lineHeight: 1.7,
+    margin: 0,
+    flex: 1,
+  },
+
+  // ── slide row ──
+  slideRow: {
+    display: 'flex',
+    gap: '20px',
+    padding: '8px 2px 4px',
+    alignItems: 'stretch',
+  },
+  slideItem: {
+    flex: 1,
+    minWidth: 0,
+  },
+};
+
+// ─── FeatureCard ──────────────────────────────────────────────────────────────
+type Feature = (typeof features)[0];
+
+const FeatureCard = ({ feature }: { feature: Feature }) => {
   return (
-    <section id="practice-areas" className="py-20" style={{ backgroundColor: theme.colors.neutral.lightBg }} ref={ref}>
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>Key Features</h1>
-          <p className="max-w-2xl mx-auto text-lg" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-            Proactive solutions that empower you to care for your animals with confidence and precision.
-          </p>
-        </motion.div>
-        
-        <div className="grid md:grid-cols-2 gap-8">
-          {areas.map((area, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              whileHover={{ scale: 1.03, boxShadow: `0 10px 30px ${theme.colors.primary.deepPurple}26` }}
-              className="flex gap-4 p-6 rounded-lg transition"
-              style={{ backgroundColor: theme.colors.neutral.white }}
-            >
-              <div className="flex-shrink-0">
-                <motion.div 
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5 }}
-                  className="w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl shadow-md"
-                  style={{ background: `linear-gradient(to bottom right, ${theme.colors.primary.tealWellness}, ${theme.colors.primary.healthGreen})` }}
-                >
-                  {area.icon}
-                </motion.div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{area.title}</h3>
-                <p style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[600] }}>{area.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+    <div style={styles.card}>
+      {/* Image area */}
+      <div style={styles.imgBox}>
+        {feature.imageSrc ? (
+          <img
+            src={feature.imageSrc}
+            alt={feature.imageAlt}
+           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+          />
+        ) : (
+          <>
+            {/* ↓ PLACEHOLDER — replace with real <img> when you have assets */}
+            <span style={styles.placeholderIcon}>{feature.icon}</span>
+            <span style={styles.placeholderLabel}>Image coming soon</span>
+          </>
+        )}
+        {/* Coloured accent bar at the bottom of the image */}
+        <div
+          style={{ ...styles.accentBar, background: feature.accentColor }}
+        />
       </div>
+
+      {/* Text body */}
+      <div style={styles.cardBody}>
+        <h3 style={styles.cardTitle}>{feature.title}</h3>
+        <p style={styles.cardDesc}>{feature.description}</p>
+      </div>
+    </div>
+  );
+};
+
+// ─── Group features into slides of 3 ─────────────────────────────────────────
+const slides: Feature[][] = [];
+for (let i = 0; i < features.length; i += 3) {
+  slides.push(features.slice(i, i + 3));
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+const PracticeAreas = () => {
+  return (
+    <section style={styles.section}>
+      {/* Header */}
+      <div style={styles.header}>
+        <span style={styles.eyebrow}>Why Choose Us</span>
+        <h2 style={styles.h2}>Everything your pet needs,<br />in one smart platform</h2>
+        <p style={styles.subtitle}>
+          From real-time GPS tracking to AI-powered health insights — we give
+          you the tools to keep your pet safe, healthy, and happy.
+        </p>
+      </div>
+
+      {/* Carousel */}
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        slidesPerView={1}
+        spaceBetween={0}
+        navigation
+        pagination={{ clickable: true }}
+        loop={true}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        speed={700}
+        style={{ paddingBottom: '52px' }}
+      >
+        {slides.map((group, slideIdx) => (
+          <SwiperSlide key={slideIdx}>
+            <div style={styles.slideRow}>
+              {group.map((feature, i) => (
+                <div key={i} style={styles.slideItem}>
+                  <FeatureCard feature={feature} />
+                </div>
+              ))}
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
   );
 };
