@@ -14,6 +14,7 @@ import GpsTracking from './pages/GpsTracking';
 import HealthMonitoring from './pages/HealthMonitoring';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import Testimonial from './components/Testimonial';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,7 @@ const Home = () => {
       <About />
       <PracticeAreas />
       {/* <Team /> */}
+      <Testimonial />
       <Contact />
       <Footer />
     </>
