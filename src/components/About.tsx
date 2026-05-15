@@ -16,9 +16,14 @@ const About = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>Transform Animal Care</h1>
-          <p className="max-w-2xl mx-auto text-lg" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-            We envision a future where animal healthcare is proactive, precise, and accessible—revolutionizing how pet and farm owners care for their animals.
+          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
+            PROACTIVE ANIMAL CARE
+          </h1>
+          <p className="max-w-2xl mx-auto text-lg mb-0" style={{ fontFamily: "'Kalam', cursive", color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
+            Pets naturally hide their pain until it worsens.
+          </p>
+          <p className="max-w-2xl mx-auto text-lg" style={{ fontFamily: "'Kalam', cursive", color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
+            Spot issues early — to prevent needless suffering & pain.
           </p>
         </motion.div>
         

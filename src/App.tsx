@@ -15,7 +15,7 @@ import HealthMonitoring from './pages/HealthMonitoring';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Testimonial from './components/Testimonial';
-
+import FAQ from './components/FAQ';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);
@@ -33,6 +33,7 @@ const Home = () => {
       <PracticeAreas />
       {/* <Team /> */}
       <Testimonial />
+      <FAQ /> 
       <Contact />
       <Footer />
     </>
