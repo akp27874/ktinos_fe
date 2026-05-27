@@ -107,10 +107,6 @@ const Testimonial = ({ testimonials = defaultTestimonials }: Props) => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   // Show 2 cards on desktop, 1 on mobile
   const visibleTestimonials = useMemo(() => {
     const visibleCount = windowWidth >= 1024 ? 2 : 1;
@@ -336,33 +332,6 @@ const Testimonial = ({ testimonials = defaultTestimonials }: Props) => {
             </motion.button>
           </div>
         </div>
-
-        {/* Dots Indicator */}
-        <motion.div
-          className="flex justify-center items-center gap-2 mt-12"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          {testimonials.map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => goToSlide(index)}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.95 }}
-              className={`rounded-full transition-all duration-300 cursor-pointer ${
-                index === currentIndex ? "w-8 h-3" : "w-3 h-3"
-              }`}
-              style={{
-                backgroundColor:
-                  index === currentIndex
-                    ? theme.colors.primary.deepPurple
-                    : theme.colors.neutral.gray[300],
-              }}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </motion.div>
       </div>
     </section>
   );

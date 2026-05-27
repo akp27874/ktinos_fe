@@ -27,45 +27,71 @@ const About = () => {
           </p>
         </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          {/* Product Card 1 - Dog Tracker */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="rounded-lg overflow-hidden shadow-lg bg-purple-100"
           >
-            <img src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80" alt="Animal Care" className="rounded-lg shadow-xl w-full" />
+            <div className="relative h-80 bg-gradient-to-br from-purple-300 to-purple-200 flex items-center justify-center">
+              <img 
+                src="https://i.pcmag.com/imagery/roundup-products/06CEGEDw7Ftp0TrfK1D7I2Z.fit_lim.size_919x518.v1758747468.jpg"
+                alt="Dog Tracker" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-purple-200 opacity-20"></div>
+            </div>
+            <div className="p-6">
+              <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>PRODUCTS</p>
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
+                  Dog Tracker
+                </h3>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition text-sm"
+                  style={{ fontFamily: theme.fonts.body }}
+                >
+                  Shop Now
+                </motion.button>
+              </div>
+            </div>
           </motion.div>
+
+          {/* Product Card 2 - Cat Tracker */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.4 }}
+            className="rounded-lg overflow-hidden shadow-lg bg-yellow-50"
           >
-            <h2 className="text-3xl font-semibold mb-6" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.softLavender }}>Our Mission</h2>
-            <div className="space-y-4" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl" style={{ color: theme.colors.primary.healthGreen }}>✓</span>
-                <p>Transform animal care from reactive to proactive</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl" style={{ color: theme.colors.primary.healthGreen }}>✓</span>
-                <p>Empower owners with data-driven insights</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl" style={{ color: theme.colors.primary.healthGreen }}>✓</span>
-                <p>Enable veterinarians to deliver precise care</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl" style={{ color: theme.colors.primary.healthGreen }}>✓</span>
-                <p>Create healthier, happier lives for animals</p>
+            <div className="relative h-80 bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center">
+              <img 
+                src="https://beardpet.com/wp-content/uploads/2024/11/DSC2587-scaled.jpg"
+                alt="Cat Tracker" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-yellow-100 opacity-10"></div>
+            </div>
+            <div className="p-6">
+              <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>PRODUCTS</p>
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
+                  Cat Tracker
+                </h3>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition text-sm"
+                  style={{ fontFamily: theme.fonts.body }}
+                >
+                  Shop Now
+                </motion.button>
               </div>
             </div>
-            <motion.button 
-              whileHover={{ x: 10 }}
-              className="mt-6 font-semibold flex items-center"
-              style={{ fontFamily: theme.fonts.body, color: theme.colors.primary.deepPurple }}
-            >
-              Learn more <span className="ml-2">→</span>
-            </motion.button>
           </motion.div>
         </div>
       </div>

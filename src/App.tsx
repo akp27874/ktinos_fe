@@ -29,8 +29,8 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <About />
       <PracticeAreas />
+      <About />
       {/* <Team /> */}
       <Testimonial />
       <FAQ /> 

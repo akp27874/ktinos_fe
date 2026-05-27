@@ -240,6 +240,7 @@ const PracticeAreas = () => {
           marginBottom: "40px",
         }}
       >
+        
         <span
           style={{
             display: "inline-block",
