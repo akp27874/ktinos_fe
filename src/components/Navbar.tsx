@@ -6,12 +6,7 @@ import logo from '../assets/images/logokk-withoutbg.png';
 import { useAuth } from '../context/AuthContext';
 
 const TICKER_ITEMS = [
-  '🎉 Special Offer — 20% off your first month! Use code KARE20',
-  '✨ Track your pet\'s health in real-time',
-  '🐾 GPS Tracking now available for all pets',
-  '💊 Never miss a vet appointment again',
-  '🏥 Smart health monitoring at your fingertips',
-  '🚀 Join thousands of happy pet owners today',
+  '🎉 Refer a Friend/Family & Get 20% OFF REF20'
 ];
 
 const tickerText = TICKER_ITEMS.join('   ✦   ') + '   ✦   ';
@@ -36,32 +31,32 @@ const Navbar = () => {
         }}>
         {/* shimmer overlay */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)', animation: 'shimmer 3s ease infinite' }} />
-        <div className="flex py-2.5">
-          <motion.div
-            className="flex whitespace-nowrap text-sm font-semibold"
-            style={{ fontFamily: theme.fonts.body }}
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 22, ease: 'linear', repeat: Infinity }}>
-            {[tickerText, tickerText].map((t, i) => (
-              <span key={i} className="flex items-center gap-1 pr-4" style={{ color: 'rgba(255,255,255,0.95)', textShadow: '0 0 12px rgba(255,255,255,0.3)' }}>
-                {t.split('KARE20').map((part, j, arr) => (
-                  <span key={j}>
-                    {part}
-                    {j < arr.length - 1 && (
-                      <motion.span
-                        className="inline-block px-2 py-0.5 rounded font-bold mx-1 text-xs"
-                        style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#1a0533', letterSpacing: '0.08em', boxShadow: '0 0 8px rgba(255,215,0,0.6)' }}
-                        animate={{ scale: [1, 1.12, 1], boxShadow: ['0 0 8px rgba(255,215,0,0.6)', '0 0 18px rgba(255,215,0,0.9)', '0 0 8px rgba(255,215,0,0.6)'] }}
-                        transition={{ repeat: Infinity, duration: 1.8 }}>
-                        KARE20
-                      </motion.span>
-                    )}
-                  </span>
-                ))}
-              </span>
-            ))}
-          </motion.div>
-        </div>
+          <div className="flex py-2.5">
+            <motion.div
+              className="flex whitespace-nowrap text-sm font-semibold"
+              style={{ fontFamily: theme.fonts.body, minWidth: '100vw' }}
+              animate={{ x: ['100%', '-100%'] }}
+              transition={{ duration: 18, ease: 'linear', repeat: Infinity, repeatType: 'loop' }}>
+              {[tickerText].map((t, i) => (
+                <span key={i} className="flex items-center gap-1 pr-4" style={{ color: 'rgba(255,255,255,0.95)', textShadow: '0 0 12px rgba(255,255,255,0.3)' }}>
+                  {t.split('KARE20').map((part, j, arr) => (
+                    <span key={j}>
+                      {part}
+                      {j < arr.length - 1 && (
+                        <motion.span
+                          className="inline-block px-2 py-0.5 rounded font-bold mx-1 text-xs"
+                          style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#1a0533', letterSpacing: '0.08em', boxShadow: '0 0 8px rgba(255,215,0,0.6)' }}
+                          animate={{ scale: [1, 1.12, 1], boxShadow: ['0 0 8px rgba(255,215,0,0.6)', '0 0 18px rgba(255,215,0,0.9)', '0 0 8px rgba(255,215,0,0.6)'] }}
+                          transition={{ repeat: Infinity, duration: 1.8 }}>
+                          KARE20
+                        </motion.span>
+                      )}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </motion.div>
+          </div>
         <style>{`
           @keyframes gradientPan { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
           @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(200%)} }
@@ -73,7 +68,27 @@ const Navbar = () => {
         <div className="container-lg mr-5">
           <div className="flex justify-between items-center py-4">
             <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto cursor-pointer' onClick={() => navigate('/dashboard')} />
-          
+
+            <div className="hidden md:flex flex-1 justify-center">
+              <nav className="flex items-center gap-8 text-sm font-semibold" style={{ fontFamily: theme.fonts.body }}>
+                <a href="#what-is-ktinoskare" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
+                  <span style={{ color: theme.colors.primary.deepPurple }}>WHAT</span>
+                  <span className="text-slate-700"> is Ktinoskare</span>
+                </a>
+                <a href="#how-it-works" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}> 
+                  <span style={{ color: theme.colors.primary.deepPurple }}>HOW</span>
+                  <span className="text-slate-700"> it works</span>
+                </a>
+                <a href="#plans" className="hover:text-slate-900 transition" style={{ color: theme.colors.primary.deepPurple }}>PLANS</a>
+                <a href="#activate-your-band" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
+                  <span style={{ color: theme.colors.primary.deepPurple }}>ACTIVATE</span>
+                  <span className="text-slate-700"> your band</span>
+                </a>
+                <a href="#buy-now" className="hover:text-slate-900 transition" style={{ color: theme.colors.primary.deepPurple }}>BUY NOW</a>
+                <a href="#lets-connect" className="hover:text-slate-900 transition" style={{ color: theme.colors.primary.deepPurple }}>LET's CONNECT</a>
+              </nav>
+            </div>
+
             <div className="flex items-center gap-4">
               <button onClick={() => setIsOpen(!isOpen)} className="md:hidden" style={{ color: theme.colors.primary.deepPurple }}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,10 +97,6 @@ const Navbar = () => {
               </button>
 
               <ul className={`${isOpen ? 'block' : 'hidden'} md:flex md:space-x-8 absolute md:relative top-24 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none`} style={{ fontFamily: theme.fonts.body }}>
-            {/* <li><button onClick={() => scrollToSection('home')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>Home</button></li>
-            <li><button onClick={() => scrollToSection('about')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>About</button></li>
-            <li><button onClick={() => scrollToSection('practice-areas')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>Features</button></li>
-            <li><button onClick={() => scrollToSection('our-team')} className="block py-2 transition hover:opacity-80" style={{ color: theme.colors.neutral.gray[700] }}>Our Team</button></li> */}
                 {isHome && !isLoggedIn
                   && <li><button onClick={() => { navigate('/login'); setIsOpen(false); }} className="text-white px-6 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen }}>Login</button></li>
                 }

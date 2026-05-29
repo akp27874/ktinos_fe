@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import PracticeAreas from './components/PracticeAreas';
+import KeyFeatures from './components/KeyFeatures';
+import Bands from './components/Bands';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import UserList from './pages/UserList';
@@ -29,9 +29,8 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <PracticeAreas />
-      <About />
-      {/* <Team /> */}
+      <KeyFeatures />
+      <Bands />
       <Testimonial />
       <FAQ /> 
       <Contact />
