@@ -16,6 +16,8 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
+//Navbar Components Adding
+import WhatItIs from './components/Whatitis';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);
@@ -51,6 +53,7 @@ function App() {
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
+        <Route path="/what-is-ktinoskare" element={<><Navbar /><WhatItIs /></>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:id" element={<PetProfile />} />
         <Route path="/gps" element={<GpsTracking />} />
