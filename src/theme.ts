@@ -28,6 +28,7 @@ export const theme = {
   fonts: {
     heading: "'Poppins', sans-serif",
     body: "'Open Sans', sans-serif",
+    handwritten: "'Kalam', cursive",
   },
   fontWeights: {
     light: 300,

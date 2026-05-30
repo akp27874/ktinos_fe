@@ -183,10 +183,10 @@ const KeyFeatures = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
             PROACTIVE ANIMAL CARE
           </h1>
-          <p className="max-w-2xl mx-auto text-lg mb-0" style={{ fontFamily: "'Kalam', cursive", color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
+          <p className="max-w-2xl mx-auto text-lg mb-0" style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
             Pets naturally hide their pain until it worsens.
           </p>
-          <p className="max-w-2xl mx-auto text-lg" style={{ fontFamily: "'Kalam', cursive", color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
+          <p className="max-w-2xl mx-auto text-lg" style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[700], fontSize: '1.4rem' }}>
             Spot issues early — to prevent needless suffering & pain.
           </p>
         </motion.div>
