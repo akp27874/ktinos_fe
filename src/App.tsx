@@ -17,7 +17,9 @@ import Login from './pages/Login';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
 //Navbar Components Adding
-import WhatItIs from './components/Whatitis';
+// Match actual filename casing to avoid duplicate-import casing error on case-insensitive filesystems
+import WhatItIs from './components/WhatItIs';
+import HowItWorks from './components/Howitworks';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);
@@ -54,6 +56,7 @@ function App() {
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
         <Route path="/what-is-ktinoskare" element={<><Navbar /><WhatItIs /></>} />
+        <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:id" element={<PetProfile />} />
         <Route path="/gps" element={<GpsTracking />} />

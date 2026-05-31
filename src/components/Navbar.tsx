@@ -75,15 +75,15 @@ const Navbar = () => {
                 <Link to="/what-is-ktinoskare" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
                   <span className="text-slate-700">What is Ktinoskare</span>
                 </Link>
-                <a href="#how-it-works" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}> 
+                <Link to="/how-it-works" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}> 
                   <span className="text-slate-700"> How it works</span>
-                </a>
-                <a href="#plans" className="hover:text-slate-900 transition"><span className="text-slate-700">Plans</span></a>
-                <a href="#activate-your-band" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
+                </Link>
+                <Link to="/plans" className="hover:text-slate-900 transition"><span className="text-slate-700">Plans</span></Link>
+                <Link to="/activate-your-band" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
                   <span className="text-slate-700">Activate Your Band</span>
-                </a>
-                <a href="#buy-now" className="hover:text-slate-900 transition"><span className="text-slate-700">Buy Now</span></a>
-                <a href="#lets-connect" className="hover:text-slate-900 transition"><span className="text-slate-700">Let's Connect</span></a>
+                </Link>
+                <Link to="/buy-now" className="hover:text-slate-900 transition"><span className="text-slate-700">Buy Now</span></Link>
+                <Link to="/lets-connect" className="hover:text-slate-900 transition"><span className="text-slate-700">Let's Connect</span></Link>
               </nav>
             </div>
 
