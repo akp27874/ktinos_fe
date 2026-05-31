@@ -30,7 +30,6 @@ const Navbar = () => {
           borderBottom: '1px solid rgba(255,255,255,0.1)',
           boxShadow: '0 2px 20px rgba(99,38,180,0.4)',
         }}>
-        {/* shimmer overlay */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)', animation: 'shimmer 3s ease infinite' }} />
           <div className="flex py-2.5">
             <motion.div
@@ -72,42 +71,44 @@ const Navbar = () => {
 
             <div className="hidden md:flex flex-1 justify-center">
               <nav className="flex items-center gap-8">
-                
+
                 {/* WHAT */}
-                <Link to="/what-is-ktinoskare" className="hover:opacity-75 transition text-center flex flex-col items-center">
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>WHAT</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>is Ktinoskare</span>
+                <Link to="/what-is-ktinoskare" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>WHAT</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>is Ktinoskare</span>
                 </Link>
 
                 {/* HOW */}
-                <Link to="/how-it-works" className="hover:opacity-75 transition text-center flex flex-col items-center">
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>HOW</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>it works</span>
+                <Link to="/how-it-works" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>HOW</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>it works</span>
                 </Link>
 
                 {/* PLANS */}
-                <a href="#plans" className="hover:opacity-75 transition text-center flex flex-col items-center">
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>PLANS</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>&amp; Prices</span>
+                <a href="#plans" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>PLANS</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>&amp; prices</span>
                 </a>
 
                 {/* ACTIVATE */}
-                <a href="#activate-your-band" className="hover:opacity-75 transition text-center flex flex-col items-center">
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>ACTIVATE</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>your band</span>
+                <a href="#activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>ACTIVATE</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>your band</span>
                 </a>
 
                 {/* LET'S */}
-                <a href="#lets-connect" className="hover:opacity-75 transition text-center flex flex-col items-center">
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>LET'S</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>connect</span>
+                <a href="#lets-connect" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>LET'S</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>connect</span>
                 </a>
 
-                {/* BUY NOW — oval border */}
-                <a href="#buy-now" className="hover:opacity-75 transition text-center flex flex-col items-center px-5 py-1 rounded-full border-2"
-                  style={{ borderColor: theme.colors.primary.deepPurple }}>
-                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>BUY</span>
-                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.primary.deepPurple, fontSize: '0.85rem' }}>NOW</span>
+                {/* BUY NOW — single line button */}
+                <a href="#buy-now">
+                  <button
+                    className="text-white px-6 py-2 rounded-lg transition font-semibold"
+                    style={{ backgroundColor: theme.colors.primary.deepPurple, fontFamily: theme.fonts.body, fontSize: '1.05rem' }}>
+                    BUY NOW
+                  </button>
                 </a>
 
               </nav>
