@@ -17,7 +17,7 @@ import Login from './pages/Login';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
 //Navbar Components Adding
-import WhatItIs from './components/Whatitis';
+import WhatItIs from './components/WhatItIs';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);

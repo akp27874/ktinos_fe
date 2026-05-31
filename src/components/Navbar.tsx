@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import logo from '../assets/images/logokk-withoutbg.png';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const TICKER_ITEMS = [
   '🎉 Refer a Friend/Family & Get 20% OFF REF20'
@@ -71,19 +71,45 @@ const Navbar = () => {
             <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto cursor-pointer' onClick={() => navigate('/')} />
 
             <div className="hidden md:flex flex-1 justify-center">
-              <nav className="flex items-center gap-8 text-sm font-semibold" style={{ fontFamily: theme.fonts.body }}>
-                <Link to="/what-is-ktinoskare" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
-                  <span className="text-slate-700">What is Ktinoskare</span>
+              <nav className="flex items-center gap-8">
+                
+                {/* WHAT */}
+                <Link to="/what-is-ktinoskare" className="hover:opacity-75 transition text-center flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>WHAT</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>is Ktinoskare</span>
                 </Link>
-                <a href="#how-it-works" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}> 
-                  <span className="text-slate-700"> How it works</span>
+
+                {/* HOW */}
+                <Link to="/how-it-works" className="hover:opacity-75 transition text-center flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>HOW</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>it works</span>
+                </Link>
+
+                {/* PLANS */}
+                <a href="#plans" className="hover:opacity-75 transition text-center flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>PLANS</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>&amp; Prices</span>
                 </a>
-                <a href="#plans" className="hover:text-slate-900 transition"><span className="text-slate-700">Plans</span></a>
-                <a href="#activate-your-band" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
-                  <span className="text-slate-700">Activate Your Band</span>
+
+                {/* ACTIVATE */}
+                <a href="#activate-your-band" className="hover:opacity-75 transition text-center flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>ACTIVATE</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>your band</span>
                 </a>
-                <a href="#buy-now" className="hover:text-slate-900 transition"><span className="text-slate-700">Buy Now</span></a>
-                <a href="#lets-connect" className="hover:text-slate-900 transition"><span className="text-slate-700">Let's Connect</span></a>
+
+                {/* LET'S */}
+                <a href="#lets-connect" className="hover:opacity-75 transition text-center flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>LET'S</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.85rem' }}>connect</span>
+                </a>
+
+                {/* BUY NOW — oval border */}
+                <a href="#buy-now" className="hover:opacity-75 transition text-center flex flex-col items-center px-5 py-1 rounded-full border-2"
+                  style={{ borderColor: theme.colors.primary.deepPurple }}>
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.1rem', fontFamily: theme.fonts.handwritten, fontWeight: 700 }}>BUY</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.primary.deepPurple, fontSize: '0.85rem' }}>NOW</span>
+                </a>
+
               </nav>
             </div>
 
