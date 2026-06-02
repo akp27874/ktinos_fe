@@ -85,10 +85,10 @@ const Navbar = () => {
                 </Link>
 
                 {/* PLANS */}
-                <a href="#plans" className="hover:opacity-75 transition flex flex-col items-center">
+                <Link to="/plans" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>PLANS</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>&amp; prices</span>
-                </a>
+                </Link>
 
                 {/* ACTIVATE */}
                 <a href="#activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
