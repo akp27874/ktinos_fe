@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Link } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import logo from '../assets/images/logokk-withoutbg.png';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const TICKER_ITEMS = [
   '🎉 Refer a Friend/Family & Get 20% OFF REF20'
@@ -30,7 +30,6 @@ const Navbar = () => {
           borderBottom: '1px solid rgba(255,255,255,0.1)',
           boxShadow: '0 2px 20px rgba(99,38,180,0.4)',
         }}>
-        {/* shimmer overlay */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)', animation: 'shimmer 3s ease infinite' }} />
           <div className="flex py-2.5">
             <motion.div
@@ -71,19 +70,47 @@ const Navbar = () => {
             <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto cursor-pointer' onClick={() => navigate('/')} />
 
             <div className="hidden md:flex flex-1 justify-center">
-              <nav className="flex items-center gap-8 text-sm font-semibold" style={{ fontFamily: theme.fonts.body }}>
-                <Link to="/what-is-ktinoskare" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
-                  <span className="text-slate-700">What is Ktinoskare</span>
+              <nav className="flex items-center gap-8">
+
+                {/* WHAT */}
+                <Link to="/what-is-ktinoskare" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>WHAT</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>is Ktinoskare</span>
                 </Link>
-                <Link to="/how-it-works" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}> 
-                  <span className="text-slate-700"> How it works</span>
+
+                {/* HOW */}
+                <Link to="/how-it-works" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>HOW</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>it works</span>
                 </Link>
-                <Link to="/plans" className="hover:text-slate-900 transition"><span className="text-slate-700">Plans</span></Link>
-                <Link to="/activate-your-band" className="hover:text-slate-900 transition" style={{ color: theme.colors.neutral.gray[700] }}>
-                  <span className="text-slate-700">Activate Your Band</span>
-                </Link>
-                <Link to="/buy-now" className="hover:text-slate-900 transition"><span className="text-slate-700">Buy Now</span></Link>
-                <Link to="/lets-connect" className="hover:text-slate-900 transition"><span className="text-slate-700">Let's Connect</span></Link>
+
+                {/* PLANS */}
+                <a href="#plans" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>PLANS</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>&amp; prices</span>
+                </a>
+
+                {/* ACTIVATE */}
+                <a href="#activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>ACTIVATE</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>your band</span>
+                </a>
+
+                {/* LET'S */}
+                <a href="#lets-connect" className="hover:opacity-75 transition flex flex-col items-center">
+                  <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>LET'S</span>
+                  <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>connect</span>
+                </a>
+
+                {/* BUY NOW — single line button */}
+                <a href="#buy-now">
+                  <button
+                    className="text-white px-6 py-2 rounded-lg transition font-semibold"
+                    style={{ backgroundColor: theme.colors.primary.deepPurple, fontFamily: theme.fonts.body, fontSize: '1.05rem' }}>
+                    BUY NOW
+                  </button>
+                </a>
+
               </nav>
             </div>
 
