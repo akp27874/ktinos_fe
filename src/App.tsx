@@ -17,7 +17,10 @@ import Login from './pages/Login';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
 //Navbar Components Adding
-import WhatItIs from './components/Whatitis';
+// Match actual filename casing to avoid duplicate-import casing error on case-insensitive filesystems
+import WhatItIs from './components/WhatItIs';
+import HowItWorks from './components/Howitworks';
+import PlansAndPrices from './components/Plansandprices';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);
@@ -53,7 +56,12 @@ function App() {
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
+        //what-is-ktinoskare
         <Route path="/what-is-ktinoskare" element={<><Navbar /><WhatItIs /></>} />
+        //how-it-works
+        <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
+        //plans-and-prices
+        <Route path="/plans" element={<><Navbar /><PlansAndPrices /></>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:id" element={<PetProfile />} />
         <Route path="/gps" element={<GpsTracking />} />

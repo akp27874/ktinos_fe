@@ -134,7 +134,7 @@ const ChatIcon = () => (
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function WhatItIs() {
+function WhatItIs() {
   return (
     <div className="font-sans text-gray-800 bg-white">
 
@@ -674,3 +674,4 @@ export default function WhatItIs() {
     </div>
   );
 }
+export default WhatItIs;
