@@ -119,53 +119,7 @@ const plans = [
   },
 ];
 
-const whyLoveItems = [
-  {
-    icon: <StarIcon />,
-    title: "30-Day Money Back Guarantee",
-    desc: "Not happy? Get a full refund within 30 days.",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-      </svg>
-    ),
-    title2: "1-Year Warranty",
-    desc: "We stand by the quality of our smart collar.",
-  },
-  {
-    icon: <TruckIcon />,
-    title3: "Free Shipping",
-    desc: "Fast & free delivery across India.",
-  },
-  {
-    icon: <CollaborateIcon />,
-    title4: "Customized Collar Belt with Pet Name",
-    desc: "Make it special with your pet's name on the collar belt.",
-  },
-  {
-    icon: <HeadphonesIcon />,
-    title5: "24×7 Customer Support",
-    desc: "We're always here to help you and your pet.",
-  },
-];
-
-const inBoxItems = [
-  { label: "1 Neck Collar Band" },
-  { label: "1 Magnetic Charger" },
-  { label: "1 Built-in SIM Card" },
-  { label: "1 Quick Start Guide" },
-];
-
-const subscriptionItems = [
-  { icon: <StarIcon />, label: "Advanced Features Access" },
-  { icon: <HeartIcon />, label: "Health Monitoring Dashboard" },
-  { icon: <LocationPinIcon />, label: "Live GPS Tracking" },
-  { icon: <ChartIcon />, label: "AI Health Reports" },
-  { icon: <BellIcon />, label: "Smart Alerts" },
-  { icon: <SupportIcon />, label: "All-Round Support" },
-];
+;
 
 const PlansAndPrices: React.FC = () => {
   return (
