@@ -34,7 +34,7 @@ const Navbar = () => {
           <div className="flex py-2.5">
             <motion.div
               className="flex whitespace-nowrap text-sm font-semibold"
-              style={{ fontFamily: theme.fonts.body, minWidth: '100vw' }}
+              style={{ fontFamily: theme.fonts.body, minWidth: '100%' }}
               animate={{ x: ['100%', '-100%'] }}
               transition={{ duration: 18, ease: 'linear', repeat: Infinity, repeatType: 'loop' }}>
               {[tickerText].map((t, i) => (
