@@ -78,11 +78,11 @@ const Contact = () => {
             <ul className="space-y-4" style={{ fontFamily: theme.fonts.body }}>
               <li className="flex items-start gap-3">
                 <span className="text-xl" style={{ color: theme.colors.primary.healthGreen }}>📍</span>
-                <span>198 West 21th Street, Suite 721 New York NY 10016</span>
+                <span>#70/4, 5th Cross, SLN Layout, Munnekolala,  Marathahalli, Bengaluru, Karnataka</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-xl" style={{ color: theme.colors.primary.healthGreen }}>📞</span>
-                <a href="tel://1235235598" className="hover:opacity-80 transition">+ 1235 2355 98</a>
+                <a href="tel://+916006077119" className="hover:opacity-80 transition">+91 6006077119</a>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-xl" style={{ color: theme.colors.primary.healthGreen }}>✉️</span>
@@ -90,7 +90,9 @@ const Contact = () => {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-xl" style={{ color: theme.colors.primary.healthGreen }}>🌐</span>
-                <a href="#" className="hover:opacity-80 transition">www.ktinoskare.com</a>
+                <a href="https://www.ktinoskare.com" className="hover:opacity-80 transition" target="_blank" rel="noopener noreferrer">
+                  www.ktinoskare.com
+                </a>
               </li>
             </ul>
           </motion.div>
