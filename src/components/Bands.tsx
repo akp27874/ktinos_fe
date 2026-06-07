@@ -145,7 +145,7 @@ const Bands = () => {
           </div>
           <div className="p-6">
             <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
-              PRODUCTS → Know More, Worry Less
+              Know More, Worry Less
             </p>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
@@ -180,7 +180,7 @@ const Bands = () => {
           </div>
           <div className="p-6">
             <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
-              PRODUCTS → Track, Protect, Pamper
+              Track, Protect, Pamper
             </p>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
