@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { theme } from '../theme';
@@ -99,15 +98,15 @@ const Bands = () => {
           Why Choose Us
         </span>
 
-        <h2
-          style={{
-            fontSize: isMobile ? "1.6rem" : "2.4rem",
-            fontWeight: 800,
-            color: "#0f172a",
-            margin: "0 0 14px",
-            lineHeight: 1.2,
-          }}
-        >
+         <h2
+         style={{
+          fontSize: isMobile ? "1.6rem" : "2.4rem",
+          fontWeight: 800,
+          color: theme.colors.primary.deepPurple,
+         margin: "0 0 14px",
+         lineHeight: 1.2,
+         }}
+         >
           Everything your pet needs,
           <br />
           in one smart platform
@@ -128,10 +127,8 @@ const Bands = () => {
         </p>
       </div>
 
-
-
       <div className="grid md:grid-cols-2 gap-8 items-center">
-        {/* Product Card 1 - Dog Tracker */}
+        {/* Product Card 1 - Dog Band */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
@@ -141,30 +138,32 @@ const Bands = () => {
           <div className="relative h-80 bg-gradient-to-br from-purple-300 to-purple-200 flex items-center justify-center">
             <img
               src="https://i.pcmag.com/imagery/roundup-products/06CEGEDw7Ftp0TrfK1D7I2Z.fit_lim.size_919x518.v1758747468.jpg"
-              alt="Dog Tracker"
+              alt="Dog Band"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-purple-200 opacity-20"></div>
           </div>
           <div className="p-6">
-            <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>PRODUCTS</p>
+            <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
+              PRODUCTS → Know More, Worry Less
+            </p>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
-                Dog Tracker
+                DOG BAND
               </h3>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition text-sm"
-                style={{ fontFamily: theme.fonts.body }}
+                className="px-6 py-2 text-white font-semibold rounded-full transition text-sm"
+                style={{ fontFamily: theme.fonts.body, backgroundColor: theme.colors.primary.deepPurple }}
               >
-                Shop Now
+                Buy Now
               </motion.button>
             </div>
           </div>
         </motion.div>
 
-        {/* Product Card 2 - Cat Tracker */}
+        {/* Product Card 2 - Cat Band */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
@@ -174,24 +173,26 @@ const Bands = () => {
           <div className="relative h-80 bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center">
             <img
               src="https://beardpet.com/wp-content/uploads/2024/11/DSC2587-scaled.jpg"
-              alt="Cat Tracker"
+              alt="Cat Band"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-yellow-100 opacity-10"></div>
           </div>
           <div className="p-6">
-            <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>PRODUCTS</p>
+            <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
+              PRODUCTS → Track, Protect, Pamper
+            </p>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
-                Cat Tracker
+                CAT BAND
               </h3>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition text-sm"
-                style={{ fontFamily: theme.fonts.body }}
+                className="px-6 py-2 text-white font-semibold rounded-full transition text-sm"
+                style={{ fontFamily: theme.fonts.body, backgroundColor: theme.colors.primary.deepPurple }}
               >
-                Shop Now
+                Buy Now
               </motion.button>
             </div>
           </div>
