@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   FaBell,               // Smart Health Alerts
   FaChartLine,          // 24x7 Live Data
