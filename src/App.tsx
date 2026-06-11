@@ -13,7 +13,7 @@ import PetProfile from './pages/PetProfile';
 import GpsTracking from './pages/GpsTracking';
 import HealthMonitoring from './pages/HealthMonitoring';
 import Settings from './pages/Settings';
-import Login from './pages/Login';
+import { SignIn, SignUp } from '@clerk/react';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
 //Navbar Components Adding
@@ -56,18 +56,19 @@ function App() {
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
-        //what-is-ktinoskare
+        {/* what-is-ktinoskare */}
         <Route path="/what-is-ktinoskare" element={<><Navbar /><WhatItIs /></>} />
-        //how-it-works
+        {/* how-it-works */}
         <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
-        //plans-and-prices
+        {/* plans-and-prices */}
         <Route path="/plans" element={<><Navbar /><PlansAndPrices /></>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:id" element={<PetProfile />} />
         <Route path="/gps" element={<GpsTracking />} />
         <Route path="/health" element={<HealthMonitoring />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<><Navbar /><SignIn path="/login" routing="path" signUpUrl="/signup" afterSignInUrl="/dashboard" /></>} />
+        <Route path="/signup" element={<><Navbar /><SignUp path="/signup" routing="path" signInUrl="/login" afterSignUpUrl="/dashboard" /></>} />
       </Routes>
     </BrowserRouter>
     </PetsProvider>
