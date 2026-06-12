@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
 import { useState, useEffect, useRef } from 'react';
 
-// ── YouTube video ID — swap this with any YouTube video ID ──
 const YOUTUBE_VIDEO_ID = 'J9BG0Ea3ccY';
 
 const slides = [
@@ -21,7 +20,6 @@ const slides = [
   },
 ];
 
-// Extend Window to include YT
 declare global {
   interface Window {
     YT: any;
@@ -29,17 +27,17 @@ declare global {
   }
 }
 
+const NAVBAR_HEIGHT = 120;
+
 const Hero = () => {
   const [current, setCurrent] = useState(0);
   const playerRef = useRef<any>(null);
-  const playerContainerRef = useRef<HTMLDivElement>(null);
   const isMountedRef = useRef(true);
 
   const goTo = (index: number) => setCurrent((index + slides.length) % slides.length);
   const goNext = () => goTo(current + 1);
   const goPrev = () => goTo(current - 1);
 
-  // ── Load YouTube IFrame API once ──
   useEffect(() => {
     isMountedRef.current = true;
 
@@ -59,7 +57,6 @@ const Hero = () => {
         },
         events: {
           onStateChange: (event: any) => {
-            // YT.PlayerState.ENDED = 0
             if (event.data === 0 && isMountedRef.current) {
               goNext();
             }
@@ -71,7 +68,6 @@ const Hero = () => {
     if (window.YT && window.YT.Player) {
       initPlayer();
     } else {
-      // Inject the script tag if not already there
       if (!document.getElementById('yt-api-script')) {
         const script = document.createElement('script');
         script.id = 'yt-api-script';
@@ -83,31 +79,42 @@ const Hero = () => {
 
     return () => {
       isMountedRef.current = false;
-      if (playerRef.current && playerRef.current.destroy) {
+      if (playerRef.current?.destroy) {
         playerRef.current.destroy();
       }
     };
   }, []);
 
-  // ── When navigating back to video slide, restart the video ──
   useEffect(() => {
-    if (current === 0 && playerRef.current && playerRef.current.playVideo) {
+    if (current === 0 && playerRef.current?.playVideo) {
       playerRef.current.seekTo(0);
       playerRef.current.playVideo();
     }
   }, [current]);
 
   return (
-    <section id="home" className="relative h-screen overflow-hidden">
-
-      {/* ── YouTube player — always mounted but hidden when not on video slide ── */}
+    <section
+      id="home"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── YouTube video slide — always in DOM, shown/hidden with opacity ── */}
       <div
-        ref={playerContainerRef}
-        className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
-        style={{ opacity: current === 0 ? 1 : 0, zIndex: current === 0 ? 1 : -1 }}
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          opacity: current === 0 ? 1 : 0,
+          zIndex: current === 0 ? 1 : -1,
+          transition: 'opacity 0.7s ease',
+          pointerEvents: 'none',
+        }}
       >
-        {/* Oversized iframe to cover full section without black bars */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* iframe wrapper — clips overflow */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
           <div
             id="yt-player"
             style={{
@@ -115,22 +122,23 @@ const Hero = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '177.78vh',   /* 16/9 * 100vh */
-              height: '56.25vw',  /* 9/16 * 100vw */
-              minWidth: '100%',
-              minHeight: '100%',
+              /* Always cover the container regardless of aspect ratio */
+            width: '100%',
+            height: '100%',
             }}
           />
         </div>
-        <div className="absolute inset-0 bg-black opacity-50" />
 
-        {/* Text overlay for video slide */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-4 pointer-events-none">
+        {/* Dark overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
+
+        {/* Text overlay */}
+        <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 1rem', pointerEvents: 'none' }}>
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: current === 0 ? 1 : 0, y: current === 0 ? 0 : -30 }}
             transition={{ duration: 0.6 }}
-            className="mb-4"
+            style={{ marginBottom: '1rem' }}
           >
             <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
               <span className="text-white">Ktinos</span>
@@ -142,7 +150,7 @@ const Hero = () => {
             animate={{ opacity: current === 0 ? 1 : 0, y: current === 0 ? 0 : 50 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl font-bold mb-4"
-            style={{ fontFamily: theme.fonts.heading }}
+            style={{ fontFamily: theme.fonts.heading, color: 'white' }}
           >
             Know before they show
           </motion.h1>
@@ -151,7 +159,7 @@ const Hero = () => {
             animate={{ opacity: current === 0 ? 1 : 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto"
-            style={{ fontFamily: theme.fonts.body }}
+            style={{ fontFamily: theme.fonts.body, color: 'white' }}
           >
             Proactive and predictive animal care for healthier, happier lives
           </motion.p>
@@ -162,46 +170,39 @@ const Hero = () => {
       <AnimatePresence mode="wait">
         {slides[current].type === 'banner' && (
           <motion.div
-            key={`banner-slide-${current}`}
+            key={`banner-${current}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7 }}
-            className="absolute inset-0 z-10"
             style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 10,
               backgroundImage: `url(${(slides[current] as { type: 'banner'; image: string }).image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
           >
-            <div className="absolute inset-0 bg-black opacity-50" />
-            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-4">
-              <motion.div
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mb-4"
-              >
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
+            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 1rem' }}>
+              <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ marginBottom: '1rem' }}>
                 <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
                   <span className="text-white">Ktinos</span>
                   <span style={{ color: theme.colors.primary.healthGreen }}>kare</span>
                 </h2>
               </motion.div>
               <motion.h1
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
                 className="text-5xl md:text-7xl font-bold mb-4"
-                style={{ fontFamily: theme.fonts.heading }}
+                style={{ fontFamily: theme.fonts.heading, color: 'white' }}
               >
                 {(slides[current] as { type: 'banner'; heading: string }).heading}
               </motion.h1>
               <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl md:text-2xl max-w-3xl mx-auto"
-                style={{ fontFamily: theme.fonts.body }}
+                style={{ fontFamily: theme.fonts.body, color: 'white' }}
               >
                 {(slides[current] as { type: 'banner'; subheading: string }).subheading}
               </motion.p>
@@ -261,6 +262,18 @@ const Hero = () => {
           Live Video
         </div>
       )}
+
+      {/* ── Scroll-to-top button ── */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+        style={{ backgroundColor: theme.colors.primary.healthGreen }}
+        aria-label="Scroll to top"
+      >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
     </section>
   );
 };

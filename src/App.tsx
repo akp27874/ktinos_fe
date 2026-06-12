@@ -53,7 +53,7 @@ function App() {
     <PetsProvider>
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<><Navbar /><Home /></>} />
+        <Route path="/" element={<><Navbar /><div className="pt-[120px]"><Home /></div></>} />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
         //what-is-ktinoskare
