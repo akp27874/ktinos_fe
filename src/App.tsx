@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import { SignIn, SignUp } from '@clerk/react';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
+import ProtectedRoute from './components/ProtectedRoute';
 //Navbar Components Adding
 // Match actual filename casing to avoid duplicate-import casing error on case-insensitive filesystems
 import WhatItIs from './components/WhatItIs';
@@ -62,13 +63,35 @@ function App() {
         <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
         {/* plans-and-prices */}
         <Route path="/plans" element={<><Navbar /><PlansAndPrices /></>} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile/:id" element={<PetProfile />} />
-        <Route path="/gps" element={<GpsTracking />} />
-        <Route path="/health" element={<HealthMonitoring />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/login" element={<><Navbar /><SignIn path="/login" routing="path" signUpUrl="/signup" afterSignInUrl="/dashboard" /></>} />
-        <Route path="/signup" element={<><Navbar /><SignUp path="/signup" routing="path" signInUrl="/login" afterSignUpUrl="/dashboard" /></>} />
+        {/* Protected Routes */}
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/profile/:id" element={<ProtectedRoute><PetProfile /></ProtectedRoute>} />
+        <Route path="/gps" element={<ProtectedRoute><GpsTracking /></ProtectedRoute>} />
+        <Route path="/health" element={<ProtectedRoute><HealthMonitoring /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        {/* Clerk Auth Routes */}
+        <Route path="/login" element={<><Navbar /><SignIn 
+          path="/login" 
+          routing="path" 
+          signUpUrl="/signup"
+          appearance={{
+            elements: {
+              rootBox: "w-full",
+              card: "shadow-lg"
+            }
+          }}
+        /></>} />
+        <Route path="/signup" element={<><Navbar /><SignUp 
+          path="/signup" 
+          routing="path" 
+          signInUrl="/login"
+          appearance={{
+            elements: {
+              rootBox: "w-full",
+              card: "shadow-lg"
+            }
+          }}
+        /></>} />
       </Routes>
     </BrowserRouter>
     </PetsProvider>

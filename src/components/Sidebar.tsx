@@ -6,7 +6,7 @@ import { ENDPOINTS } from '../config/api';
 import axiosInstance from '../config/axiosInstance';
 import { usePets } from '../context/PetsContext';
 import logo from '../assets/images/logokk-withoutbg.png';
-import { useAuth } from '../context/AuthContext';
+import { useClerk } from '@clerk/react';
 
 interface SpeciesOption { id: number; name: string; }
 interface BreedOption { id: number; name: string; species: number; }
@@ -24,7 +24,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { addPet, refetch } = usePets();
-  const { logout } = useAuth();
+  const { signOut } = useClerk();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [speciesList, setSpeciesList] = useState<SpeciesOption[]>([]);
@@ -151,7 +151,7 @@ const Sidebar = () => {
           <button className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
             ❓ Support
           </button>
-          <button onClick={() => { logout(); navigate('/'); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
+          <button onClick={() => { signOut(() => navigate('/')); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
             ↩ Logout
           </button>
         </div>

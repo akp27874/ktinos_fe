@@ -1,18 +1,25 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
+import { useAuth as useClerkAuth, useUser } from '@clerk/react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
+  isLoading: boolean;
+  user: any;
 }
 
-const AuthContext = createContext<AuthContextType>({ isLoggedIn: false, login: () => {}, logout: () => {} });
+const AuthContext = createContext<AuthContextType>({ isLoggedIn: false, isLoading: false, user: null });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
-  return <AuthContext.Provider value={{ isLoggedIn, login, logout }}>{children}</AuthContext.Provider>;
+  const { isSignedIn, isLoaded } = useClerkAuth();
+  const { user } = useUser();
+
+  const contextValue: AuthContextType = {
+    isLoggedIn: isSignedIn ?? false,
+    isLoading: !isLoaded,
+    user: user,
+  };
+
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuthContext = () => useContext(AuthContext);
