@@ -93,7 +93,7 @@ const Navbar = () => {
                 </a>
 
                 {/* LET'S */}
-                <a href="#lets-connect" className="hover:opacity-75 transition flex flex-col items-center">
+                <a href="/#contact" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>LET'S</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>connect</span>
                 </a>

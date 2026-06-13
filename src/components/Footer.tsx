@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0" style={{ fontFamily: theme.fonts.body }}>
-            <p className="text-sm">&copy; 2024 Ktinoskare. All Rights Reserved.</p>
+            <p className="text-sm">&copy; {new Date().getFullYear()} Ktinoskare. All Rights Reserved.</p>
             <p className="text-sm">Proactive care for healthier animals</p>
           </div>
           <div className="flex space-x-6">
