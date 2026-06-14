@@ -24,7 +24,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { addPet, refetch } = usePets();
-  const { signOut } = useClerk();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [speciesList, setSpeciesList] = useState<SpeciesOption[]>([]);
