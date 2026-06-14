@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import logo from '../assets/images/logokk-withoutbg.png';
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react';
+import { Show, SignInButton, SignUpButton } from '@clerk/react';
 
 const TICKER_ITEMS = [
   '🎉 Refer a Friend/Family & Get 20% OFF REF20'

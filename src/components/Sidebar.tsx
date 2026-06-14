@@ -6,7 +6,7 @@ import { ENDPOINTS } from '../config/api';
 import axiosInstance from '../config/axiosInstance';
 import { usePets } from '../context/PetsContext';
 import logo from '../assets/images/logokk-withoutbg.png';
-import { Show, useClerk, UserButton } from '@clerk/react';
+import { Show, UserButton } from '@clerk/react';
 
 interface SpeciesOption { id: number; name: string; }
 interface BreedOption { id: number; name: string; species: number; }
