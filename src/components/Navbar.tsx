@@ -134,11 +134,6 @@ const Navbar = () => {
                   </SignUpButton>
                 </li>
               </Show>
-              <Show when="signed-in">
-                <li className="flex items-center">
-                  <UserButton />
-                </li>
-              </Show>
             </ul>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { ENDPOINTS } from '../config/api';
 import axiosInstance from '../config/axiosInstance';
 import { usePets } from '../context/PetsContext';
 import logo from '../assets/images/logokk-withoutbg.png';
-import { useClerk } from '@clerk/react';
+import { Show, useClerk, UserButton } from '@clerk/react';
 
 interface SpeciesOption { id: number; name: string; }
 interface BreedOption { id: number; name: string; species: number; }
@@ -48,7 +48,6 @@ const Sidebar = () => {
       .catch(() => setBreedList([]));
   }, [form.speciesId]);
 
-  console.log(speciesList,"speciesList")
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -127,6 +126,14 @@ const Sidebar = () => {
             <img src={logo} alt="Ktinoskare" className="h-10 w-auto object-contain" />
           </div>
 
+          <div className="mb-6 flex justify-center">
+            <Show when="signed-in">
+              <div className="flex items-center justify-center">
+                <UserButton />
+              </div>
+            </Show>
+          </div>
+
           <nav className="space-y-1">
             {navItems.map((item) => (
               <button key={item.key} onClick={() => navigate(item.path)}
@@ -150,9 +157,6 @@ const Sidebar = () => {
           </motion.button>
           <button className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
             ❓ Support
-          </button>
-          <button onClick={() => { signOut(() => navigate('/')); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm" style={{ color: theme.colors.neutral.gray[400] }}>
-            ↩ Logout
           </button>
         </div>
       </aside>

@@ -1,13 +1,13 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth, useUser } from '@clerk/react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@clerk/react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isSignedIn, isLoaded } = useAuth();
-  const { isSignedIn: userSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useAuth();
+  const location = useLocation();
 
   // While Clerk is loading
   if (!isLoaded) {
@@ -19,8 +19,14 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   // If user is not authenticated, redirect to login
-  if (!isSignedIn && !userSignedIn) {
-    return <Navigate to="/login" replace />;
+  if (!isSignedIn) {
+    return (
+      <Navigate
+        to="/login"
+        state={{from: location}}
+        replace
+      />
+    )
   }
 
   // User is authenticated, render the component
