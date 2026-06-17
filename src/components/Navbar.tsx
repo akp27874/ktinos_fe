@@ -15,9 +15,7 @@ const tickerText = TICKER_ITEMS.join('   ✦   ') + '   ✦   ';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const { isLoggedIn } = useAuth();
-  const isHome = location.pathname === '/';
 
   return (
     <nav className="fixed w-full z-50">
@@ -67,68 +65,119 @@ const Navbar = () => {
       <div className="w-full bg-white shadow-md">
         <div className="container-lg mr-5">
           <div className="flex justify-between items-center py-4">
-            <img src={logo} height={30} alt="ktinoskare logo" className='h-12 w-auto cursor-pointer' onClick={() => navigate('/')} />
 
+            {/* Logo */}
+            <img src={logo} height={30} alt="ktinoskare logo" className="h-12 w-auto cursor-pointer" onClick={() => navigate('/')} />
+
+            {/* Desktop Nav */}
             <div className="hidden md:flex flex-1 justify-center">
               <nav className="flex items-center gap-8">
 
-                {/* WHAT */}
                 <Link to="/what-is-ktinoskare" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>WHAT</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>is Ktinoskare</span>
                 </Link>
 
-                {/* HOW */}
                 <Link to="/how-it-works" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>HOW</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>it works</span>
                 </Link>
 
-                {/* PLANS */}
                 <Link to="/plans" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>PLANS</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>&amp; prices</span>
                 </Link>
 
-                {/* ACTIVATE */}
                 <a href="#activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>ACTIVATE</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>your band</span>
                 </a>
 
-                {/* LET'S */}
                 <a href="/#contact" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>LET'S</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>connect</span>
                 </a>
 
-                {/* BUY NOW — single line button */}
-                <a href="#buy-now">
-                  <button
-                    className="text-white px-6 py-2 rounded-lg transition font-semibold"
+                <a href="https://ashutosh-poc-store.myshopify.com/" target="_blank" rel="noopener noreferrer">
+                  <button className="text-white px-6 py-2 rounded-lg transition font-semibold"
                     style={{ backgroundColor: theme.colors.primary.deepPurple, fontFamily: theme.fonts.body, fontSize: '1.05rem' }}>
                     BUY NOW
                   </button>
                 </a>
 
+                {!isLoggedIn && (
+                  <button onClick={() => navigate('/login')}
+                    className="text-white px-6 py-2 rounded-lg transition font-semibold"
+                    style={{ backgroundColor: theme.colors.primary.healthGreen, fontFamily: theme.fonts.body, fontSize: '1.05rem' }}>
+                    Login
+                  </button>
+                )}
+
               </nav>
             </div>
 
-            <div className="flex items-center gap-4">
-              <button onClick={() => setIsOpen(!isOpen)} className="md:hidden" style={{ color: theme.colors.primary.deepPurple }}>
+            {/* Hamburger Button */}
+            <div className="md:hidden flex items-center">
+              <button onClick={() => setIsOpen(!isOpen)} style={{ color: theme.colors.primary.deepPurple }}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  {isOpen
+                    ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  }
                 </svg>
               </button>
-
-              <ul className={`${isOpen ? 'block' : 'hidden'} md:flex md:space-x-8 absolute md:relative top-24 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none`} style={{ fontFamily: theme.fonts.body }}>
-                {isHome && !isLoggedIn
-                  && <li><button onClick={() => { navigate('/login'); setIsOpen(false); }} className="text-white px-6 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen }}>Login</button></li>
-                }
-              </ul>
             </div>
+
           </div>
         </div>
+
+        {/* Mobile Dropdown */}
+        {isOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg px-6 py-4 flex flex-col gap-4" style={{ fontFamily: theme.fonts.body }}>
+
+            <Link to="/what-is-ktinoskare" onClick={() => setIsOpen(false)} className="flex flex-col hover:opacity-75 transition">
+              <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontWeight: 600 }}>WHAT</span>
+              <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>is Ktinoskare</span>
+            </Link>
+
+            <Link to="/how-it-works" onClick={() => setIsOpen(false)} className="flex flex-col hover:opacity-75 transition">
+              <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontWeight: 600 }}>HOW</span>
+              <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>it works</span>
+            </Link>
+
+            <Link to="/plans" onClick={() => setIsOpen(false)} className="flex flex-col hover:opacity-75 transition">
+              <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontWeight: 600 }}>PLANS</span>
+              <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>&amp; prices</span>
+            </Link>
+
+            <a href="#activate-your-band" onClick={() => setIsOpen(false)} className="flex flex-col hover:opacity-75 transition">
+              <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontWeight: 600 }}>ACTIVATE</span>
+              <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>your band</span>
+            </a>
+
+            <a href="/#contact" onClick={() => setIsOpen(false)} className="flex flex-col hover:opacity-75 transition">
+              <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontWeight: 600 }}>LET'S</span>
+              <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>connect</span>
+            </a>
+
+            <a href="https://ashutosh-poc-store.myshopify.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
+              <button className="w-full text-white px-6 py-2 rounded-lg transition font-semibold"
+                style={{ backgroundColor: theme.colors.primary.deepPurple, fontSize: '1.05rem' }}>
+                BUY NOW
+              </button>
+            </a>
+
+            {!isLoggedIn && (
+              <button onClick={() => { navigate('/login'); setIsOpen(false); }}
+                className="w-full text-white px-6 py-2 rounded-lg transition font-semibold"
+                style={{ backgroundColor: theme.colors.primary.healthGreen }}>
+                Login
+              </button>
+            )}
+
+          </div>
+        )}
+
       </div>
     </nav>
   );
