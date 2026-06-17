@@ -13,11 +13,10 @@ import PetProfile from './pages/PetProfile';
 import GpsTracking from './pages/GpsTracking';
 import HealthMonitoring from './pages/HealthMonitoring';
 import Settings from './pages/Settings';
-import Login from './pages/Login';
+import { SignIn, SignUp, useAuth } from '@clerk/react';
 import Testimonial from './components/Testimonial';
 import FAQ from './components/FAQ';
-//Navbar Components Adding
-// Match actual filename casing to avoid duplicate-import casing error on case-insensitive filesystems
+import ProtectedRoute from './components/ProtectedRoute';
 import WhatItIs from './components/WhatItIs';
 import HowItWorks from './components/Howitworks';
 import PlansAndPrices from './components/Plansandprices';
@@ -47,27 +46,69 @@ const Home = () => {
 import { PetsProvider } from './context/PetsContext';
 import { AuthProvider } from './context/AuthContext';
 
+const HomeOrDashboard = () => {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  return isSignedIn ? <Dashboard /> : <><Navbar /><div className="pt-[120px]"><Home /></div></>;
+};
+
 function App() {
   return (
     <AuthProvider>
     <PetsProvider>
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<><Navbar /><div className="pt-[120px]"><Home /></div></>} />
+         {/* Clerk Auth Routes */}
+        <Route
+          path="/login"
+          element={
+            <>
+              <Navbar />
+              <SignIn 
+                path="/login" 
+                routing="path" 
+                signUpUrl="/signup"
+                forceRedirectUrl="/dashboard"
+              />
+            </>
+          }
+        />
+        <Route path="/signup" element={<><Navbar /><SignUp 
+          path="/signup" 
+          routing="path" 
+          signInUrl="/login"
+          appearance={{
+            elements: {
+              rootBox: "w-full",
+              card: "shadow-lg"
+            }
+          }}
+        /></>} />
+        <Route path="/" 
+          element={
+            <>
+              <HomeOrDashboard />
+            </>
+          }
+        />
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
-        //what-is-ktinoskare
+        {/* what-is-ktinoskare */}
         <Route path="/what-is-ktinoskare" element={<><Navbar /><WhatItIs /></>} />
-        //how-it-works
+        {/* how-it-works */}
         <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
-        //plans-and-prices
+        {/* plans-and-prices */}
         <Route path="/plans" element={<><Navbar /><PlansAndPrices /></>} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile/:id" element={<PetProfile />} />
-        <Route path="/gps" element={<GpsTracking />} />
-        <Route path="/health" element={<HealthMonitoring />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/login" element={<Login />} />
+        {/* Protected Routes */}
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/profile/:id" element={<ProtectedRoute><PetProfile /></ProtectedRoute>} />
+        <Route path="/gps" element={<ProtectedRoute><GpsTracking /></ProtectedRoute>} />
+        <Route path="/health" element={<ProtectedRoute><HealthMonitoring /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
     </PetsProvider>

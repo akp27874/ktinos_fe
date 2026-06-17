@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import logo from '../assets/images/logokk-withoutbg.png';
-import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Show, SignInButton, SignUpButton } from '@clerk/react';
 
 const TICKER_ITEMS = [
   '🎉 Refer a Friend/Family & Get 20% OFF REF20'
@@ -15,9 +14,6 @@ const tickerText = TICKER_ITEMS.join('   ✦   ') + '   ✦   ';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { isLoggedIn } = useAuth();
-  const isHome = location.pathname === '/';
 
   return (
     <nav className="fixed w-full z-50">
@@ -121,11 +117,24 @@ const Navbar = () => {
                 </svg>
               </button>
 
-              <ul className={`${isOpen ? 'block' : 'hidden'} md:flex md:space-x-8 absolute md:relative top-24 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none`} style={{ fontFamily: theme.fonts.body }}>
-                {isHome && !isLoggedIn
-                  && <li><button onClick={() => { navigate('/login'); setIsOpen(false); }} className="text-white px-6 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen }}>Login</button></li>
-                }
-              </ul>
+              <ul className={`${isOpen ? 'block' : 'hidden'} md:flex md:space-x-4 absolute md:relative top-24 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-4 md:p-0 shadow-md md:shadow-none`} style={{ fontFamily: theme.fonts.body }}>
+              <Show when="signed-out">
+                <li>
+                  <SignInButton>
+                    <button className="text-white px-5 py-2 rounded-lg transition font-semibold" style={{ backgroundColor: theme.colors.primary.healthGreen }}>
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </li>
+                <li>
+                  <SignUpButton>
+                    <button className="text-gray-900 px-5 py-2 rounded-lg border font-semibold border-gray-300 hover:bg-gray-50 transition">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </li>
+              </Show>
+            </ul>
             </div>
           </div>
         </div>
