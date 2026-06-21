@@ -1,8 +1,39 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const YOUTUBE_VIDEO_ID = 'J9BG0Ea3ccY';
+
+interface YTPlayerStateChangeEvent {
+  data: number;
+}
+
+interface YTPlayerOptions {
+  videoId: string;
+  playerVars: {
+    autoplay: number;
+    mute: number;
+    controls: number;
+    modestbranding: number;
+    rel: number;
+    showinfo: number;
+    iv_load_policy: number;
+    playsinline: number;
+  };
+  events: {
+    onStateChange: (event: YTPlayerStateChangeEvent) => void;
+  };
+}
+
+interface YTPlayerInstance {
+  destroy: () => void;
+  seekTo: (seconds: number) => void;
+  playVideo: () => void;
+}
+
+interface YTNamespace {
+  Player: new (elementId: string, options: YTPlayerOptions) => YTPlayerInstance;
+}
 
 const slides = [
   { type: 'video' as const },
@@ -22,7 +53,7 @@ const slides = [
 
 declare global {
   interface Window {
-    YT: any;
+    YT?: YTNamespace;
     onYouTubeIframeAPIReady: () => void;
   }
 }
@@ -31,19 +62,25 @@ const NAVBAR_HEIGHT = 120;
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YTPlayerInstance | null>(null);
   const isMountedRef = useRef(true);
 
   const goTo = (index: number) => setCurrent((index + slides.length) % slides.length);
-  const goNext = () => goTo(current + 1);
-  const goPrev = () => goTo(current - 1);
+  const goNext = useCallback(() => {
+    setCurrent((value) => (value + 1) % slides.length);
+  }, []);
+  const goPrev = useCallback(() => {
+    setCurrent((value) => (value - 1 + slides.length) % slides.length);
+  }, []);
 
   useEffect(() => {
     isMountedRef.current = true;
 
     const initPlayer = () => {
-      if (!isMountedRef.current) return;
-      playerRef.current = new window.YT.Player('yt-player', {
+      const ytApi = window.YT;
+      if (!isMountedRef.current || !ytApi) return;
+
+      playerRef.current = new ytApi.Player('yt-player', {
         videoId: YOUTUBE_VIDEO_ID,
         playerVars: {
           autoplay: 1,
@@ -56,7 +93,7 @@ const Hero = () => {
           playsinline: 1,
         },
         events: {
-          onStateChange: (event: any) => {
+          onStateChange: (event: YTPlayerStateChangeEvent) => {
             if (event.data === 0 && isMountedRef.current) {
               goNext();
             }
@@ -83,7 +120,7 @@ const Hero = () => {
         playerRef.current.destroy();
       }
     };
-  }, []);
+  }, [goNext]);
 
   useEffect(() => {
     if (current === 0 && playerRef.current?.playVideo) {

@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Pet } from '../data/pets';
 import axiosInstance from '../config/axiosInstance';
@@ -66,18 +68,48 @@ export const PetsProvider = ({ children }: { children: ReactNode }) => {
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchPets = () => {
-    setLoading(true);
-    axiosInstance.get(ENDPOINTS.getPets(1))
-      .then(res => {
-        const results: ApiPet[] = res.data.results ?? res.data;
-        setPets(results.map(mapApiPet));
-      })
-      .catch(() => setPets([]))
-      .finally(() => setLoading(false));
-  };
+  useEffect(() => {
+    let active = true;
 
-  useEffect(() => { fetchPets(); }, []);
+    (async () => {
+      setLoading(true);
+
+      try {
+        const res = await axiosInstance.get(ENDPOINTS.getPets(1));
+        const results: ApiPet[] = res.data.results ?? res.data;
+
+        if (active) {
+          setPets(results.map(mapApiPet));
+        }
+      } catch {
+        if (active) {
+          setPets([]);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const fetchPets = async () => {
+    setLoading(true);
+
+    try {
+      const res = await axiosInstance.get(ENDPOINTS.getPets(1));
+      const results: ApiPet[] = res.data.results ?? res.data;
+      setPets(results.map(mapApiPet));
+    } catch {
+      setPets([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addPet = (pet: Pet) => setPets(prev => [...prev, pet]);
   const updatePet = (updated: Pet) => setPets(prev => prev.map(p => p.id === updated.id ? updated : p));

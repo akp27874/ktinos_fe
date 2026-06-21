@@ -18,6 +18,7 @@ interface TelemetryData {
 const PetProfile = () => {
   const { id } = useParams();
   const [chartTab, setChartTab] = useState<'Day' | 'Week' | 'Month'>('Week');
+  const [now] = useState(() => Date.now());
   const { pets } = usePets();
   const pet = pets.find((p) => p.id === Number(id));
   const [telemetry, setTelemetry] = useState<TelemetryData | null>(null);
@@ -46,7 +47,7 @@ const PetProfile = () => {
   const tempPercent = latestTemp ? Math.round(((latestTemp - tempMin) / (tempMax - tempMin || 1)) * 100) : 75;
 
   const lastCheckupDaysAgo = pet.lastCheckup
-    ? Math.floor((Date.now() - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
+    ? Math.floor((now - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
     : null;
 
   const nextVisitLabel = pet.nextCheckup

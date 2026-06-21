@@ -33,6 +33,7 @@ const Sidebar = () => {
   const [apiError, setApiError] = useState('');
 
   const activeKey = navItems.find(n => n.path === location.pathname)?.key ?? '';
+  const visibleBreedList = form.speciesId ? breedList : [];
 
   useEffect(() => {
     axiosInstance.get(ENDPOINTS.species)
@@ -41,7 +42,7 @@ const Sidebar = () => {
   }, []);
 
   useEffect(() => {
-    if (!form.speciesId) { setBreedList([]); return; }
+    if (!form.speciesId) { return; }
     axiosInstance.get(ENDPOINTS.breeds(form.speciesId))
       .then(res => setBreedList(res.data ?? []))
       .catch(() => setBreedList([]));
@@ -220,6 +221,7 @@ const Sidebar = () => {
                       <select value={form.speciesId}
                         onChange={e => {
                           const selected = speciesList.find(s => String(s.id) === e.target.value);
+                          setBreedList([]);
                           setForm({ ...form, speciesId: e.target.value, species: selected?.name ?? '', breed: '', breedId: '' });
                         }}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
@@ -242,7 +244,7 @@ const Sidebar = () => {
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
                         <option value="">Select breed</option>
-                        {breedList.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                        {visibleBreedList.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                       </select>
                     </div>
                     <div>
