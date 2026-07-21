@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import hero1 from '../assets/images/hero1.jpeg';
+import herocat3 from '../assets/images/Hero-cat3.jpeg';
 
 const YOUTUBE_VIDEO_ID = 'J9BG0Ea3ccY';
 
@@ -39,13 +41,13 @@ const slides = [
   { type: 'video' as const },
   {
     type: 'banner' as const,
-    image: '/src/assets/images/hero1.jpeg',
+    image: hero1,
     heading: 'Your Pet Deserves the Best',
     subheading: 'Real-time health monitoring so you never miss a moment that matters.',
   },
   {
     type: 'banner' as const,
-    image: '/src/assets/images/Hero-cat3.jpeg',
+    image: herocat3,
     heading: 'Health Insights, Anytime',
     subheading: 'AI-powered alerts and wellness scores delivered straight to your phone.',
   },
