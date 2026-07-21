@@ -39,13 +39,13 @@ const slides = [
   { type: 'video' as const },
   {
     type: 'banner' as const,
-    image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1920&q=80',
+    image: '/src/assets/images/hero1.jpeg',
     heading: 'Your Pet Deserves the Best',
     subheading: 'Real-time health monitoring so you never miss a moment that matters.',
   },
   {
     type: 'banner' as const,
-    image: 'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=1920&q=80',
+    image: '/src/assets/images/Hero-cat3.jpeg',
     heading: 'Health Insights, Anytime',
     subheading: 'AI-powered alerts and wellness scores delivered straight to your phone.',
   },
