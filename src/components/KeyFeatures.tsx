@@ -172,7 +172,7 @@ const KeyFeatures = () => {
   }
 
   return (
-    <section id="key_features" className="py-20 bg-white" ref={ref}>
+    <section id="key_features" className="py-20 bg-white" ref={ref} style={{ position: 'relative', zIndex: 0 }}>
       <div className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}

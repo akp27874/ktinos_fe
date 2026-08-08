@@ -62,39 +62,50 @@ function App() {
     <PetsProvider>
       <BrowserRouter>
       <Routes>
-         {/* Clerk Auth Routes */}
-        <Route
-          path="/login"
-          element={
-            <>
-              <Navbar />
-              <SignIn 
-                path="/login" 
-                routing="path" 
-                signUpUrl="/signup"
-                forceRedirectUrl="/dashboard"
-              />
-            </>
+      {/* Clerk Auth Routes */}
+<Route
+  path="/login"
+  element={
+    <>
+      <Navbar />
+      <SignIn
+        path="/login"
+        routing="path"
+        signUpUrl="/signup"
+        forceRedirectUrl="/dashboard"
+      />
+    </>
+  }
+/>
+
+<Route
+  path="/signup"
+  element={
+    <>
+      <Navbar />
+      <SignUp
+        path="/signup"
+        routing="path"
+        signInUrl="/login"
+        appearance={{
+          elements: {
+            rootBox: "w-full",
+            card: "shadow-lg"
           }
-        />
-        <Route path="/signup" element={<><Navbar /><SignUp 
-          path="/signup" 
-          routing="path" 
-          signInUrl="/login"
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              card: "shadow-lg"
-            }
-          }}
-        /></>} />
-        <Route path="/" 
-          element={
-            <>
-              <HomeOrDashboard />
-            </>
-          }
-        />
+        }}
+      />
+    </>
+  }
+/>
+
+<Route
+  path="/"
+  element={
+    <>
+      <HomeOrDashboard />
+    </>
+  }
+/>
         <Route path="/users" element={<><Navbar /><UserList /></>} />
         <Route path="/pet/:id" element={<><Navbar /><PetDetails /></>} />
         {/* what-is-ktinoskare */}
