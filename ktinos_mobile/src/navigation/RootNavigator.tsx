@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../context/AuthContext';
 
 // Auth Screens
+import LandingScreen from '../screens/LandingScreen';
 import LoginScreen from '../screens/LoginScreen';
 // App Screens
 import DashboardNavigator from './DashboardNavigator';
@@ -12,6 +13,7 @@ import PetProfileScreen from '../screens/PetProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 export type RootStackParamList = {
+  Landing: undefined;
   Login: undefined;
   DashboardNavigator: undefined;
   PetDetails: { id: number };
@@ -32,7 +34,10 @@ export default function RootNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isLoggedIn ? (
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <>
+            <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </>
         ) : (
           <>
             <Stack.Screen name="DashboardNavigator" component={DashboardNavigator} />
