@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import hero1 from '../assets/images/hero1.jpeg';
-import herocat3 from '../assets/images/Hero-cat3.jpeg';
+import herocat3 from '../assets/images/Top-banner_2.png';
 
 const YOUTUBE_VIDEO_ID = 'J9BG0Ea3ccY';
 
@@ -42,14 +42,14 @@ const slides = [
   {
     type: 'banner' as const,
     image: hero1,
-    heading: 'Your Pet Deserves the Best',
-    subheading: 'Real-time health monitoring so you never miss a moment that matters.',
+    heading: 'For The Ones Who Can\'t Tell You',
+    subheading: 'Transform daily activity into meaningful health insights powered by AI.',
   },
   {
     type: 'banner' as const,
     image: herocat3,
-    heading: 'Health Insights, Anytime',
-    subheading: 'AI-powered alerts and wellness scores delivered straight to your phone.',
+    heading: 'Because Family Isn\'t Always Human',
+    subheading: 'Transform daily activity into meaningful health insights powered by AI.',
   },
 ];
 
@@ -224,24 +224,24 @@ const Hero = () => {
             }}
           >
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
-            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 1rem' }}>
-              <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ marginBottom: '1rem' }}>
-                <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
+            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', textAlign: 'left', padding: '0 clamp(1.5rem, 5vw, 5rem)', maxWidth: 'min(52rem, 72%)' }}>
+              <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ marginBottom: '0.4rem' }}>
+                <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
                   <span className="text-white">Ktinos</span>
                   <span style={{ color: theme.colors.primary.healthGreen }}>kare</span>
                 </h2>
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl md:text-7xl font-bold mb-4"
-                style={{ fontFamily: theme.fonts.heading, color: 'white' }}
+                className="text-3xl md:text-5xl font-bold mb-2"
+                style={{ fontFamily: theme.fonts.heading, color: 'white', lineHeight: 1.08, whiteSpace: 'nowrap', fontSize: 'clamp(1.5rem, 3vw, 3rem)' }}
               >
                 {(slides[current] as { type: 'banner'; heading: string }).heading}
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-xl md:text-2xl max-w-3xl mx-auto"
-                style={{ fontFamily: theme.fonts.body, color: 'white' }}
+                className="text-base md:text-xl max-w-xl"
+                style={{ fontFamily: theme.fonts.handwritten, color: 'white', lineHeight: 1.25 }}
               >
                 {(slides[current] as { type: 'banner'; subheading: string }).subheading}
               </motion.p>
