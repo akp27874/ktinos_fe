@@ -3,6 +3,12 @@ import { useRef, useState, useEffect } from 'react';
 import { theme } from '../theme';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import AIHealthInsight from '../assets/images/AI-Health-Insights.jpg';
+import HeartRateMonitoring from '../assets/images/Heart-Rate-Monitoring.jpg';
+import SmartActivityTracking from '../assets/images/Smart-Activity-Tracking.jpg';
+import BreedIntelligence from '../assets/images/Breed-Intelligence.jpg';
+import MultiPetDashboard from '../assets/images/Multi-Pet-Dashboard.jpg';
+import WellnessReports from '../assets/images/Wellness-Reports.jpg';
 
 type Feature = {
   icon: string;
@@ -15,63 +21,60 @@ type Feature = {
 
 const features: Feature[] = [
   {
-    icon: '🔍',
-    title: 'Pet Safety & Geo-Fencing',
-    description:
-      'Advanced GPS tracking with geo-fencing technology to keep your pet safe within designated areas.',
-    imageSrc:
-      'https://www.thesprucepets.com/thmb/XN-58rdUa1F1KOxK8fZmm6fXJdw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dog-gps-tracker-test-cube-real-time-cat-tracker-tstaples-3318-2186d694cccf4ea1a73d84dedc954463.jpg',
-    imageAlt: 'Dog wearing a GPS collar',
-    accentColor: '#22c55e',
-  },
-  {
-    icon: '💚',
-    title: 'Health Monitoring',
-    description:
-      'Real-time health monitoring with vital data tracking to prevent potential issues before they arise.',
-    imageSrc: '/image (2).png',
-    imageAlt: 'Pet health dashboard',
-    accentColor: '#3b82f6',
-  },
-  {
     icon: '📊',
-    title: 'Data-Driven Insights',
+    title: 'Smart Activity Tracking',
     description:
-      "Intelligent analytics providing comprehensive data about your pet's activity, nutrition, and wellbeing.",
-    imageSrc: '/dataset.png',
+      "Track every walk, run and adventure.",
+    imageSrc: SmartActivityTracking,
     imageAlt: 'Pet activity charts',
     accentColor: '#f59e0b',
   },
   {
-    icon: '🎯',
-    title: 'Holistic Pet Care',
+    icon: '💚',
+    title: 'Heart Rate Monitoring',
     description:
-      'Track activity levels, nutrition, playtime, and overall wellness in one seamless dashboard.',
-    imageSrc:
-      'https://animalwellnessmagazine.com/wp-content/uploads/dog-and-cat-1.jpg',
-    imageAlt: 'Happy dog and cat together',
+      'Continous wellness tracking.',
+    imageSrc: HeartRateMonitoring,
+    imageAlt: 'Pet health dashboard',
+    accentColor: '#3b82f6',
+  },
+  {
+    icon: '🔍',
+    title: 'AI Health Insights',
+    description:
+      'Personalized recommendations powered by machine learning.',
+    imageSrc: AIHealthInsight,
+    imageAlt: 'AI Health Insights',
+    accentColor: '#22c55e',
+  },
+  {
+    icon: '🎯',
+    title: 'Breed Intelligence',
+    description:
+      'Insights tailored to your pet\'s unique profile.',
+    imageSrc: BreedIntelligence,
+    imageAlt: 'Breed Intelligence',
     accentColor: '#ec4899',
   },
   {
-    icon: '👥',
-    title: 'Multi-Pet Management',
-    description:
-      'Manage multiple pets with personalized profiles and health records all in one place.',
-    imageSrc:
-      'https://www.healthy-pet.com/cdn/shop/articles/ac7ae5f6fbc297bbb835a5ff8a0c0de5_9fa4a5ed-80f5-4c8d-83dd-602d39ae5def.jpg?v=1771531864',
-    imageAlt: 'Multiple pet profiles',
-    accentColor: '#8b5cf6',
-  },
-  {
     icon: '⚙️',
-    title: 'Smart Settings',
+    title: 'Wellness Reports',
     description:
-      'Customize your experience with flexible preferences, alerts, and notification settings.',
-    imageSrc:
-      'https://www.thesprucepets.com/thmb/XN-58rdUa1F1KOxK8fZmm6fXJdw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dog-gps-tracker-test-cube-real-time-cat-tracker-tstaples-3318-2186d694cccf4ea1a73d84dedc954463.jpg',
-    imageAlt: 'Settings screen',
+      'Track long-term health trends.',
+    imageSrc: WellnessReports,
+    imageAlt: 'Wellness Reports',
     accentColor: '#06b6d4',
   },
+  {
+    icon: '👥',
+    title: 'Multi-Pet Dashboard',
+    description:
+      'Manage every pet from one place.',
+    imageSrc: MultiPetDashboard,
+    imageAlt: 'Multi pet Dashboard',
+    accentColor: '#8b5cf6',
+  },
+  
 ];
 
 const FeatureCard = ({ feature, isMobile }: { feature: Feature; isMobile: boolean }) => (
@@ -103,8 +106,9 @@ const FeatureCard = ({ feature, isMobile }: { feature: Feature; isMobile: boolea
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          objectPosition: 'top center',
+          objectPosition: 'center center',
           display: 'block',
+          background: '#f8fafc',
         }}
       />
       <div
@@ -161,15 +165,7 @@ const KeyFeatures = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const slides: Feature[][] = [];
-
-  if (isMobile) {
-    features.forEach((feature) => slides.push([feature]));
-  } else {
-    for (let i = 0; i < features.length; i += 3) {
-      slides.push(features.slice(i, i + 3));
-    }
-  }
+  const slides = features;
 
   return (
     <section id="key_features" className="py-20 bg-white" ref={ref}>
@@ -195,8 +191,8 @@ const KeyFeatures = () => {
       <Swiper
         className="pet-swiper"
         modules={[Navigation, Pagination, Autoplay]}
-        slidesPerView={1}
-        spaceBetween={0}
+        slidesPerView={isMobile ? 1 : 4}
+        spaceBetween={isMobile ? 0 : 20}
         navigation={!isMobile}
         pagination={{ clickable: true }}
         loop={true}
@@ -207,33 +203,17 @@ const KeyFeatures = () => {
         speed={700}
         autoHeight={isMobile}
       >
-        {slides.map((group, slideIdx) => (
+        {slides.map((feature, slideIdx) => (
           <SwiperSlide key={slideIdx}>
             <div
               style={{
                 display: "flex",
-                gap: isMobile ? "0px" : "20px",
-                padding: "8px 2px 4px",
-                alignItems: "stretch",
                 width: "100%",
+                height: "100%",
                 boxSizing: "border-box",
               }}
             >
-              {group.map((feature, i) => (
-                <div
-                  key={i}
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    display: "flex",
-                  }}
-                >
-                  <FeatureCard
-                    feature={feature}
-                    isMobile={isMobile}
-                  />
-                </div>
-              ))}
+              <FeatureCard feature={feature} isMobile={isMobile} />
             </div>
           </SwiperSlide>
         ))}

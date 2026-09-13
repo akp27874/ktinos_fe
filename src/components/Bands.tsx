@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { theme } from '../theme';
+import DogBand from '../assets/images/Dog-band.jpg';
+import CatBand from '../assets/images/cat-band.jpg';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -127,21 +129,22 @@ const Bands = () => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 items-center">
-        {/* Product Card 1 - Dog Band */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="rounded-lg overflow-hidden shadow-lg bg-purple-100"
-        >
-          <div className="relative h-80 bg-gradient-to-br from-purple-300 to-purple-200 flex items-center justify-center">
+      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+        <div className="grid md:grid-cols-2 gap-8 items-center" style={{ marginLeft: '40px', marginRight: '40px' }}>
+          {/* Product Card 1 - Dog Band */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="rounded-lg overflow-hidden shadow-lg bg-purple-100"
+          >
+          <div className="relative h-80 flex items-center justify-center overflow-hidden rounded-t-lg bg-transparent">
             <img
-              src="https://i.pcmag.com/imagery/roundup-products/06CEGEDw7Ftp0TrfK1D7I2Z.fit_lim.size_919x518.v1758747468.jpg"
+              src={DogBand}
               alt="Dog Band"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain object-center"
+              style={{ display: 'block', background: 'transparent', transform: 'scale(1.04)' }}
             />
-            <div className="absolute inset-0 bg-purple-200 opacity-20"></div>
           </div>
           <div className="p-6">
             <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
@@ -161,22 +164,22 @@ const Bands = () => {
               </motion.button>
             </div>
           </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Product Card 2 - Cat Band */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="rounded-lg overflow-hidden shadow-lg bg-yellow-50"
-        >
-          <div className="relative h-80 bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center">
+          {/* Product Card 2 - Cat Band */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="rounded-lg overflow-hidden shadow-lg bg-yellow-50"
+          >
+          <div className="relative h-80 flex items-center justify-center overflow-hidden rounded-t-lg bg-transparent">
             <img
-              src="https://beardpet.com/wp-content/uploads/2024/11/DSC2587-scaled.jpg"
+              src={CatBand}
               alt="Cat Band"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain object-center"
+              style={{ display: 'block', background: 'transparent', transform: 'scale(1.06)' }}
             />
-            <div className="absolute inset-0 bg-yellow-100 opacity-10"></div>
           </div>
           <div className="p-6">
             <p className="text-sm font-semibold text-gray-600 mb-2" style={{ fontFamily: theme.fonts.body }}>
@@ -196,7 +199,8 @@ const Bands = () => {
               </motion.button>
             </div>
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

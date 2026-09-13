@@ -7,6 +7,8 @@ import {
 // Secure & Trusted
 } from "react-icons/fa"; 
 import { PawPrint  , ShieldIcon, MessageSquare} from 'lucide-react';
+import innerPageImage from '../assets/images/inner-page_4.jpg';
+import { theme } from '../theme';
 
 // ==================== ORIGINAL ICONS (unchanged) ====================
 
@@ -115,106 +117,41 @@ const Paw_Print  = ({ className }: { className?: string }) => (
 function HowItWorks() {
   return (
     <div className="bg-white font-sans text-gray-800 overflow-x-hidden">
-      {/* ─── HERO SECTION (unchanged) ─── */}
-      <section className="relative bg-gradient-to-br from-amber-50 via-white to-orange-50 overflow-hidden pt-32 pb-20 px-6 md:px-16 lg:px-24">
-        <Paw_Print  className="absolute bottom-4 left-6 w-20 h-20 text-orange-100/60" />
-        <Paw_Print  className="absolute top-6 right-8 w-16 h-16 text-orange-100/60 rotate-12" />
-        <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-orange-200/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl" />
-
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-10">
-          <div className="flex-1 text-center md:text-left">
-            <div className="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-semibold mb-4 tracking-wide">
-              ✨ Next-Gen Pet Care
-            </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-              How{" "}
-              <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                Ktinoskare
-              </span>{" "}
-              Works?
-            </h1>
-            <p className="text-base font-medium text-gray-600 mb-4 tracking-wide">
-              Advanced technology. Meaningful insights.
-              <br />
-              Better health for your pet.
-            </p>
-            <p className="text-gray-500 max-w-md mx-auto md:mx-0 leading-relaxed">
-              Ktinoskare continuously monitors your pet's health and activity,
-              analyzes the data using AI, and delivers actionable insights to you
-              in real-time.
-            </p>
-          </div>
-
-          <div className="flex-1 flex justify-center relative">
-            <div className="relative">
-              <div className="w-72 h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center overflow-hidden shadow-xl ring-4 ring-white/50">
-                <img
-                  src="https://wallpapercave.com/wp/wp15140840.webp"
-                  alt="Happy golden retriever"
-                  className="w-full h-full object-cover rounded-full scale-105"
-                />
-              </div>
-              <div className="absolute -right-8 top-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-4 w-40 border border-white/50">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shadow-sm">
-                    <span className="text-xs font-bold text-white">B</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold leading-none text-gray-800">Buddy</p>
-                    <p className="text-[10px] text-gray-500">Golden Retriever</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center mb-2">
-                  <div className="relative w-20 h-20">
-                    <svg viewBox="0 0 36 36" className="w-20 h-20 -rotate-90">
-                      <circle cx="18" cy="18" r="15" fill="none" stroke="#f0f0f0" strokeWidth="3" />
-                      <circle
-                        cx="18" cy="18" r="15" fill="none"
-                        stroke="url(#grad)" strokeWidth="3"
-                        strokeDasharray="85 100"
-                        strokeLinecap="round"
-                      />
-                      <defs>
-                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f97316" />
-                          <stop offset="100%" stopColor="#fb923c" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-xl font-extrabold text-orange-500 leading-none">92</span>
-                      <span className="text-[8px] text-gray-500">Score</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-[9px] text-center text-green-600 font-semibold bg-green-50 rounded-full py-1">
-                  ✓ Great health today!
-                </p>
-                <div className="grid grid-cols-3 gap-1 mt-3">
-                  {[
-                    { label: "Activity", value: "3,245" },
-                    { label: "Calories", value: "620" },
-                    { label: "Rest Time", value: "10.2" },
-                  ].map((s) => (
-                    <div key={s.label} className="text-center">
-                      <p className="text-xs font-bold text-gray-800">{s.value}</p>
-                      <p className="text-[8px] text-gray-500">{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-1.5 flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[9px] text-green-700 font-semibold">Live Location Active</span>
-                </div>
-              </div>
-              <div className="absolute -left-6 bottom-10 bg-gray-900/90 backdrop-blur-sm rounded-2xl shadow-2xl p-3 w-24 border border-gray-700">
-                <div className="flex items-center justify-center mb-1 text-orange-400">
-                  <HeartIcon />
-                </div>
-                <p className="text-[9px] text-gray-300 text-center font-medium">High Heart Rate</p>
-                <p className="text-[8px] text-orange-400 text-center">Alert • 112 bpm</p>
-              </div>
+      {/* ══════════════════════════════════════
+          HERO SECTION
+      ══════════════════════════════════════ */}
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={innerPageImage}
+          alt="Happy golden retriever using Ktinoskare"
+          className="relative z-0 block w-full h-auto"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-transparent" />
+        <div className="absolute inset-0 z-10 flex items-center w-full">
+          <div className="w-full max-w-7xl mx-auto px-6 py-8 md:px-16 lg:px-24">
+            <div className="max-w-xl text-white text-center md:text-left">
+              <h1
+                className="mb-5 text-5xl font-extrabold leading-tight md:text-6xl"
+                style={{ fontFamily: theme.fonts.heading }}
+              >
+                How <span className="text-orange-400">Ktinoskare</span> Works?
+              </h1>
+              <p
+                className="mb-5 text-base md:text-lg"
+                style={{ fontFamily: theme.fonts.handwritten }}
+              >
+                Advanced technology. Meaningful insights.
+                <br />
+                Better health for your pet.
+              </p>
+              <p
+                className="mx-auto max-w-md leading-relaxed text-gray-200 md:mx-0"
+                style={{ fontFamily: theme.fonts.handwritten }}
+              >
+                Ktinoskare continuously monitors your pet's health and activity,
+                analyzes the data using AI, and delivers actionable insights to you
+                in real-time.
+              </p>
             </div>
           </div>
         </div>

@@ -1,4 +1,6 @@
 import React from "react";
+import innerPageImage from "../assets/images/inner-page_1.jpg";
+import { theme } from "../theme";
 
 // Icons as inline SVGs to avoid extra dependencies
 const CheckIcon = () => (
@@ -123,148 +125,36 @@ const plans = [
 
 const PlansAndPrices: React.FC = () => {
   return (
-    <div className="bg-[#faf8f5] font-sans text-gray-800 min-h-screen ">
+    <div className="bg-[#faf8f5] font-sans text-gray-800 min-h-screen">
 
-      {/* Hero Section */}
-      <section className="relative bg-[#fdf8f3] overflow-hidden pt-40 pb-14 px-6 md:px-16 lg:px-24">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8">
-        <div className="flex-1">
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+      {/* ══════════════════════════════════════
+          HERO SECTION
+      ══════════════════════════════════════ */}
+      <section className="relative aspect-[1920/1130] overflow-hidden">
+        <img
+          src={innerPageImage}
+          alt="German Shepherd using Ktinoskare in a protected park"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/45 via-black/30 to-transparent" />
+        <div className="absolute inset-0 z-20 mx-auto flex max-w-7xl items-center px-6 md:px-16 lg:px-24">
+          <div className="w-full md:w-1/2">
+            <h1
+              className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-6xl"
+              style={{ fontFamily: theme.fonts.heading }}
+            >
               Smart Care Plans for{" "}
-              <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                a Healthier, Safer Pet
-              </span>{" "}
+              <span className="text-orange-400">a Healthier, Safer Pet</span>
             </h1>
-          <p className="text-gray-500 text-base mb-6 max-w-md">
-            Ktinoskare is a smart pet health and activity monitoring solution
-            that tracks vitals, activity, location and predicts potential health
-            issues in real-time.
-          </p>
-          <div className="flex items-start gap-3 bg-orange-50 border border-orange-100 rounded-xl p-4 max-w-md">
-            <span className="mt-0.5">
-              <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-            </span>
-            <p className="text-sm text-gray-700">
-              <span className="font-bold">All Ktinoskare customers are Premium customers.</span>
-              <br />
-              Choose the plan that fits your pet parenting journey.
+            <p
+              className="mb-6 max-w-md text-base leading-relaxed text-gray-100 md:text-lg"
+              style={{ fontFamily: theme.fonts.handwritten }}
+            >
+              Ktinoskare is a smart pet health and activity monitoring solution
+              that tracks vitals, activity, location and predicts potential health
+              issues in real-time.
             </p>
           </div>
-        </div>
-        <div className="flex-1 flex justify-center items-end">
-  <div className="relative flex items-end justify-center gap-4">
-
-    {/* Dog Image */}
-    <div className="relative z-10 w-72 h-96 flex-shrink-0">
-      <img
-        src="https://wallpapercave.com/wp/wp15140840.webp"
-        alt="Dog"
-        className="w-full h-full object-cover object-top"
-        style={{ maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0))', WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0))' }}
-      />
-    </div>
-
-    {/* Phone Mockup */}
-    <div className="relative z-20 w-52 h-[26rem] bg-gray-900 rounded-[2.5rem] shadow-2xl border-[5px] border-gray-800 flex flex-col overflow-hidden">
-      {/* Phone notch */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-gray-900 rounded-b-2xl z-10" />
-
-      {/* Screen content */}
-      <div className="flex-1 bg-white overflow-hidden flex flex-col">
-
-        {/* Status bar */}
-        <div className="h-5 bg-white" />
-
-        {/* App content */}
-        <div className="flex-1 px-3 pt-1 pb-2 bg-white flex flex-col">
-
-          {/* Header */}
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-base flex-shrink-0">🐾</div>
-            <div>
-              <div className="font-bold text-gray-900 text-[13px] leading-tight">Buddy</div>
-              <div className="text-gray-400 text-[9px]">Golden Retriever · 4 Years</div>
-            </div>
-            <div className="ml-auto text-gray-300 text-sm">⋯</div>
-          </div>
-
-          {/* Score Gauge */}
-          <div className="flex flex-col items-center mb-3">
-            <div className="relative w-20 h-20">
-              <svg width="80" height="80" viewBox="0 0 90 90">
-                <circle cx="45" cy="45" r="38" fill="none" stroke="#f0f0f0" strokeWidth="8" />
-                <circle cx="45" cy="45" r="38" fill="none" stroke="#22c55e" strokeWidth="8"
-                  strokeDasharray="219.7 238.76" strokeLinecap="round"
-                  transform="rotate(-90 45 45)" />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="font-extrabold text-[17px] text-gray-900 leading-none">92</span>
-                <span className="text-[8px] text-green-500 font-semibold">Excellent</span>
-              </div>
-            </div>
-            <div className="font-bold text-[11px] text-gray-900 mt-1.5">Wellness Score</div>
-            <div className="text-[9px] text-gray-400 text-center mt-1 leading-relaxed">
-              Great job! Buddy is<br />in great health today.
-            </div>
-          </div>
-
-          <div className="h-px bg-gray-100 mb-2.5" />
-
-          {/* Stats */}
-          <div className="flex justify-between mb-2.5">
-            <div className="text-center flex-1">
-              <div className="text-[8px] text-gray-400 mb-0.5">Activity</div>
-              <div className="font-bold text-[12px] text-gray-900">8,245</div>
-              <div className="text-[8px] text-gray-400">Steps</div>
-            </div>
-            <div className="w-px bg-gray-100" />
-            <div className="text-center flex-1">
-              <div className="text-[8px] text-gray-400 mb-0.5">Calories</div>
-              <div className="font-bold text-[12px] text-gray-900">620</div>
-              <div className="text-[8px] text-gray-400">kcal</div>
-            </div>
-            <div className="w-px bg-gray-100" />
-            <div className="text-center flex-1">
-              <div className="text-[8px] text-gray-400 mb-0.5">Rest Time</div>
-              <div className="font-bold text-[12px] text-gray-900">10.2</div>
-              <div className="text-[8px] text-gray-400">hrs</div>
-            </div>
-          </div>
-
-          <div className="h-px bg-gray-100 mb-2.5" />
-
-          {/* Live Location */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px]">📍</span>
-            <div className="flex-1">
-              <div className="text-[8px] text-gray-400 font-medium">Live Location</div>
-              <div className="text-[10px] text-gray-900 font-semibold leading-tight">Near Green Park, Austin, TX</div>
-            </div>
-            <div className="flex gap-0.5">
-              <span className="text-[10px]">📶</span>
-              <span className="text-[10px]">🔋</span>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom nav bar */}
-        <div className="h-8 bg-white border-t border-gray-100 flex items-center justify-around px-4">
-          <div className="w-3 h-3 rounded-sm bg-green-500 opacity-80" />
-          <div className="w-3 h-3 rounded-sm bg-gray-200" />
-          <div className="w-3 h-3 rounded-sm bg-gray-200" />
-          <div className="w-3 h-3 rounded-full bg-gray-200" />
-        </div>
-      </div>
-
-      {/* Home indicator */}
-      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-600 rounded-full" />
-    </div>
-
-  </div>
-</div>
         </div>
       </section>
 

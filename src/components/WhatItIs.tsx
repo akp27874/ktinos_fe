@@ -1,16 +1,11 @@
+import innerPageImage from "../assets/images/inner-page_3.jpg";
+import { theme } from "../theme";
+
 // ─── Inline SVG Icons ─────────────────────────────────────────────────────────
 
 const HeartPulseIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-  </svg>
-);
-
-const RunIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
-    <circle cx="13" cy="4" r="1.5" fill="currentColor" stroke="none" />
-    <path d="M7 21l2.5-5.5 3 2 2.5-5" />
-    <path d="M5 12l4.5-4 3.5 2 3-5.5" />
   </svg>
 );
 
@@ -139,88 +134,32 @@ function WhatItIs() {
       {/* ══════════════════════════════════════
           HERO SECTION
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#fdf8f3] overflow-hidden pt-40 pb-14 px-6 md:px-16 lg:px-24">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-
-          {/* Left copy */}
-          <div className="z-10">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-5">
-              What is<br />
-              <span className="text-gray-900">Ktinoskare?</span>
-            </h1>
-            <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-              Ktinoskare is a smart pet health and activity monitoring solution that helps
-              you track your pet's daily activity, health vitals, location and predict
-              potential health issues—so you can take action early and keep them happy,
-              healthy and safe always.
-            </p>
-            <button className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-colors text-white font-semibold px-7 py-3.5 rounded-full shadow-md">
-              <PawIcon className="w-5 h-5" />
-              A Smarter Way to Care
-            </button>
-          </div>
-
-          {/* Right: dog+cat image with floating feature badges */}
-          <div className="relative flex justify-center items-center min-h-[340px]">
-
-            {/* Central dog + cat photo */}
-            <div className="relative rounded-3xl overflow-hidden w-72 h-60 md:w-[380px] md:h-[280px] shadow-xl">
-              <img
-                src="https://www.kippy.eu/blog/wp-content/uploads/2022/01/cane_gatto_kippy-900x599.jpg"
-                alt="Happy dog and cat together"
-                className="w-full h-full object-cover"
-              />
-              {/* Small tracker device overlay on collar area */}
-              <div className="absolute bottom-14 left-[45%] w-6 h-4 bg-gray-900 rounded opacity-90" />
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={innerPageImage}
+          alt="Happy dog and cat wearing Ktinoskare trackers"
+          className="relative z-0 block h-auto w-full"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-transparent" />
+        <div className="absolute inset-0 z-10 flex items-center w-full">
+          <div className="w-full max-w-7xl mx-auto px-6 py-8 md:px-16 lg:px-24">
+            <div className="max-w-xl text-white text-center md:text-left">
+              <h1
+                className="mb-5 text-5xl font-extrabold leading-tight md:text-6xl"
+                style={{ fontFamily: theme.fonts.heading }}
+              >
+                What is <span className="text-orange-400">Ktinoskare</span>?
+              </h1>
+              <p
+                className="text-base leading-relaxed text-white/90 md:text-lg"
+                style={{ fontFamily: theme.fonts.handwritten }}
+              >
+                Ktinoskare is a smart pet health and activity monitoring solution that helps
+                you track your pet's daily activity, health vitals, location and predict
+                potential health issues so you can take action early and keep them happy,
+                healthy and safe always.
+              </p>
             </div>
-
-            {/* Badge — Health Vitals Monitoring (top-left) */}
-            <div className="absolute top-0 left-0 flex flex-col items-center gap-1 z-10">
-              <div className="bg-white rounded-full w-[58px] h-[58px] flex items-center justify-center shadow-lg border border-gray-100 text-orange-500">
-                <HeartPulseIcon />
-              </div>
-              <span className="text-[11px] font-semibold text-gray-700 text-center leading-tight">
-                Health Vitals<br />Monitoring
-              </span>
-            </div>
-
-            {/* Badge — Daily Activity Tracking (top-right) */}
-            <div className="absolute top-0 right-0 flex flex-col items-center gap-1 z-10">
-              <div className="bg-white rounded-full w-[58px] h-[58px] flex items-center justify-center shadow-lg border border-gray-100 text-orange-500">
-                <RunIcon />
-              </div>
-              <span className="text-[11px] font-semibold text-gray-700 text-center leading-tight">
-                Daily Activity<br />Tracking
-              </span>
-            </div>
-
-            {/* Badge — Real-time Location (bottom-left) */}
-            <div className="absolute bottom-0 left-0 flex flex-col items-center gap-1 z-10">
-              <div className="bg-white rounded-full w-[58px] h-[58px] flex items-center justify-center shadow-lg border border-gray-100 text-orange-500">
-                <LocationPinIcon />
-              </div>
-              <span className="text-[11px] font-semibold text-gray-700 text-center leading-tight">
-                Real-time<br />Location Tracking
-              </span>
-            </div>
-
-            {/* Badge — Smart Alerts (bottom-right) */}
-            <div className="absolute bottom-0 right-0 flex flex-col items-center gap-1 z-10">
-              <div className="bg-white rounded-full w-[58px] h-[58px] flex items-center justify-center shadow-lg border border-gray-100 text-orange-500">
-                <BellIcon />
-              </div>
-              <span className="text-[11px] font-semibold text-gray-700 text-center leading-tight">
-                Smart Alerts &amp;<br />Anomaly Detection
-              </span>
-            </div>
-
-            {/* Dashed connector lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 420 340" preserveAspectRatio="none">
-              <line x1="65" y1="55" x2="155" y2="100" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4" />
-              <line x1="355" y1="55" x2="265" y2="100" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4" />
-              <line x1="65" y1="285" x2="155" y2="240" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4" />
-              <line x1="355" y1="285" x2="265" y2="240" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4" />
-            </svg>
           </div>
         </div>
       </section>
