@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://13.233.237.155';
+export const BASE_URL = 'https://13.233.104.107';
 export const API_URL = `${BASE_URL}/api/v1`;
 
 export const ENDPOINTS = {
