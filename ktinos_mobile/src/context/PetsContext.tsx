@@ -1,0 +1,126 @@
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Pet } from '../data/pets';
+import axiosInstance from '../config/axiosInstance';
+import { ENDPOINTS } from '../config/api';
+
+interface ApiPet {
+  id: number;
+  owner_id: number;
+  owner_username: string;
+  name: string;
+  device: number | null;
+  device_uid?: string;
+  breed_id: number | null;
+  breed_name: string;
+  species_id: number | null;
+  gender: string;
+  dob: string;
+  age?: number;
+  weight: number;
+  color: string;
+  vaccinated: boolean;
+  lastCheckup: string | null;
+  nextCheckup: string | null;
+  healthStatus: 'Healthy' | 'Needs Attention' | 'Critical';
+  notes: string;
+  avatar: string | null;
+}
+
+const DEFAULT_AVATAR =
+  'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80';
+
+const mapApiPet = (p: ApiPet): Pet => ({
+  id: p.id,
+  device: p.device,
+  ownerName: p.owner_username,
+  ownerEmail: '',
+  ownerPhone: '',
+  petName: p.name,
+  species: String(p.species_id ?? ''),
+  breed: p.breed_name,
+  age: p.age ?? 0,
+  weight: String(p.weight),
+  gender: p.gender,
+  color: p.color,
+  vaccinated: p.vaccinated,
+  lastCheckup: p.lastCheckup ?? '',
+  nextCheckup: p.nextCheckup ?? '',
+  healthStatus: p.healthStatus,
+  notes: p.notes,
+  avatar: p.avatar ? `${p.avatar}` : DEFAULT_AVATAR,
+});
+
+interface PetsContextType {
+  pets: Pet[];
+  loading: boolean;
+  addPet: (pet: Pet) => void;
+  updatePet: (pet: Pet) => void;
+  refetch: () => void;
+}
+
+const PetsContext = createContext<PetsContextType>({
+  pets: [],
+  loading: false,
+  addPet: () => {},
+  updatePet: () => {},
+  refetch: () => {},
+});
+
+export const PetsProvider = ({ children }: { children: ReactNode }) => {
+  const [pets, setPets] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetchPetsInternal(active);
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const fetchPetsInternal = async (active = true) => {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get(ENDPOINTS.getPets(1));
+      const results: ApiPet[] = res.data.results ?? res.data;
+      if (active) {
+        setPets(results.map(mapApiPet));
+      }
+    } catch {
+      if (active) {
+        setPets([]);
+      }
+    } finally {
+      if (active) {
+        setLoading(false);
+      }
+    }
+  };
+
+  const fetchPets = async () => {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get(ENDPOINTS.getPets(1));
+      const results: ApiPet[] = res.data.results ?? res.data;
+      setPets(results.map(mapApiPet));
+    } catch {
+      setPets([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addPet = (pet: Pet) => setPets((prev) => [...prev, pet]);
+  const updatePet = (updated: Pet) =>
+    setPets((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+
+  return (
+    <PetsContext.Provider
+      value={{ pets, loading, addPet, updatePet, refetch: fetchPets }}
+    >
+      {children}
+    </PetsContext.Provider>
+  );
+};
+
+export const usePets = () => useContext(PetsContext);
