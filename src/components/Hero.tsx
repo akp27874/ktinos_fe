@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import { useState, useCallback, useEffect } from 'react';
 import hero1 from '../assets/images/hero1.jpeg';
@@ -49,14 +49,9 @@ const Hero = () => {
       }}
     >
       {/* ── Banner slides ── */}
-      <AnimatePresence mode="wait">
-        {slides[current].type === 'banner' && (
-          <motion.div
+      {slides[current].type === 'banner' && (
+          <div
             key={`banner-${current}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
             style={{
               position: 'absolute',
               inset: 0,
@@ -66,8 +61,7 @@ const Hero = () => {
               backgroundPosition: 'center',
             }}
           >
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
-            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', textAlign: 'left', padding: '0 clamp(1.5rem, 5vw, 5rem)', maxWidth: 'min(52rem, 72%)' }}>
+            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', textAlign: 'left', padding: '0 clamp(5rem, 10vw, 9rem)', maxWidth: 'min(60rem, 82%)' }}>
               <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ marginBottom: '0.4rem' }}>
                 <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
                   <span className="text-white">Ktinos</span>
@@ -89,9 +83,8 @@ const Hero = () => {
                 {(slides[current] as { type: 'banner'; subheading: string }).subheading}
               </motion.p>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* ── Left Arrow ── */}
       <button
