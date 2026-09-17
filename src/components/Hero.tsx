@@ -1,44 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../theme';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import hero1 from '../assets/images/hero1.jpeg';
 import herocat3 from '../assets/images/Top-banner_2.png';
 
-const YOUTUBE_VIDEO_ID = 'J9BG0Ea3ccY';
-
-interface YTPlayerStateChangeEvent {
-  data: number;
-}
-
-interface YTPlayerOptions {
-  videoId: string;
-  playerVars: {
-    autoplay: number;
-    mute: number;
-    controls: number;
-    modestbranding: number;
-    rel: number;
-    showinfo: number;
-    iv_load_policy: number;
-    playsinline: number;
-  };
-  events: {
-    onStateChange: (event: YTPlayerStateChangeEvent) => void;
-  };
-}
-
-interface YTPlayerInstance {
-  destroy: () => void;
-  seekTo: (seconds: number) => void;
-  playVideo: () => void;
-}
-
-interface YTNamespace {
-  Player: new (elementId: string, options: YTPlayerOptions) => YTPlayerInstance;
-}
-
 const slides = [
-  { type: 'video' as const },
   {
     type: 'banner' as const,
     image: hero1,
@@ -53,19 +19,10 @@ const slides = [
   },
 ];
 
-declare global {
-  interface Window {
-    YT?: YTNamespace;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
 const NAVBAR_HEIGHT = 120;
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
-  const playerRef = useRef<YTPlayerInstance | null>(null);
-  const isMountedRef = useRef(true);
 
   const goTo = (index: number) => setCurrent((index + slides.length) % slides.length);
   const goNext = useCallback(() => {
@@ -76,60 +33,10 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    isMountedRef.current = true;
+    const interval = window.setInterval(goNext, 5000);
 
-    const initPlayer = () => {
-      const ytApi = window.YT;
-      if (!isMountedRef.current || !ytApi) return;
-
-      playerRef.current = new ytApi.Player('yt-player', {
-        videoId: YOUTUBE_VIDEO_ID,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0,
-          iv_load_policy: 3,
-          playsinline: 1,
-        },
-        events: {
-          onStateChange: (event: YTPlayerStateChangeEvent) => {
-            if (event.data === 0 && isMountedRef.current) {
-              goNext();
-            }
-          },
-        },
-      });
-    };
-
-    if (window.YT && window.YT.Player) {
-      initPlayer();
-    } else {
-      if (!document.getElementById('yt-api-script')) {
-        const script = document.createElement('script');
-        script.id = 'yt-api-script';
-        script.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(script);
-      }
-      window.onYouTubeIframeAPIReady = initPlayer;
-    }
-
-    return () => {
-      isMountedRef.current = false;
-      if (playerRef.current?.destroy) {
-        playerRef.current.destroy();
-      }
-    };
+    return () => window.clearInterval(interval);
   }, [goNext]);
-
-  useEffect(() => {
-    if (current === 0 && playerRef.current?.playVideo) {
-      playerRef.current.seekTo(0);
-      playerRef.current.playVideo();
-    }
-  }, [current]);
 
   return (
     <section
@@ -141,70 +48,6 @@ const Hero = () => {
         overflow: 'hidden',
       }}
     >
-      {/* ── YouTube video slide — always in DOM, shown/hidden with opacity ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0, bottom: 0,
-          opacity: current === 0 ? 1 : 0,
-          zIndex: current === 0 ? 1 : -1,
-          transition: 'opacity 0.7s ease',
-          pointerEvents: 'none',
-        }}
-      >
-        {/* iframe wrapper — clips overflow */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-          <div
-            id="yt-player"
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              /* Always cover the container regardless of aspect ratio */
-            width: '100%',
-            height: '100%',
-            }}
-          />
-        </div>
-
-        {/* Dark overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
-
-        {/* Text overlay */}
-        <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 1rem', pointerEvents: 'none' }}>
-          <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: current === 0 ? 1 : 0, y: current === 0 ? 0 : -30 }}
-            transition={{ duration: 0.6 }}
-            style={{ marginBottom: '1rem' }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: theme.fonts.heading }}>
-              <span className="text-white">Ktinos</span>
-              <span style={{ color: theme.colors.primary.healthGreen }}>kare</span>
-            </h2>
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: current === 0 ? 1 : 0, y: current === 0 ? 0 : 50 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold mb-4"
-            style={{ fontFamily: theme.fonts.heading, color: 'white' }}
-          >
-            Know before they show
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: current === 0 ? 1 : 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto"
-            style={{ fontFamily: theme.fonts.body, color: 'white' }}
-          >
-            Proactive and predictive animal care for healthier, happier lives
-          </motion.p>
-        </div>
-      </div>
-
       {/* ── Banner slides ── */}
       <AnimatePresence mode="wait">
         {slides[current].type === 'banner' && (
@@ -291,16 +134,6 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* ── Video badge ── */}
-      {current === 0 && (
-        <div
-          className="absolute top-6 right-6 z-30 flex items-center gap-2 px-3 py-1.5 rounded-full text-white text-sm font-medium"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)', border: `1px solid ${theme.colors.primary.healthGreen}` }}
-        >
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: theme.colors.primary.healthGreen }} />
-          Live Video
-        </div>
-      )}
     </section>
   );
 };
