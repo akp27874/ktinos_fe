@@ -50,10 +50,6 @@ const PetProfile = () => {
     ? Math.floor((now - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
     : null;
 
-  const nextVisitLabel = pet.nextCheckup
-    ? new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    : 'Not scheduled';
-
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>
 
@@ -114,10 +110,14 @@ const PetProfile = () => {
                     {pet.vaccinated ? '✅ Yes' : '❌ No'}
                   </span>
                 </div>
-                {/* <div className="flex justify-between text-sm">
-                  <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
-                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{nextVisitLabel}</span>
-                </div> */}
+                {pet.nextCheckup && (
+                  <div className="flex justify-between text-sm">
+                    <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
+                    <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>
+                      {new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                )}
                 {pet.notes && (
                   <div className="flex justify-between text-sm">
                     <span style={{ color: theme.colors.neutral.gray[400] }}>Notes</span>
