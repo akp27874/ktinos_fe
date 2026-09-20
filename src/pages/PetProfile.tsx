@@ -85,8 +85,8 @@ const PetProfile = () => {
               className="bg-white rounded-2xl p-6 shadow-sm relative overflow-hidden"
             >
               <div className="flex items-center gap-2 mb-4">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}></span>
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}>{pet.healthStatus}</span>
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: pet.health_status === 'HEALTHY' ? theme.colors.primary.healthGreen : '#f59e0b' }}></span>
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: pet.health_status === 'HEALTHY' ? theme.colors.primary.healthGreen : '#f59e0b' }}>{pet.health_status}</span>
               </div>
 
               <h2 className="text-3xl font-bold mb-1" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</h2>
@@ -140,7 +140,7 @@ const PetProfile = () => {
               <div className="text-2xl mb-3">💡</div>
               <h3 className="text-lg font-bold mb-3" style={{ fontFamily: theme.fonts.heading }}>Health Insight</h3>
               <p className="text-sm opacity-85 mb-4 leading-relaxed">
-                {pet.petName}'s vitals are being monitored. Health status is currently <strong>{pet.healthStatus}</strong>.
+                {pet.petName}'s vitals are being monitored. Health status is currently <strong>{pet.health_status}</strong>.
                 {pet.vaccinated ? ' Vaccinations are up to date.' : ' Vaccination may be overdue — please consult your vet.'}
               </p>
               <div className="flex items-center gap-2 mb-4 bg-white bg-opacity-10 rounded-xl p-3">

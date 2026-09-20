@@ -6,6 +6,7 @@ export const ENDPOINTS = {
   breeds: (speciesId: number | string) => `/api/v1/pets/breeds/?species_id=${speciesId}`,
   addPet: `/api/v1/pets/`,
   getPets: (ownerId: number) => `/api/v1/pets/?owner_id=${ownerId}`,
+  getDevicesByUser: (userId: number) => `/api/v1/devices/user/?user_id=${userId}&page=1&page_size=100`,
   updatePet: (petId: number, ownerId: number) => `/api/v1/pets/${petId}/?owner_id=${ownerId}`,
   telemetry: (deviceId: number) => `/api/v1/telemetry/charts/${deviceId}/`,
 };

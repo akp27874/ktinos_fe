@@ -204,9 +204,9 @@ const Dashboard = () => {
               <div className="space-y-3">
                 {[
                   { label: 'Total Pets', value: pets.length, color: theme.colors.primary.deepPurple },
-                  { label: 'Healthy', value: pets.filter(p => p.healthStatus === 'Healthy').length, color: theme.colors.primary.healthGreen },
-                  { label: 'Needs Attention', value: pets.filter(p => p.healthStatus === 'Needs Attention').length, color: '#f59e0b' },
-                  { label: 'Critical', value: pets.filter(p => p.healthStatus === 'Critical').length, color: '#ef4444' },
+                  { label: 'Healthy', value: pets.filter(p => p.health_status === 'HEALTHY').length, color: theme.colors.primary.healthGreen },
+                  { label: 'Under Treatment', value: pets.filter(p => p.health_status === 'UNDER_TREATMENT').length, color: '#f59e0b' },
+                  { label: 'Sick', value: pets.filter(p => p.health_status === 'SICK').length, color: '#ef4444' },
                 ].map((stat) => (
                   <div key={stat.label} className="flex justify-between items-center">
                     <span className="text-sm" style={{ color: theme.colors.neutral.gray[500] }}>{stat.label}</span>

@@ -108,7 +108,7 @@ const PetDetails = () => {
         vaccinated: form.vaccinated,
         lastCheckup: form.lastCheckup || null,
         nextCheckup: form.nextCheckup || null,
-        healthStatus: form.healthStatus,
+        health_status: form.health_status,
         notes: form.notes,
         avatar: photoPreview || form.avatar || null,
       });
@@ -174,8 +174,8 @@ const PetDetails = () => {
                   : <h1 className="text-3xl font-bold" style={{ fontFamily: theme.fonts.heading, color: '#f5f5f5', marginBottom: "10px" }}>{formData.petName}</h1>
                 }
                 <p className="text-gray-500 text-sm">{formData.breed}</p>
-                <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(formData.healthStatus)}>
-                  {formData.healthStatus}
+                <span className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(formData.health_status)}>
+                  {formData.health_status}
                 </span>
               </div>
 
@@ -258,7 +258,7 @@ const PetDetails = () => {
               {/* Health */}
               <div>
                 <h2 className="text-lg font-bold mb-2" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>🏥 Health Records</h2>
-                <Field label="Health Status" value={formData.healthStatus} editing={editing} onChange={set('healthStatus')} />
+                <Field label="Health Status" value={formData.health_status} editing={editing} onChange={set('health_status')} />
                 <Field label="Last Checkup" value={formData.lastCheckup} editing={editing} onChange={set('lastCheckup')} type="date" />
                 <Field label="Next Checkup" value={formData.nextCheckup} editing={editing} onChange={set('nextCheckup')} type="date" />
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">

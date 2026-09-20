@@ -10,6 +10,7 @@ import { Show, UserButton } from '@clerk/react';
 
 interface SpeciesOption { id: number; name: string; }
 interface BreedOption { id: number; name: string; species: number; }
+interface DeviceOption { id: number; device_uid: string; }
 
 const navItems = [
   { icon: '🐾', label: 'Pets Dashboard', key: 'dashboard', path: '/dashboard' },
@@ -28,6 +29,7 @@ const Sidebar = () => {
   const [form, setForm] = useState(emptyForm);
   const [speciesList, setSpeciesList] = useState<SpeciesOption[]>([]);
   const [breedList, setBreedList] = useState<BreedOption[]>([]);
+  const [deviceList, setDeviceList] = useState<DeviceOption[]>([]);
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [apiError, setApiError] = useState('');
@@ -48,6 +50,18 @@ const Sidebar = () => {
       .catch(() => setBreedList([]));
   }, [form.speciesId]);
 
+  useEffect(() => {
+    if (!showModal) { return; }
+    axiosInstance.get(ENDPOINTS.getDevicesByUser(1))
+      .then(res => {
+        const results = res.data?.results ?? [];
+        setDeviceList(results
+          .map((device: { hardware_info?: DeviceOption }) => device.hardware_info)
+          .filter((device: DeviceOption | undefined): device is DeviceOption => Boolean(device?.id && device.device_uid)));
+      })
+      .catch(() => setDeviceList([]));
+  }, [showModal]);
+
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -65,8 +79,8 @@ const Sidebar = () => {
       owner_id: 1,
       device: Number(form.device),
       name: form.petName,
-      breed_id: Number(form.breedId),
-      species_id: Number(form.speciesId),
+      breed: Number(form.breedId),
+      species: Number(form.speciesId),
       gender: form.gender,
       dob: form.dob || today,
       age: 0,
@@ -75,7 +89,7 @@ const Sidebar = () => {
       vaccinated: false,
       lastCheckup: today,
       nextCheckup: nextMonth,
-      healthStatus: 'Healthy',
+      health_status: 'HEALTHY',
       notes: '',
       avatar: photoPreview || '',
     };
@@ -99,7 +113,7 @@ const Sidebar = () => {
         vaccinated: false,
         lastCheckup: today,
         nextCheckup: nextMonth,
-        healthStatus: 'Healthy' as const,
+        health_status: 'HEALTHY' as const,
         notes: '',
         avatar: photoPreview || `https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&q=80`,
       };
@@ -285,11 +299,14 @@ const Sidebar = () => {
                         style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Device ID</label>
-                      <input type="number" placeholder="e.g. 10" value={form.device}
+                      <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Device</label>
+                      <select value={form.device}
                         onChange={e => setForm({ ...form, device: e.target.value })}
                         className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
+                        <option value="">Select device</option>
+                        {deviceList.map(device => <option key={device.id} value={device.id}>{device.device_uid}</option>)}
+                      </select>
                     </div>
                   </div>
 
