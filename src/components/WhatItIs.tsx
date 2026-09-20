@@ -1,5 +1,7 @@
 import innerPageImage from "../assets/images/inner-page_3.jpg";
 import { theme } from "../theme";
+import { PawPrint, ShieldIcon as CareShieldIcon, MessageSquare as SupportMessageIcon } from "lucide-react";
+import { PawIcon } from "./PawIcon";
 
 // ─── Inline SVG Icons ─────────────────────────────────────────────────────────
 
@@ -9,32 +11,15 @@ const HeartPulseIcon = () => (
   </svg>
 );
 
-const LocationPinIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
+const LocationPinIcon = ({ className = "w-7 h-7", style }: { className?: string; style?: Record<string, string | number> }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className} style={style}>
     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
     <circle cx="12" cy="9" r="2.5" />
   </svg>
 );
 
-const BellIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
-    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-  </svg>
-);
-
-const PawIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <ellipse cx="6" cy="7.5" rx="2" ry="2.5" />
-    <ellipse cx="10" cy="5.5" rx="1.7" ry="2.2" />
-    <ellipse cx="14" cy="5.5" rx="1.7" ry="2.2" />
-    <ellipse cx="18" cy="7.5" rx="2" ry="2.5" />
-    <path d="M12 9.5c-3.5 0-6 2-6 5 0 2.5 2 4.5 6 4.5s6-2 6-4.5c0-3-2.5-5-6-5z" />
-  </svg>
-);
-
-const CheckCircleIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
+const CheckCircleIcon = ({ className = "w-5 h-5", style }: { className?: string; style?: Record<string, string | number> }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className} style={style}>
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
     <polyline points="22 4 12 14.01 9 11.01" />
   </svg>
@@ -67,6 +52,13 @@ const MapSmIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
     <circle cx="12" cy="9" r="2.5" />
+  </svg>
+);
+
+const BellIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
   </svg>
 );
 
@@ -113,18 +105,6 @@ const HeartSmIcon = () => (
   </svg>
 );
 
-const ShieldIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} className="w-6 h-6">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
-
-const ChatIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} className="w-6 h-6">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-  </svg>
-);
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 function WhatItIs() {
@@ -148,7 +128,7 @@ function WhatItIs() {
                 className="mb-5 text-5xl font-extrabold leading-tight md:text-6xl"
                 style={{ fontFamily: theme.fonts.heading }}
               >
-                What is <span className="text-orange-400">Ktinoskare</span>?
+                What is <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 45%, ${theme.colors.primary.tealWellness} 100%)` }}>Ktinoskare</span>?
               </h1>
               <p
                 className="text-base leading-relaxed text-white/90 md:text-lg"
@@ -167,9 +147,9 @@ function WhatItIs() {
       {/* ══════════════════════════════════════
           ALL-IN-ONE FEATURES
       ══════════════════════════════════════ */}
-      <section className="bg-white py-16 px-6 md:px-16 lg:px-24">
+      <section className="bg-white py-16 px-6 md:px-16 lg:px-24" style={{ background: `linear-gradient(180deg, ${theme.colors.neutral.white} 0%, rgba(155,89,182,0.04) 100%)` }}>
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 mb-12">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-12" style={{ color: theme.colors.primary.deepPurple }}>
             All-in-One Pet Health &amp; Safety Solution
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
@@ -201,7 +181,14 @@ function WhatItIs() {
               },
             ].map((f, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-500 border border-orange-100">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center border"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(155,89,182,0.12), rgba(26,188,156,0.08))`,
+                    color: theme.colors.primary.deepPurple,
+                    borderColor: 'rgba(106,27,154,0.15)',
+                  }}
+                >
                   {f.icon}
                 </div>
                 <h3 className="font-bold text-gray-900 text-sm md:text-base">{f.title}</h3>
@@ -215,12 +202,12 @@ function WhatItIs() {
       {/* ══════════════════════════════════════
           REAL-TIME LOCATION SECTION
       ══════════════════════════════════════ */}
-      <section className="bg-[#fdf8f3] py-16 px-6 md:px-16 lg:px-24">
+      <section className="py-16 px-6 md:px-16 lg:px-24" style={{ background: `linear-gradient(135deg, rgba(155,89,182,0.06), rgba(26,188,156,0.08), rgba(255,255,255,1))` }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* Left copy */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-4">
+            <h2 className="text-3xl md:text-4xl font-extrabold leading-snug mb-4" style={{ color: theme.colors.primary.deepPurple }}>
               Real-time Location,<br />Total Peace of Mind
             </h2>
             <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-sm">
@@ -230,7 +217,7 @@ function WhatItIs() {
             <ul className="space-y-3">
               {["Live Tracking", "Safe Zone Alerts"].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-gray-700 font-medium text-sm">
-                  <LocationPinIcon />
+                  <LocationPinIcon style={{ color: theme.colors.primary.tealWellness }} />
                   {item}
                 </li>
               ))}
@@ -266,16 +253,16 @@ function WhatItIs() {
                   <line x1="74" y1="0" x2="74" y2="160" stroke="white" strokeWidth="1" strokeDasharray="6 4" />
                   <line x1="156" y1="0" x2="156" y2="160" stroke="white" strokeWidth="1" strokeDasharray="6 4" />
                   {/* pulse rings */}
-                  <circle cx="115" cy="80" r="35" fill="none" stroke="#f97316" strokeWidth="1" opacity="0.25" />
-                  <circle cx="115" cy="80" r="22" fill="none" stroke="#f97316" strokeWidth="1.5" opacity="0.4" />
-                  <circle cx="115" cy="80" r="11" fill="#fff7ed" stroke="#f97316" strokeWidth="2" />
+                  <circle cx="115" cy="80" r="35" fill="none" stroke="#6A1B9A" strokeWidth="1" opacity="0.25" />
+                  <circle cx="115" cy="80" r="22" fill="none" stroke="#1ABC9C" strokeWidth="1.5" opacity="0.5" />
+                  <circle cx="115" cy="80" r="11" fill="#F5F6F7" stroke="#6A1B9A" strokeWidth="2" />
                 </svg>
                 {/* Pin marker */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full bg-orange-500 border-4 border-white shadow-lg flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full border-4 border-white shadow-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6A1B9A, #1ABC9C)', color: '#fff' }}>
                     <PawIcon className="w-4 h-4 text-white" />
                   </div>
-                  <div className="w-3 h-3 bg-orange-500 rotate-45 rounded-sm -mt-1.5" />
+                  <div className="w-3 h-3 rotate-45 rounded-sm -mt-1.5" style={{ background: theme.colors.primary.deepPurple }} />
                 </div>
               </div>
 
@@ -302,12 +289,12 @@ function WhatItIs() {
       {/* ══════════════════════════════════════
           HEALTH DASHBOARD SECTION
       ══════════════════════════════════════ */}
-      <section className="bg-white py-16 px-6 md:px-16 lg:px-24">
+      <section className="bg-white py-16 px-6 md:px-16 lg:px-24" style={{ background: `linear-gradient(180deg, rgba(155,89,182,0.03), rgba(26,188,156,0.04), rgba(255,255,255,1))` }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* Left copy */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-4">
+            <h2 className="text-3xl md:text-4xl font-extrabold leading-snug mb-4" style={{ color: theme.colors.primary.deepPurple }}>
               Your Pet's Health<br />Dashboard
             </h2>
             <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-sm">
@@ -322,7 +309,7 @@ function WhatItIs() {
                 "History & Trends",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                  <CheckCircleIcon className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                  <CheckCircleIcon className="w-5 h-5 flex-shrink-0" style={{ color: theme.colors.primary.tealWellness }} />
                   {item}
                 </li>
               ))}
@@ -334,8 +321,8 @@ function WhatItIs() {
             {/* Top bar */}
             <div className="flex items-center justify-between bg-white px-5 py-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <PawIcon className="w-5 h-5 text-orange-500" />
-                <span className="text-xs font-extrabold tracking-widest text-gray-800 uppercase">Ktinoskare</span>
+                <PawIcon className="w-5 h-5" style={{ color: theme.colors.primary.tealWellness }} />
+                <span className="text-xs font-extrabold tracking-widest uppercase" style={{ color: theme.colors.primary.deepPurple }}>Ktinoskare</span>
               </div>
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-400" />
@@ -359,13 +346,14 @@ function WhatItIs() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className={`flex items-center gap-2 px-3 py-2 text-[11px] font-medium cursor-pointer ${
-                      item.active
-                        ? "bg-orange-50 text-orange-500 border-r-2 border-orange-500"
-                        : "text-gray-500"
-                    }`}
+                    className="flex items-center gap-2 px-3 py-2 text-[11px] font-medium cursor-pointer"
+                    style={item.active ? {
+                      background: 'rgba(155,89,182,0.08)',
+                      color: theme.colors.primary.deepPurple,
+                      borderRight: `2px solid ${theme.colors.primary.deepPurple}`,
+                    } : { color: theme.colors.neutral.gray[500] }}
                   >
-                    <span className={item.active ? "text-orange-500" : "text-gray-400"}>{item.icon}</span>
+                    <span style={item.active ? { color: theme.colors.primary.deepPurple } : { color: theme.colors.neutral.gray[400] }}>{item.icon}</span>
                     {item.label}
                   </div>
                 ))}
@@ -477,7 +465,7 @@ function WhatItIs() {
       {/* ══════════════════════════════════════
           SMART ALERTS SECTION
       ══════════════════════════════════════ */}
-      <section className="bg-[#fdf8f3] py-14 px-6 md:px-16 lg:px-24">
+      <section className="py-14 px-6 md:px-16 lg:px-24" style={{ background: `linear-gradient(135deg, rgba(155,89,182,0.06), rgba(26,188,156,0.07), rgba(255,255,255,1))` }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 items-center">
 
           {/* Phone mockup */}
@@ -498,7 +486,7 @@ function WhatItIs() {
                     {/* Alert 1 */}
                     <div className="bg-red-50 border border-red-200 rounded-2xl p-2.5">
                       <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full bg-red-100 border border-red-200 flex items-center justify-center flex-shrink-0 text-red-500">
+                        <div className="w-8 h-8 rounded-full border flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(106,27,154,0.08)', borderColor: 'rgba(106,27,154,0.2)', color: theme.colors.primary.deepPurple }}>
                           <HeartPulseIcon />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -517,7 +505,7 @@ function WhatItIs() {
                     {/* Alert 2 */}
                     <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-2.5">
                       <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full bg-yellow-100 border border-yellow-200 flex items-center justify-center flex-shrink-0 text-yellow-600">
+                        <div className="w-8 h-8 rounded-full border flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(26,188,156,0.08)', borderColor: 'rgba(26,188,156,0.2)', color: theme.colors.primary.tealWellness }}>
                           <DogIcon />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -547,7 +535,7 @@ function WhatItIs() {
             <ul className="space-y-3">
               {["Health Anomalies", "Activity Changes", "Behavior Alerts", "Medication Reminders"].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                  <CheckCircleIcon className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                  <CheckCircleIcon className="w-5 h-5 flex-shrink-0" style={{ color: theme.colors.primary.tealWellness }} />
                   {item}
                 </li>
               ))}
@@ -565,7 +553,7 @@ function WhatItIs() {
             </div>
             {/* Testimonial overlapping */}
             <div className="mx-4 mt-[-55px] relative z-10 bg-white rounded-2xl shadow-xl p-5 border border-gray-100">
-              <div className="text-orange-500 text-4xl font-serif leading-none mb-1 opacity-80">"</div>
+              <div className="text-4xl font-serif leading-none mb-1 opacity-80" style={{ color: theme.colors.primary.deepPurple }}>"</div>
               <p className="text-gray-800 text-[13px] leading-relaxed font-medium">
                 "Ktinoskare gives me peace of mind every day. I know Buddy is happy, healthy and safe.
               </p>
@@ -575,17 +563,15 @@ function WhatItIs() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════
-          FOOTER TRUST BAR
-      ══════════════════════════════════════ */}
+      {/* Footer Section */}
       <footer className="bg-gray-900 py-8 px-6 md:px-16 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-7 items-center">
             {[
-              { icon: <PawIcon className="w-6 h-6 text-white" />, title: "Trusted by", sub: "Pet Parents" },
-              { icon: <ShieldIcon />, title: "Veterinarian", sub: "Recommended" },
-              { icon: <ShieldIcon />, title: "Safe & Secure", sub: "Technology" },
-              { icon: <ChatIcon />, title: "Dedicated Customer", sub: "Support" },
+              { icon: <PawPrint className="w-6 h-6 text-white" />, title: "Trusted by", sub: "Pet Parents" },
+              { icon: <CareShieldIcon className="w-6 h-6 text-white" />, title: "Veterinarian", sub: "Recommended" },
+              { icon: <CareShieldIcon className="w-6 h-6 text-white" />, title: "Safe & Secure", sub: "Technology" },
+              { icon: <SupportMessageIcon className="w-6 h-6 text-white" />, title: "Dedicated Customer", sub: "Support" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 text-white">
                 <div className="opacity-80 flex-shrink-0">{item.icon}</div>
@@ -598,12 +584,12 @@ function WhatItIs() {
           </div>
           <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <PawIcon className="w-5 h-5 text-orange-500" />
+              <PawIcon className="w-5 h-5" style={{ color: theme.colors.primary.tealWellness }} />
               <span className="text-white font-extrabold text-sm tracking-widest uppercase">Ktinoskare</span>
             </div>
-            <p className="text-orange-400 font-extrabold text-sm text-center">
+            <p className="font-extrabold text-sm text-center" style={{ color: theme.colors.primary.softLavender }}>
               Because They Deserve the Best Care{" "}
-              <span className="text-red-400">❤</span>
+              <span style={{ color: theme.colors.primary.deepPurple }}>❤</span>
             </p>
           </div>
         </div>
