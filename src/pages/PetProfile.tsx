@@ -67,7 +67,7 @@ const PetProfile = () => {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: theme.colors.primary.tealWellness }}>Live Monitoring</p>
             <h1 className="text-4xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
-              Vital Sanctuary
+              Pet Health Monitoring
             </h1>
           </div>
           <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-xl shadow-sm">
@@ -114,10 +114,10 @@ const PetProfile = () => {
                     {pet.vaccinated ? '✅ Yes' : '❌ No'}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                {/* <div className="flex justify-between text-sm">
                   <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
                   <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{nextVisitLabel}</span>
-                </div>
+                </div> */}
                 {pet.notes && (
                   <div className="flex justify-between text-sm">
                     <span style={{ color: theme.colors.neutral.gray[400] }}>Notes</span>

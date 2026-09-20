@@ -37,7 +37,7 @@ const Dashboard = () => {
 
         {/* Top bar */}
         <div className="flex justify-between items-center mb-8">
-          <div className="flex gap-6 text-sm font-semibold">
+          {/* <div className="flex gap-6 text-sm font-semibold">
             {['Dashboard', 'Community', 'Expert Advice'].map((t) => (
               <button key={t} className="pb-1 transition"
                 style={{
@@ -48,8 +48,8 @@ const Dashboard = () => {
                 {t}
               </button>
             ))}
-          </div>
-          <div className="flex items-center gap-4">
+          </div> */}
+          <div className="ml-auto flex items-center gap-4">
             <button className="text-xl">🔔</button>
             <button className="text-xl">💬</button>
             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&q=80" alt="user" className="w-9 h-9 rounded-full object-cover" />
@@ -67,10 +67,10 @@ const Dashboard = () => {
                 Welcome home,
               </h1>
               <h1 className="text-5xl font-bold leading-tight mb-3" style={{ fontFamily: theme.fonts.heading, color: theme.colors.neutral.gray[300] }}>
-                The Ktinoskare awaits.
+                Every pet, every insight. One intelligent view.
               </h1>
               <p className="text-sm max-w-md" style={{ color: theme.colors.neutral.gray[500] }}>
-                Everything is calm. Your companions are resting comfortably, and their vitals are within the optimal range.
+                Vitals are within the optimal range.
               </p>
             </motion.div>
 
@@ -186,7 +186,7 @@ const Dashboard = () => {
                   <p className="text-xl font-bold leading-tight">12</p>
                 </div>
                 <div>
-                  <p className="font-bold text-sm" style={{ fontFamily: theme.fonts.heading, color: theme.colors.neutral.gray[800] }}>Veterinary Wellness Check</p>
+                  <p className="font-bold text-sm" style={{ fontFamily: theme.fonts.heading, color: theme.colors.neutral.gray[800] }}>Vaccination Due</p>
                   <p className="text-xs" style={{ color: theme.colors.neutral.gray[400] }}>Central Pet Clinic · 14:30</p>
                 </div>
               </div>
