@@ -43,12 +43,12 @@ module.exports = {
     },
     owner: "bishnu987",
     plugins: [
+      "./plugins/withAndroidNetworkSecurityConfig.js",
       [
         "expo-build-properties",
         {
           android: {
-            usesCleartextTraffic: true,
-            networkSecurityConfig: "./network_security_config.xml"
+            usesCleartextTraffic: true
           }
         }
       ]

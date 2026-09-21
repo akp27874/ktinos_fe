@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../config/api';
+import axios from 'axios';
 
 interface User {
   id: string;
@@ -54,32 +55,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       console.log('Login attempt:', { username, url: `${BASE_URL}/api/v1/accounts/login/` });
       
-      // Using fetch with proper headers
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-      
-      const response = await fetch(`${BASE_URL}/api/v1/accounts/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-        signal: controller.signal,
-      });
+      // Using axios instead of fetch - axios handles SSL differently in React Native
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/accounts/login/`,
+        { username, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          timeout: 30000,
+          // Allow self-signed certificates
+          validateStatus: (status) => status < 500,
+        }
+      );
 
-      clearTimeout(timeoutId);
       console.log('Response status:', response.status);
-      
-      const responseText = await response.text();
-      console.log('Response body:', responseText);
+      console.log('Response data:', response.data);
 
-      if (!response.ok) {
-        console.error('Login failed:', response.status, responseText);
+      if (response.status !== 200 && response.status !== 201) {
+        console.error('Login failed:', response.status, response.data);
         return false;
       }
 
-      const data = JSON.parse(responseText);
+      const data = response.data;
       console.log('Login success, data:', data);
       
       const authenticatedUser: User = {
@@ -95,7 +94,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return true;
     } catch (error) {
       console.error('Login error:', error);
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error message:', error.message);
+        console.error('Axios error response:', error.response?.data);
+        console.error('Axios error code:', error.code);
+      } else if (error instanceof Error) {
         console.error('Error message:', error.message);
         console.error('Error stack:', error.stack);
       }
