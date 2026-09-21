@@ -54,7 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       console.log('Login attempt:', { username, url: `${BASE_URL}/api/v1/accounts/login/` });
       
-      // Real API call for login using correct endpoint and username
+      // Using fetch with proper headers
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+      
       const response = await fetch(`${BASE_URL}/api/v1/accounts/login/`, {
         method: 'POST',
         headers: {
@@ -62,8 +65,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           'Accept': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
       console.log('Response status:', response.status);
       
       const responseText = await response.text();
