@@ -1,0 +1,57 @@
+module.exports = {
+  expo: {
+    name: "Ktinoskare",
+    slug: "ktinos_mobile",
+    version: "1.0.0",
+    sdkVersion: "54.0.0",
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "light",
+    splash: {
+      image: "./assets/splash-icon.png",
+      resizeMode: "contain",
+      backgroundColor: "#6A1B9A"
+    },
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: "com.ktinoskare.mobile",
+      infoPlist: {
+        NSPhotoLibraryUsageDescription: "This app needs access to your photo library to upload pet photos.",
+        NSCameraUsageDescription: "This app needs access to your camera to take pet photos."
+      }
+    },
+    android: {
+      package: "com.ktinoskare.mobile",
+      adaptiveIcon: {
+        foregroundImage: "./assets/android-icon-foreground.png",
+        backgroundColor: "#6A1B9A"
+      },
+      permissions: [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA",
+        "INTERNET"
+      ]
+    },
+    web: {
+      favicon: "./assets/favicon.png"
+    },
+    extra: {
+      eas: {
+        projectId: "df52dcf8-1be0-4d4b-8cf5-e172d0fd0b94"
+      }
+    },
+    owner: "bishnu987",
+    plugins: [
+      [
+        "expo-build-properties",
+        {
+          android: {
+            usesCleartextTraffic: true,
+            networkSecurityConfig: "./network_security_config.xml"
+          }
+        }
+      ]
+    ]
+  }
+};
