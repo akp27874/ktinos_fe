@@ -19,7 +19,69 @@ const navItems = [
   { icon: '⚙️', label: 'Settings', key: 'settings', path: '/settings' },
 ];
 
-const emptyForm = { petName: '', species: '', speciesId: '', breed: '', breedId: '', age: '', weight: '', gender: 'Male', dob: '', color: '', device: '', ownerName: '', ownerEmail: '', ownerPhone: '' };
+const emptyForm = { petName: '', species: '', speciesId: '', breed: '', breedId: '', age: '', weight: '', gender: 'Male', dob: '', color: '', device: '', subscription: '', ownerName: '', ownerEmail: '', ownerPhone: '' };
+
+interface DropdownOption {
+  value: string;
+  label: string;
+}
+
+interface StyledSelectProps {
+  value: string;
+  options: DropdownOption[];
+  placeholder: string;
+  onChange: (value: string) => void;
+}
+
+const StyledSelect = ({ value, options, placeholder, onChange }: StyledSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption = options.find(option => option.value === value);
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setIsOpen(open => !open)}
+        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border text-left flex items-center justify-between"
+        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: selectedOption ? theme.colors.neutral.gray[700] : theme.colors.neutral.gray[400], backgroundColor: theme.colors.neutral.white }}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+      >
+        <span>{selectedOption?.label ?? placeholder}</span>
+        <span aria-hidden="true" style={{ color: theme.colors.neutral.gray[700] }}>⌄</span>
+      </button>
+      {isOpen && (
+        <div
+          className="absolute left-0 right-0 z-20 mt-1 rounded-lg border bg-white shadow-lg overflow-hidden"
+          style={{ borderColor: theme.colors.neutral.gray[200] }}
+          role="listbox"
+        >
+          {options.map(option => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => { onChange(option.value); setIsOpen(false); }}
+              className="w-full px-3 py-2 text-left text-xs transition-colors"
+              style={{ color: theme.colors.neutral.gray[700], backgroundColor: theme.colors.neutral.white }}
+              onMouseEnter={event => {
+                event.currentTarget.style.backgroundColor = theme.colors.primary.healthGreen;
+                event.currentTarget.style.color = theme.colors.neutral.white;
+              }}
+              onMouseLeave={event => {
+                event.currentTarget.style.backgroundColor = theme.colors.neutral.white;
+                event.currentTarget.style.color = theme.colors.neutral.gray[700];
+              }}
+              role="option"
+              aria-selected={option.value === value}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -232,17 +294,16 @@ const Sidebar = () => {
                     </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Species</label>
-                      <select value={form.speciesId}
-                        onChange={e => {
-                          const selected = speciesList.find(s => String(s.id) === e.target.value);
+                      <StyledSelect
+                        value={form.speciesId}
+                        placeholder="Select species"
+                        options={speciesList.map(s => ({ value: String(s.id), label: s.name }))}
+                        onChange={value => {
+                          const selected = speciesList.find(s => String(s.id) === value);
                           setBreedList([]);
-                          setForm({ ...form, speciesId: e.target.value, species: selected?.name ?? '', breed: '', breedId: '' });
+                          setForm({ ...form, speciesId: value, species: selected?.name ?? '', breed: '', breedId: '' });
                         }}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-                        <option value="">Select species</option>
-                        {speciesList.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-                      </select>
+                      />
                     </div>
                   </div>
 
@@ -250,23 +311,22 @@ const Sidebar = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Breed</label>
-                      <select value={form.breedId}
-                        onChange={e => {
-                          const selected = breedList.find(b => String(b.id) === e.target.value);
-                          setForm({ ...form, breedId: e.target.value, breed: selected?.name ?? '' });
+                      <StyledSelect
+                        value={form.breedId}
+                        placeholder="Select breed"
+                        options={visibleBreedList.map(b => ({ value: String(b.id), label: b.name }))}
+                        onChange={value => {
+                          const selected = breedList.find(b => String(b.id) === value);
+                          setForm({ ...form, breedId: value, breed: selected?.name ?? '' });
                         }}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-                        <option value="">Select breed</option>
-                        {visibleBreedList.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-                      </select>
+                      />
                     </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Date of Birth</label>
                       <input type="date" value={form.dob}
                         onChange={e => setForm({ ...form, dob: e.target.value })}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }} />
+                        className="pet-date-input w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
+                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700], accentColor: theme.colors.primary.deepPurple }} />
                     </div>
                   </div>
 
@@ -281,11 +341,12 @@ const Sidebar = () => {
                     </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Gender</label>
-                      <select value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-                        <option>Male</option><option>Female</option>
-                      </select>
+                      <StyledSelect
+                        value={form.gender}
+                        placeholder="Select gender"
+                        options={[{ value: 'Male', label: 'Male' }, { value: 'Female', label: 'Female' }]}
+                        onChange={value => setForm({ ...form, gender: value })}
+                      />
                     </div>
                   </div>
 
@@ -300,14 +361,31 @@ const Sidebar = () => {
                     </div>
                     <div>
                       <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>Device</label>
-                      <select value={form.device}
-                        onChange={e => setForm({ ...form, device: e.target.value })}
-                        className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none border"
-                        style={{ borderColor: theme.colors.neutral.gray[200], fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[700] }}>
-                        <option value="">Select device</option>
-                        {deviceList.map(device => <option key={device.id} value={device.id}>{device.device_uid}</option>)}
-                      </select>
+                      <StyledSelect
+                        value={form.device}
+                        placeholder="Select device"
+                        options={deviceList.map(device => ({ value: String(device.id), label: device.device_uid }))}
+                        onChange={value => setForm({ ...form, device: value })}
+                      />
                     </div>
+                  </div>
+
+                  {/* Row 5: Subscription Model */}
+                  <div>
+                    <label className="text-xs font-semibold block mb-1" style={{ color: theme.colors.neutral.gray[600] }}>
+                      Choose the subscription model
+                    </label>
+                    <StyledSelect
+                      value={form.subscription}
+                      placeholder="Select subscription model"
+                      options={[
+                        { value: 'Monthly', label: 'Monthly 399/-' },
+                        { value: 'Quarterly', label: 'Quarterly : 999/-' },
+                        { value: 'Half yearly', label: 'Half yearly- 1999/-' },
+                        { value: 'Yearly', label: 'Yearly-3999/-' },
+                      ]}
+                      onChange={value => setForm({ ...form, subscription: value })}
+                    />
                   </div>
 
                   {/* Photo Upload */}

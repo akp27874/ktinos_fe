@@ -16,7 +16,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed w-full z-50">
+    <nav className="fixed top-0 left-0 w-full z-50">
       {/* Ticker Banner */}
       <div className="w-full overflow-hidden relative"
         style={{
@@ -87,10 +87,10 @@ const Navbar = () => {
                 </Link>
 
                 {/* ACTIVATE */}
-                <a href="#activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
+                <Link to="/activate-your-band" className="hover:opacity-75 transition flex flex-col items-center">
                   <span style={{ color: theme.colors.primary.deepPurple, fontSize: '1.05rem', fontFamily: theme.fonts.body, fontWeight: 600 }}>ACTIVATE</span>
                   <span style={{ fontFamily: theme.fonts.handwritten, color: theme.colors.neutral.gray[600], fontSize: '0.8rem' }}>your band</span>
-                </a>
+                </Link>
 
                 {/* LET'S */}
                 <a href="/#contact" className="hover:opacity-75 transition flex flex-col items-center">
