@@ -24,7 +24,7 @@ interface ApiPet {
   vaccinated: boolean;
   lastCheckup: string | null;
   nextCheckup: string | null;
-  healthStatus: 'Healthy' | 'Needs Attention' | 'Critical';
+  health_status: 'HEALTHY' | 'SICK' | 'UNDER_TREATMENT' | 'RECOVERING';
   notes: string;
   avatar: string | null;
 }
@@ -47,7 +47,7 @@ const mapApiPet = (p: ApiPet): Pet => ({
   vaccinated: p.vaccinated,
   lastCheckup: p.lastCheckup ?? '',
   nextCheckup: p.nextCheckup ?? '',
-  healthStatus: p.healthStatus,
+  health_status: p.health_status,
   notes: p.notes,
   avatar: p.avatar ? `${p.avatar}` : DEFAULT_AVATAR,
 });

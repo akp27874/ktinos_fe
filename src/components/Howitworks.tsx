@@ -9,6 +9,7 @@ import {
 import { PawPrint  , ShieldIcon, MessageSquare} from 'lucide-react';
 import innerPageImage from '../assets/images/inner-page_4.jpg';
 import { theme } from '../theme';
+import { PawIcon } from './PawIcon';
 
 // ==================== ORIGINAL ICONS (unchanged) ====================
 
@@ -17,7 +18,6 @@ const HeartIcon = () => (
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
 );
-
 
 const BellIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
@@ -52,7 +52,7 @@ const CloudIcon = () => (
   </svg>
 );
 const QuoteIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-orange-500">
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8" style={{ color: theme.colors.primary.deepPurple }}>
     <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
     <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
   </svg>
@@ -79,8 +79,8 @@ const TempIcon = () => (
     <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
   </svg>
 );
-const LocationPinIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
+const LocationPinIcon = ({ className = "w-5 h-5", style }: { className?: string; style?: Record<string, string | number> }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className} style={style}>
     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
     <circle cx={12} cy={10} r={3} />
   </svg>
@@ -104,8 +104,8 @@ const SecureCloudIcon = () => (
   </svg>
 );
 
-const Paw_Print  = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 100 100" fill="currentColor" className={className}>
+const Paw_Print  = ({ className, style }: { className?: string; style?: Record<string, string | number> }) => (
+  <svg viewBox="0 0 100 100" fill="currentColor" className={className} style={style}>
     <ellipse cx="20" cy="30" rx="10" ry="14" />
     <ellipse cx="40" cy="18" rx="9" ry="13" />
     <ellipse cx="60" cy="18" rx="9" ry="13" />
@@ -134,7 +134,7 @@ function HowItWorks() {
                 className="mb-5 text-5xl font-extrabold leading-tight md:text-6xl"
                 style={{ fontFamily: theme.fonts.heading }}
               >
-                How <span className="text-orange-400">Ktinoskare</span> Works?
+                How <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 45%, ${theme.colors.primary.tealWellness} 100%)` }}>Ktinoskare</span> Works?
               </h1>
               <p
                 className="mb-5 text-base md:text-lg"
@@ -158,24 +158,24 @@ function HowItWorks() {
       </section>
 
       {/* ─── 3-STEP PROCESS (unchanged) ─── */}
-      <section className="py-20 px-6 md:px-16 bg-white relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-50/20 via-transparent to-transparent" />
+      <section className="py-20 px-6 md:px-16 bg-white relative" style={{ background: `linear-gradient(180deg, rgba(155,89,182,0.04), rgba(255,255,255,1))` }}>
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at top, rgba(155,89,182,0.12), transparent 45%)' }} />
         <div className="relative z-10">
           <h2 className="text-center text-2xl md:text-3xl font-extrabold text-gray-800 mb-14">
             The Ktinoskare Process –{" "}
-            <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
+            <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 50%, ${theme.colors.primary.tealWellness} 100%)` }}>
               3 Simple Steps
             </span>
           </h2>
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="group rounded-2xl bg-white border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300">1</div>
+            <div className="group rounded-2xl bg-white border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center hover:-translate-y-2" style={{ boxShadow: '0 20px 45px rgba(106,27,154,0.08)' }}>
+              <div className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: theme.colors.primary.deepPurple }}>1</div>
               <div className="w-32 h-32 mb-5 relative flex items-center justify-center">
                 <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&h=300&fit=crop&crop=top" alt="Dog with smart collar" className="w-28 h-28 object-cover rounded-xl shadow-md" />
-                <div className="absolute -bottom-2 -right-2 bg-gray-800 rounded-xl p-1 shadow-md"><div className="w-8 h-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-sm flex items-center justify-center"><span className="text-[6px] text-white font-bold">BAND</span></div></div>
+                <div className="absolute -bottom-2 -right-2 bg-gray-800 rounded-xl p-1 shadow-md"><div className="w-8 h-3 rounded-sm flex items-center justify-center" style={{ background: `linear-gradient(90deg, ${theme.colors.primary.deepPurple}, ${theme.colors.primary.tealWellness})` }}><span className="text-[6px] text-white font-bold">BAND</span></div></div>
               </div>
-              <h3 className="text-orange-500 font-extrabold text-xl mb-3">Track</h3>
+              <h3 className="font-extrabold text-xl mb-3" style={{ color: theme.colors.primary.deepPurple }}>Track</h3>
               <p className="text-sm text-gray-600 leading-relaxed">Put the smart neck collar band on your pet, which tracks the vitals and activities of your pet 24x7.</p>
               <div className="mt-5 flex gap-3 flex-wrap justify-center">
                 {[
@@ -186,7 +186,7 @@ function HowItWorks() {
                   { icon: <LocationPinIcon />, label: "Location" },
                 ].map((f) => (
                   <div key={f.label} className="flex flex-col items-center gap-1">
-                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:bg-orange-50 transition-colors duration-300">{f.icon}</div>
+                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}>{f.icon}</div>
                     <span className="text-[9px] font-medium text-gray-500 leading-tight">{f.label}</span>
                   </div>
                 ))}
@@ -194,13 +194,13 @@ function HowItWorks() {
             </div>
             {/* Step 2 */}
             <div className="group rounded-2xl bg-white border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300">2</div>
+              <div className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: theme.colors.primary.deepPurple }}>2</div>
               <div className="w-32 h-32 mb-5 flex items-center justify-center">
-                <div className="w-28 h-28 rounded-full border-2 border-dashed border-orange-200 bg-orange-50/30 flex items-center justify-center group-hover:border-orange-300 transition-colors duration-300">
-                  <div className="flex flex-col items-center"><CloudIcon /><span className="text-[10px] font-bold text-orange-500 mt-1">KTINOSKARE</span><span className="text-[8px] text-gray-500">CLOUD</span></div>
+                <div className="w-28 h-28 rounded-full border-2 border-dashed flex items-center justify-center transition-colors duration-300" style={{ borderColor: 'rgba(106,27,154,0.25)', background: 'rgba(155,89,182,0.06)' }}>
+                  <div className="flex flex-col items-center"><CloudIcon /><span className="text-[10px] font-bold mt-1" style={{ color: theme.colors.primary.deepPurple }}>KTINOSKARE</span><span className="text-[8px] text-gray-500">CLOUD</span></div>
                 </div>
               </div>
-              <h3 className="text-orange-500 font-extrabold text-xl mb-3">Analyze</h3>
+              <h3 className="font-extrabold text-xl mb-3" style={{ color: theme.colors.primary.deepPurple }}>Analyze</h3>
               <p className="text-sm text-gray-600 leading-relaxed">Multiple data points are collected on the Ktinoskare cloud application and processed using our advanced AI algorithms.</p>
               <div className="mt-5 flex gap-3 flex-wrap justify-center">
                 {[
@@ -209,7 +209,7 @@ function HowItWorks() {
                   { icon: <SecureCloudIcon />, label: "Secure Cloud" },
                 ].map((f) => (
                   <div key={f.label} className="flex flex-col items-center gap-1">
-                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:bg-orange-50 transition-colors duration-300">{f.icon}</div>
+                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}>{f.icon}</div>
                     <span className="text-[9px] font-medium text-gray-500 leading-tight">{f.label}</span>
                   </div>
                 ))}
@@ -217,14 +217,14 @@ function HowItWorks() {
             </div>
             {/* Step 3 */}
             <div className="group rounded-2xl bg-white border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300">3</div>
+              <div className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center text-xl mb-5 shadow-md group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: theme.colors.primary.deepPurple }}>3</div>
               <div className="w-32 h-32 mb-5 flex items-center justify-center">
                 <div className="relative">
-                  <div className="w-24 h-16 bg-gray-800 rounded-xl shadow-md flex items-center justify-center"><div className="w-20 h-12 bg-gradient-to-b from-blue-900 to-indigo-900 rounded flex flex-col gap-1 p-1"><div className="h-1.5 bg-orange-400 rounded w-3/4" /><div className="h-1.5 bg-gray-600 rounded w-1/2" /><div className="h-1.5 bg-gray-600 rounded w-2/3" /></div></div>
-                  <div className="absolute -right-8 -bottom-3 w-14 h-24 bg-gray-900 rounded-xl border-2 border-gray-700 shadow-lg flex flex-col items-center justify-center gap-1 p-1"><div className="w-full h-2 bg-gradient-to-r from-orange-400 to-amber-500 rounded" /><div className="w-full h-1 bg-gray-700 rounded" /><div className="w-full h-1 bg-gray-700 rounded" /><div className="w-5 h-5 rounded-full bg-green-500 mt-1 shadow-inner" /></div>
+                  <div className="w-24 h-16 bg-gray-800 rounded-xl shadow-md flex items-center justify-center"><div className="w-20 h-12 bg-gradient-to-b from-blue-900 to-indigo-900 rounded flex flex-col gap-1 p-1"><div className="h-1.5 rounded w-3/4" style={{ background: theme.colors.primary.tealWellness }} /><div className="h-1.5 bg-gray-600 rounded w-1/2" /><div className="h-1.5 bg-gray-600 rounded w-2/3" /></div></div>
+                  <div className="absolute -right-8 -bottom-3 w-14 h-24 bg-gray-900 rounded-xl border-2 border-gray-700 shadow-lg flex flex-col items-center justify-center gap-1 p-1"><div className="w-full h-2 rounded" style={{ background: `linear-gradient(90deg, ${theme.colors.primary.deepPurple}, ${theme.colors.primary.tealWellness})` }} /><div className="w-full h-1 bg-gray-700 rounded" /><div className="w-full h-1 bg-gray-700 rounded" /><div className="w-5 h-5 rounded-full bg-green-500 mt-1 shadow-inner" /></div>
                 </div>
               </div>
-              <h3 className="text-orange-500 font-extrabold text-xl mb-3">Inform</h3>
+              <h3 className="font-extrabold text-xl mb-3" style={{ color: theme.colors.primary.deepPurple }}>Inform</h3>
               <p className="text-sm text-gray-600 leading-relaxed">Filtered meaningful information in the form of health alerts, activity details, vitals, location and more is presented to you via the Ktinoskare web dashboard or mobile app in real-time.</p>
               <div className="mt-5 flex gap-2 flex-wrap justify-center">
                 {[
@@ -235,7 +235,7 @@ function HowItWorks() {
                   { icon: <StepsIcon />, label: "Reports" },
                 ].map((f) => (
                   <div key={f.label} className="flex flex-col items-center gap-1">
-                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:bg-orange-50 transition-colors duration-300">{f.icon}</div>
+                    <div className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}>{f.icon}</div>
                     <span className="text-[9px] font-medium text-gray-500 leading-tight">{f.label}</span>
                   </div>
                 ))}
@@ -246,44 +246,44 @@ function HowItWorks() {
       </section>
 
       {/* ─── GET STARTED IN 3 EASY STEPS (unchanged) ─── */}
-      <section className="py-20 px-6 md:px-16 bg-gradient-to-b from-gray-50 to-white">
-        <h2 className="text-center text-2xl md:text-3xl font-extrabold text-gray-800 mb-14">Get Started in <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">3 Easy Steps</span></h2>
+      <section className="py-20 px-6 md:px-16" style={{ background: 'linear-gradient(180deg, rgba(155,89,182,0.04), rgba(255,255,255,1))' }}>
+        <h2 className="text-center text-2xl md:text-3xl font-extrabold text-gray-800 mb-14">Get Started in <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 45%, ${theme.colors.primary.tealWellness} 100%)` }}>3 Easy Steps</span></h2>
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="group flex flex-col items-center text-center">
-            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl overflow-hidden border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://m.media-amazon.com/images/I/51JH7qVV8dL.jpg" alt="Ktinoskare product box" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /></div><div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg">1</div></div>
+            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl overflow-hidden border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://m.media-amazon.com/images/I/51JH7qVV8dL.jpg" alt="Ktinoskare product box" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /></div><div className="absolute -top-3 -right-3 w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg" style={{ backgroundColor: theme.colors.primary.deepPurple }}>1</div></div>
             <h3 className="font-extrabold text-lg mb-2 text-gray-800">Buy</h3>
             <p className="text-sm text-gray-600 leading-relaxed">Buy the smart collar band from our website or our partner e-commerce platforms.</p>
-            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-50 transition-colors duration-300"><ShoppingCartIcon /></div>
+            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}><ShoppingCartIcon /></div>
           </div>
           <div className="group flex flex-col items-center text-center">
-            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl bg-white flex items-center justify-center border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://c8.alamy.com/comp/F07102/activate-green-button-isolated-on-white-background-F07102.jpg" alt="Golden retriever with band" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /><div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg">2</div></div></div>
+            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl bg-white flex items-center justify-center border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://c8.alamy.com/comp/F07102/activate-green-button-isolated-on-white-background-F07102.jpg" alt="Golden retriever with band" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /><div className="absolute -top-3 -right-3 w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg" style={{ backgroundColor: theme.colors.primary.deepPurple }}>2</div></div></div>
             <h3 className="font-extrabold text-lg mb-2 text-gray-800">Activate</h3>
             <p className="text-sm text-gray-600 leading-relaxed">Activate the band in your account on our website or mobile app.</p>
-            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-50 transition-colors duration-300"><UserCheckIcon /></div>
+            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}><UserCheckIcon /></div>
           </div>
           <div className="group flex flex-col items-center text-center">
-            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl overflow-hidden border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&h=300&fit=crop&crop=top" alt="Golden retriever with band" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /></div><div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg">3</div></div>
+            <div className="relative mb-5"><div className="w-32 h-32 rounded-2xl shadow-xl overflow-hidden border-2 border-white group-hover:shadow-2xl transition-all duration-300"><img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&h=300&fit=crop&crop=top" alt="Golden retriever with band" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /></div><div className="absolute -top-3 -right-3 w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center shadow-lg" style={{ backgroundColor: theme.colors.primary.deepPurple }}>3</div></div>
             <h3 className="font-extrabold text-lg mb-2 text-gray-800">Place &amp; Monitor</h3>
             <p className="text-sm text-gray-600 leading-relaxed">Place the band on your pet and start receiving daily alerts, 24x7 live data, weekly reports, live location and more.</p>
-            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-50 transition-colors duration-300"><MonitorIcon /></div>
+            <div className="mt-4 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center group-hover:brightness-105 transition-colors duration-300" style={{ color: theme.colors.primary.deepPurple, background: 'rgba(155,89,182,0.08)' }}><MonitorIcon /></div>
           </div>
         </div>
       </section>
 
       {/* ─── WHAT YOU GET (rewritten with react-icons, no map) ─── */}
-      <section className="py-20 px-6 md:px-16 bg-white">
+      <section className="py-20 px-6 md:px-16 bg-white" style={{ background: `linear-gradient(180deg, rgba(255,255,255,1), rgba(155,89,182,0.03))` }}>
         <h2 className="text-center text-2xl md:text-3xl font-extrabold text-gray-800 mb-14">
           What You Get with{" "}
-          <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
+          <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 45%, ${theme.colors.primary.tealWellness} 100%)` }}>
             Ktinoskare
           </span>
         </h2>
 
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Smart Health Alerts */}
-          <div className="group flex flex-col items-center text-center gap-3 p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FaBell className="w-8 h-8 text-orange-500" />
+          <div className="group flex flex-col items-center text-center gap-3 p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style={{ borderColor: 'rgba(106,27,154,0.08)' }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300" style={{ background: 'rgba(155,89,182,0.08)', color: theme.colors.primary.deepPurple }}>
+              <FaBell className="w-8 h-8" />
             </div>
             <h4 className="text-sm font-extrabold text-gray-800 leading-tight">Smart Health Alerts</h4>
             <p className="text-xs text-gray-500 leading-relaxed">Instant alerts for any abnormalities or unusual behavior.</p>
@@ -328,13 +328,13 @@ function HowItWorks() {
       </section>
 
       {/* ─── BETTER DATA SECTION (unchanged) ─── */}
-      <section className="py-20 px-6 md:px-16 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 overflow-hidden relative">
-        <Paw_Print  className="absolute right-8 top-8 w-28 h-28 text-orange-100/50 rotate-12" />
-        <Paw_Print  className="absolute left-4 bottom-6 w-20 h-20 text-orange-100/50 -rotate-12" />
+      <section className="py-20 px-6 md:px-16 overflow-hidden relative" style={{ background: `linear-gradient(135deg, rgba(155,89,182,0.08), rgba(26,188,156,0.08), rgba(255,255,255,1))` }}>
+        <Paw_Print  className="absolute right-8 top-8 w-28 h-28 rotate-12" style={{ color: 'rgba(106,27,154,0.16)' }} />
+        <Paw_Print  className="absolute left-4 bottom-6 w-20 h-20 -rotate-12" style={{ color: 'rgba(26,188,156,0.14)' }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/30 via-transparent to-transparent" />
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-10">
           <div className="flex-1 text-center md:text-left">
-            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Better Data.<br />Better Insights.<br /><span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Better Care.</span> <span className="text-orange-500 inline-block animate-pulse">♥</span></h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Better Data.<br />Better Insights.<br /><span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(90deg, ${theme.colors.primary.deepPurple} 0%, ${theme.colors.primary.softLavender} 40%, ${theme.colors.primary.tealWellness} 100%)` }}>Better Care.</span> <span className="inline-block animate-pulse" style={{ color: theme.colors.primary.deepPurple }}>♥</span></h2>
             <p className="text-gray-600 max-w-md mx-auto md:mx-0 leading-relaxed">Ktinoskare helps you understand your pet better and gives them the care they deserve, every single day.</p>
           </div>
           <div className="flex-1 flex justify-center">
@@ -347,13 +347,13 @@ function HowItWorks() {
               <div className="absolute -top-4 -left-4"><QuoteIcon /></div>
               <p className="text-gray-700 mt-4 leading-relaxed italic font-medium">"Ktinoskare gives me peace of mind every day. Now I always know that my buddy is healthy, safe and happy."</p>
               <p className="text-sm font-bold text-gray-800 mt-4">– Priya, Pet Parent</p>
-              <div className="absolute bottom-6 right-6 text-orange-500 animate-pulse"><HeartIcon /></div>
+              <div className="absolute bottom-6 right-6 animate-pulse" style={{ color: theme.colors.primary.deepPurple }}><HeartIcon /></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── TRUST BADGES (unchanged) ─── */}
+      {/* Footer Section */}
 <footer className="bg-gray-900 py-8 px-6 md:px-16 lg:px-24">
   <div className="max-w-7xl mx-auto">
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-7 items-center">
@@ -374,12 +374,12 @@ function HowItWorks() {
     </div>
     <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <div className="flex items-center gap-2">
-        <Paw_Print   className="w-5 h-5 text-orange-500" />
+        <PawIcon className="w-5 h-5" style={{ color: theme.colors.primary.tealWellness }} />
         <span className="text-white font-extrabold text-sm tracking-widest uppercase">Ktinoskare</span>
       </div>
-      <p className="text-orange-400 font-extrabold text-sm text-center">
+      <p className="font-extrabold text-sm text-center" style={{ color: theme.colors.primary.softLavender }}>
         Because They Deserve the Best Care{" "}
-        <span className="text-red-400">❤</span>
+        <span style={{ color: theme.colors.primary.deepPurple }}>❤</span>
       </p>
     </div>
   </div>

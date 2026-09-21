@@ -84,8 +84,8 @@ const UserList = () => {
                     <td className="px-4 py-3 text-gray-700">{pet.breed}</td>
                     <td className="px-4 py-3 text-gray-700">{pet.age} yrs</td>
                     <td className="px-4 py-3">
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(pet.healthStatus)}>
-                        {pet.healthStatus}
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(pet.health_status)}>
+                        {pet.health_status}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -127,8 +127,8 @@ const UserList = () => {
                 <p className="text-sm mb-3" style={{ fontFamily: theme.fonts.body, color: theme.colors.neutral.gray[500] }}>
                   Owner: {pet.ownerName}
                 </p>
-                <span className="px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(pet.healthStatus)}>
-                  {pet.healthStatus}
+                <span className="px-3 py-1 rounded-full text-xs font-semibold" style={statusColor(pet.health_status)}>
+                  {pet.health_status}
                 </span>
               </motion.div>
             ))}

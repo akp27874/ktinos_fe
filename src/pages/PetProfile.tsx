@@ -50,10 +50,6 @@ const PetProfile = () => {
     ? Math.floor((now - new Date(pet.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))
     : null;
 
-  const nextVisitLabel = pet.nextCheckup
-    ? new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    : 'Not scheduled';
-
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>
 
@@ -67,7 +63,7 @@ const PetProfile = () => {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: theme.colors.primary.tealWellness }}>Live Monitoring</p>
             <h1 className="text-4xl font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>
-              Vital Sanctuary
+              Pet Health Monitoring
             </h1>
           </div>
           <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-xl shadow-sm">
@@ -89,8 +85,8 @@ const PetProfile = () => {
               className="bg-white rounded-2xl p-6 shadow-sm relative overflow-hidden"
             >
               <div className="flex items-center gap-2 mb-4">
-                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}></span>
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: pet.healthStatus === 'Healthy' ? theme.colors.primary.healthGreen : '#f59e0b' }}>{pet.healthStatus}</span>
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: pet.health_status === 'HEALTHY' ? theme.colors.primary.healthGreen : '#f59e0b' }}></span>
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: pet.health_status === 'HEALTHY' ? theme.colors.primary.healthGreen : '#f59e0b' }}>{pet.health_status}</span>
               </div>
 
               <h2 className="text-3xl font-bold mb-1" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</h2>
@@ -114,10 +110,14 @@ const PetProfile = () => {
                     {pet.vaccinated ? '✅ Yes' : '❌ No'}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
-                  <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>{nextVisitLabel}</span>
-                </div>
+                {pet.nextCheckup && (
+                  <div className="flex justify-between text-sm">
+                    <span style={{ color: theme.colors.neutral.gray[400] }}>Next Vet Visit</span>
+                    <span className="font-semibold" style={{ color: theme.colors.neutral.gray[800] }}>
+                      {new Date(pet.nextCheckup).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                )}
                 {pet.notes && (
                   <div className="flex justify-between text-sm">
                     <span style={{ color: theme.colors.neutral.gray[400] }}>Notes</span>
@@ -140,7 +140,7 @@ const PetProfile = () => {
               <div className="text-2xl mb-3">💡</div>
               <h3 className="text-lg font-bold mb-3" style={{ fontFamily: theme.fonts.heading }}>Health Insight</h3>
               <p className="text-sm opacity-85 mb-4 leading-relaxed">
-                {pet.petName}'s vitals are being monitored. Health status is currently <strong>{pet.healthStatus}</strong>.
+                {pet.petName}'s vitals are being monitored. Health status is currently <strong>{pet.health_status}</strong>.
                 {pet.vaccinated ? ' Vaccinations are up to date.' : ' Vaccination may be overdue — please consult your vet.'}
               </p>
               <div className="flex items-center gap-2 mb-4 bg-white bg-opacity-10 rounded-xl p-3">

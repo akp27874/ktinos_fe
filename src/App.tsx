@@ -20,6 +20,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import WhatItIs from './components/WhatItIs';
 import HowItWorks from './components/Howitworks';
 import PlansAndPrices from './components/Plansandprices';
+import ActivateBand from './pages/ActivateBand';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => { setTimeout(() => setLoading(false), 500); }, []);
@@ -68,26 +69,33 @@ function App() {
           element={
             <>
               <Navbar />
-              <SignIn 
-                path="/login" 
-                routing="path" 
-                signUpUrl="/signup"
-                forceRedirectUrl="/dashboard"
-              />
+              <div style={{ minHeight: 'calc(100vh - 116px)', marginTop: '116px', padding: '32px 16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflowY: 'auto' }}>
+                <SignIn
+                  path="/login"
+                  routing="path"
+                  signUpUrl="/signup"
+                  forceRedirectUrl="/dashboard"
+                />
+              </div>
             </>
           }
         />
-        <Route path="/signup" element={<><Navbar /><SignUp 
-          path="/signup" 
-          routing="path" 
-          signInUrl="/login"
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              card: "shadow-lg"
-            }
-          }}
-        /></>} />
+        <Route path="/signup" element={<>
+          <Navbar />
+          <div style={{ minHeight: 'calc(100vh - 116px)', marginTop: '116px', padding: '32px 16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflowY: 'auto' }}>
+            <SignUp
+              path="/signup"
+              routing="path"
+              signInUrl="/login"
+              appearance={{
+                elements: {
+                  rootBox: "w-full",
+                  card: "shadow-lg"
+                }
+              }}
+            />
+          </div>
+        </>} />
         <Route path="/" 
           element={
             <>
@@ -103,6 +111,7 @@ function App() {
         <Route path="/how-it-works" element={<><Navbar /><HowItWorks /></>} />
         {/* plans-and-prices */}
         <Route path="/plans" element={<><Navbar /><PlansAndPrices /></>} />
+        <Route path="/activate-your-band" element={<><Navbar /><ActivateBand /></>} />
         {/* Protected Routes */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/profile/:id" element={<ProtectedRoute><PetProfile /></ProtectedRoute>} />
