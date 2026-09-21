@@ -10,6 +10,9 @@ const safeZones = [
   { name: 'Central Park', radius: '1.2KM RADIUS', active: false, icon: '🌲', alert: null },
 ];
 
+const Lat = 32.7466087;
+const Long = 74.8654137;
+
 interface PetRouteState {
   pet?: Pet;
 }
@@ -18,6 +21,8 @@ const GpsTracking = () => {
   const location = useLocation();
   const [zones, setZones] = useState(safeZones);
   const featured = (location.state as PetRouteState | null)?.pet ?? pets[0];
+  const mapSpan = 0.01;
+  const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${Long - mapSpan}%2C${Lat - mapSpan}%2C${Long + mapSpan}%2C${Lat + mapSpan}&layer=mapnik`;
 
   const toggleZone = (idx: number) => {
     setZones((prev) => prev.map((z, i) => i === idx ? { ...z, active: !z.active } : z));
@@ -32,9 +37,9 @@ const GpsTracking = () => {
 
         {/* Map */}
         <div className="flex-1 relative overflow-hidden" style={{ minHeight: '100vh' }}>
-          {/* Hardcoded map using OpenStreetMap iframe */}
+          {/* Map centered on the user's latitude and longitude */}
           <iframe
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1276%2C51.5074%2C-0.1076%2C51.5174&layer=mapnik"
+            src={mapUrl}
             className="w-full h-full border-0"
             style={{ minHeight: '100vh', filter: 'saturate(0.7) brightness(1.05)' }}
             title="GPS Map"
@@ -45,8 +50,8 @@ const GpsTracking = () => {
             <div className="rounded-full border-2 border-dashed" style={{ width: 320, height: 320, borderColor: `${theme.colors.primary.tealWellness}88`, backgroundColor: `${theme.colors.primary.tealWellness}11` }}></div>
           </div>
 
-          {/* Pet marker */}
-          <div className="absolute" style={{ top: '46%', left: '47%', transform: 'translate(-50%, -50%)' }}>
+          {/* Pet marker at the user's latitude and longitude */}
+          <div className="absolute" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <motion.div
               animate={{ scale: [1, 1.15, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
