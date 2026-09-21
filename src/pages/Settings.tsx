@@ -3,14 +3,19 @@ import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import Sidebar from '../components/Sidebar';
 import { pets } from '../data/pets';
+import { useAuthContext } from '../context/AuthContext';
 
 const Settings = () => {
+  const { user } = useAuthContext();
   const [alerts, setAlerts] = useState({ health: true, expert: true, community: false });
-  const [profile, setProfile] = useState({
-    name: 'Julian Alexander',
-    email: 'julian.care@sanctuary.com',
-    location: 'San Francisco, CA',
-    accountType: 'Premium Sanctuary',
+  const [profile, setProfile] = useState(() => {
+    const metadataLocation = user?.publicMetadata?.location;
+    return {
+      name: [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.username || 'Not provided',
+      email: user?.primaryEmailAddress?.emailAddress || 'Not provided',
+      location: typeof metadataLocation === 'string' && metadataLocation.trim() ? metadataLocation : 'Not provided',
+      accountType: 'Admin',
+    };
   });
   const [editing, setEditing] = useState(false);
 
