@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
 import Sidebar from '../components/Sidebar';
-import { pets } from '../data/pets';
+import { Pet, pets } from '../data/pets';
 
 const activityData = {
   Daily:  [40, 65, 50, 80, 55, 30, 20],
@@ -18,12 +18,16 @@ const weeklyTrends = [
   { icon: '😌', label: 'Stress Levels', sub: 'Barking and erratic movement rate.', value: 'Low', color: theme.colors.neutral.gray[300], barW: '20%' },
 ];
 
-const featured = pets[3]; // Luna
+interface PetRouteState {
+  pet?: Pet;
+}
 
 const HealthMonitoring = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [activityTab, setActivityTab] = useState<'Daily' | 'Weekly'>('Weekly');
   const maxActivity = Math.max(...activityData[activityTab]);
+  const featured = (location.state as PetRouteState | null)?.pet ?? pets[3];
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg, fontFamily: theme.fonts.body }}>

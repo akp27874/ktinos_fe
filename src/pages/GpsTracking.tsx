@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { theme } from '../theme';
-import { pets } from '../data/pets';
+import { Pet, pets } from '../data/pets';
 import Sidebar from '../components/Sidebar';
 
 const safeZones = [
@@ -9,10 +10,14 @@ const safeZones = [
   { name: 'Central Park', radius: '1.2KM RADIUS', active: false, icon: '🌲', alert: null },
 ];
 
-const featured = pets[0];
+interface PetRouteState {
+  pet?: Pet;
+}
 
 const GpsTracking = () => {
+  const location = useLocation();
   const [zones, setZones] = useState(safeZones);
+  const featured = (location.state as PetRouteState | null)?.pet ?? pets[0];
 
   const toggleZone = (idx: number) => {
     setZones((prev) => prev.map((z, i) => i === idx ? { ...z, active: !z.active } : z));

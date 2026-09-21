@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../theme';
@@ -7,7 +8,8 @@ import Sidebar from '../components/Sidebar';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { pets, loading } = usePets();
-  const featured = pets[0];
+  const [selectedPetId, setSelectedPetId] = useState<number>();
+  const featured = pets.find(pet => pet.id === selectedPetId) ?? pets[0];
 
   if (loading) return (
     <div className="flex min-h-screen" style={{ backgroundColor: theme.colors.neutral.lightBg }}>
@@ -107,18 +109,31 @@ const Dashboard = () => {
             {/* Feature Cards */}
             <div className="grid grid-cols-2 gap-4">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                whileHover={{ scale: 1.02 }} onClick={() => navigate('/health')}
+                whileHover={{ scale: 1.02 }} onClick={() => navigate('/health', { state: { pet: featured } })}
                 className="rounded-2xl p-6 text-white cursor-pointer" style={{ backgroundColor: theme.colors.primary.deepPurple }}>
                 <h3 className="text-xl font-bold mb-2" style={{ fontFamily: theme.fonts.heading }}>Health Monitoring</h3>
                 <p className="text-sm opacity-80 mb-6">Deep dive into clinical-grade analytics for heart rate, respiratory patterns, and rest.</p>
-                <span className="text-sm font-semibold" style={{ color: theme.colors.primary.healthGreen }}>Analyze Data →</span>
+                <button
+                  type="button"
+                  onClick={() => navigate('/health', { state: { pet: featured } })}
+                  className="text-sm font-semibold"
+                  style={{ color: theme.colors.primary.healthGreen }}
+                >
+                  Analyze Data →
+                </button>
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                whileHover={{ scale: 1.02 }} onClick={() => navigate('/gps')}
+                whileHover={{ scale: 1.02 }} onClick={() => navigate('/gps', { state: { pet: featured } })}
                 className="rounded-2xl p-6 text-white cursor-pointer" style={{ backgroundColor: theme.colors.primary.tealWellness }}>
                 <h3 className="text-xl font-bold mb-2" style={{ fontFamily: theme.fonts.heading }}>GPS Tracking</h3>
                 <p className="text-sm opacity-80 mb-6">{featured.petName} is currently in the 'Safe Zone'. Real-time location with 3m precision.</p>
-                <span className="text-sm font-semibold text-white">Live Map →</span>
+                <button
+                  type="button"
+                  onClick={() => navigate('/gps', { state: { pet: featured } })}
+                  className="text-sm font-semibold text-white"
+                >
+                  Live Map →
+                </button>
               </motion.div>
             </div>
 
@@ -134,7 +149,20 @@ const Dashboard = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.03, boxShadow: `0 8px 24px ${theme.colors.primary.deepPurple}22` }}
-                    className="bg-white rounded-xl p-3 text-center shadow-sm">
+                    className="bg-white rounded-xl p-3 text-center shadow-sm"
+                    onClick={() => setSelectedPetId(pet.id)}>
+                    <label className="flex justify-end cursor-pointer" onClick={event => event.stopPropagation()}>
+                      <input
+                        type="radio"
+                        name="selected-pet"
+                        value={pet.id}
+                        checked={featured.id === pet.id}
+                        onChange={() => setSelectedPetId(pet.id)}
+                        className="h-4 w-4 cursor-pointer"
+                        style={{ accentColor: theme.colors.primary.deepPurple }}
+                        aria-label={`Select ${pet.petName}`}
+                      />
+                    </label>
                     <img src={pet.avatar} alt={pet.petName} className="w-14 h-14 rounded-full object-cover mx-auto mb-2" />
                     <p className="text-sm font-bold" style={{ fontFamily: theme.fonts.heading, color: theme.colors.primary.deepPurple }}>{pet.petName}</p>
                     <p className="text-xs mb-2" style={{ color: theme.colors.neutral.gray[400] }}>{pet.breed}</p>
