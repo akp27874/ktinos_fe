@@ -12,24 +12,26 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { theme } from '../theme';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!username || !password) {
       setError('Please fill in all fields.');
       return;
     }
     setLoading(true);
     setError('');
-    const success = await login(email, password);
+    const success = await login(username, password);
     setLoading(false);
     if (!success) {
       Alert.alert('Login Failed', 'Invalid credentials. Please try again.');
@@ -70,15 +72,14 @@ export default function LoginScreen() {
             <Text style={styles.vitalityText}>98.4% Health Vitality</Text>
           </View>
 
-          {/* Email */}
-          <Text style={styles.label}>Email Address</Text>
+          {/* Username */}
+          <Text style={styles.label}>Username</Text>
           <TextInput
             style={styles.input}
-            placeholder="care@petcare.com"
+            placeholder="Enter your username"
             placeholderTextColor={theme.colors.neutral.gray[400]}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
+            value={username}
+            onChangeText={setUsername}
             autoCapitalize="none"
           />
 
@@ -133,7 +134,7 @@ export default function LoginScreen() {
 
           <View style={styles.signupRow}>
             <Text style={styles.signupText}>Don't have an account? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup' as never)}>
               <Text style={styles.signupLink}>Create Profile</Text>
             </TouchableOpacity>
           </View>

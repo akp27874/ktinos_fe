@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 // Auth Screens
 import LandingScreen from '../screens/LandingScreen';
 import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 // App Screens
 import DashboardNavigator from './DashboardNavigator';
 import PetDetailsScreen from '../screens/PetDetailsScreen';
@@ -15,6 +16,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 export type RootStackParamList = {
   Landing: undefined;
   Login: undefined;
+  Signup: undefined;
   DashboardNavigator: undefined;
   PetDetails: { id: number };
   PetProfile: { id: number };
@@ -37,6 +39,7 @@ export default function RootNavigator() {
           <>
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
           </>
         ) : (
           <>

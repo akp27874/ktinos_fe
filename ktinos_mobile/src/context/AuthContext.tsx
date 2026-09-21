@@ -13,7 +13,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
 }
 
@@ -50,15 +50,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Real API call for login
-      const response = await fetch(`${BASE_URL}/api/v1/auth/login/`, {
+      // Real API call for login using correct endpoint and username
+      const response = await fetch(`${BASE_URL}/api/v1/accounts/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
@@ -67,10 +67,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const data = await response.json();
       const authenticatedUser: User = {
-        id: data.user?.id || '1',
-        email: data.user?.email || email,
-        name: data.user?.name || email.split('@')[0],
-        token: data.token || data.access_token || 'token_' + Date.now(),
+        id: data.user?.id || data.id || '1',
+        email: data.user?.email || data.email || '',
+        name: data.user?.username || data.username || data.first_name || username,
+        token: data.token || data.access_token || data.access || 'token_' + Date.now(),
       };
       
       await AsyncStorage.setItem('ktinoskare_user', JSON.stringify(authenticatedUser));
