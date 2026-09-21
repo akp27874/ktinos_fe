@@ -52,20 +52,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
+      console.log('Login attempt:', { username, url: `${BASE_URL}/api/v1/accounts/login/` });
+      
       // Real API call for login using correct endpoint and username
       const response = await fetch(`${BASE_URL}/api/v1/accounts/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ username, password }),
       });
 
+      console.log('Response status:', response.status);
+      
+      const responseText = await response.text();
+      console.log('Response body:', responseText);
+
       if (!response.ok) {
+        console.error('Login failed:', response.status, responseText);
         return false;
       }
 
-      const data = await response.json();
+      const data = JSON.parse(responseText);
+      console.log('Login success, data:', data);
+      
       const authenticatedUser: User = {
         id: data.user?.id || data.id || '1',
         email: data.user?.email || data.email || '',
@@ -79,6 +90,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return true;
     } catch (error) {
       console.error('Login error:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
       return false;
     }
   };
